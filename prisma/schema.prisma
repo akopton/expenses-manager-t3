@@ -50,6 +50,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    bills         Bill[]
 }
 
 model VerificationToken {
@@ -64,3 +65,30 @@ model Record {
     id    String @id @default(cuid())
     value String
 }
+
+model Product {
+    id     String  @id @default(cuid())
+    name   String
+    value  Decimal
+    count  Int     @default(1)
+    bill   Bill?   @relation(fields: [billId], references: [id])
+    billId String?
+}
+
+model Bill {
+    id         String    @id @default(cuid())
+    userId     String
+    name       String
+    items      Product[]
+    value      Decimal
+    added_at   DateTime
+    updated_at DateTime
+    isPaid     Boolean
+    owner      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// model BillsSet {
+//     id       String  @id @default(cuid())
+//     bills    Bill[]
+//     isShared Boolean
+// }
