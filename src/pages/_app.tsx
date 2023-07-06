@@ -11,9 +11,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <ProtectedRoute>
-        <Component {...pageProps} />
-      </ProtectedRoute>
+      <Component {...pageProps} />
     </SessionProvider>
   );
 };
