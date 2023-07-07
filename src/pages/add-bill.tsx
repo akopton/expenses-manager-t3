@@ -30,12 +30,12 @@ export default function AddBillPage() {
       : setItems((prev) => prev.filter((item) => el.id !== item.id));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     //TODO: add bill to table
 
     if (!userId) return;
-    await addBill.mutateAsync({
+    addBill.mutateAsync({
       name,
       items,
       value,
