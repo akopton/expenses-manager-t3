@@ -7,19 +7,11 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   if (session.status === "unauthenticated" && router.pathname !== "/") {
-    try {
-      router.push("/");
-    } catch (err) {
-      console.error(err);
-    }
+    router.push("/");
   }
 
   if (session.status === "authenticated" && router.pathname === "/") {
-    try {
-      router.push("/dashboard");
-    } catch (err) {
-      console.error(err);
-    }
+    router.push("/dashboard");
   }
 
   return children;
