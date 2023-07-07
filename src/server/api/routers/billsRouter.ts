@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { type Bill } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime";
 
 export const billsRouter = createTRPCRouter({
   addBill: protectedProcedure
@@ -42,13 +41,18 @@ export const billsRouter = createTRPCRouter({
           owner: { connect: { id: user.id } },
         },
       });
-
       return bill;
     }),
+
   getBills: protectedProcedure.query(async ({ ctx }) => {
     const bills = await ctx.prisma.bill.findMany();
-    console.log(bills);
+    return bills;
+  }),
 
+  getBillsWithProducts: protectedProcedure.query(async ({ ctx }) => {
+    const bills = await ctx.prisma.bill.findMany({
+      include: { items: true },
+    });
     return bills;
   }),
 });

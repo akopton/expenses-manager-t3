@@ -39,7 +39,7 @@ export const AddProductForm = () => {
           className={styles.input}
         />
         <input
-          type="button"
+          type="submit"
           value="Add"
           className={styles.submitBtn}
           onClick={handleSubmit}

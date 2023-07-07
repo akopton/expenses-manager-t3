@@ -2,6 +2,7 @@ import type { Product } from "@prisma/client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { number } from "zod";
+import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
 import { decimalToFloat } from "~/utils/decimalToFloat";
 import { sumValues } from "~/utils/sumValues";
@@ -41,6 +42,12 @@ export default function AddBillPage() {
     setValue(() => sumValues(items));
   }, [items]);
 
+  const handleSelect = (isChecked: boolean, item: Product) => {
+    isChecked
+      ? setItems((prev) => [...prev, item])
+      : setItems((prev) => prev.filter((el) => item.id !== el.id));
+  };
+
   return (
     <>
       <Head>
@@ -50,7 +57,10 @@ export default function AddBillPage() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <h1 className="text-3xl">add bill</h1>
-        <div>
+        {products.data && (
+          <CustomSelect data={products.data} onSelect={handleSelect} />
+        )}
+        {/* <div>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -91,7 +101,7 @@ export default function AddBillPage() {
         </div>
         <div>
           <h2>bills</h2>
-        </div>
+        </div> */}
       </main>
     </>
   );
