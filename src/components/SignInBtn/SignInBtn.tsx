@@ -3,20 +3,16 @@ export const SignInBtn = () => {
   const session = useSession();
 
   const handleSignIn = async () => {
-    await signIn().catch((e) => {
-      throw new Error(e);
-    });
+    return await signIn();
   };
 
   const handleSignOut = async () => {
-    await signOut().catch((e) => {
-      throw new Error(e);
-    });
+    return await signOut();
   };
 
   if (session.status === "authenticated") {
     return (
-      <button className="btn" onClick={() => handleSignIn()}>
+      <button className="btn" onClick={handleSignIn}>
         Sign Out
       </button>
     );
