@@ -6,11 +6,13 @@ import { sumValues } from "~/utils/sumValues";
 
 export default function AddBillPage() {
   const products = api.products.getProducts.useQuery();
-  const bills = api.bills.getBills.useQuery();
+  const addBill = api.bills.addBill.useMutation();
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [value, setValue] = useState<number>(0);
   const [isPaid, setIsPaid] = useState<boolean>(false);
+  const added_at = new Date();
+  const updated_at = new Date();
 
   const handleCheckbox = (
     e: React.FormEvent<HTMLInputElement>,
@@ -21,9 +23,16 @@ export default function AddBillPage() {
       : setItems((prev) => prev.filter((item) => el.id !== item.id));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //TODO: add bill to table
+    await addBill.mutateAsync({
+      name,
+      items,
+      value,
+      added_at,
+      updated_at,
+      isPaid,
+    });
   };
 
   useEffect(() => {
@@ -80,16 +89,6 @@ export default function AddBillPage() {
         </div>
         <div>
           <h2>bills</h2>
-          <ul>
-            {bills &&
-              bills.data?.map((el) => {
-                return (
-                  <li key={el.id}>
-                    <span>{el.name}</span>
-                  </li>
-                );
-              })}
-          </ul>
         </div>
       </main>
     </>

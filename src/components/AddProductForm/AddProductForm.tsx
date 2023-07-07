@@ -7,10 +7,10 @@ export const AddProductForm = () => {
   const [value, setValue] = useState<number>(0);
   const addProduct = api.products.addProduct.useMutation();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const count = 5;
-    return addProduct.mutate({ name, value, count });
+    await addProduct.mutateAsync({ name, value, count });
   };
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
@@ -25,7 +25,7 @@ export const AddProductForm = () => {
 
   return (
     <>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type="text"
           onChange={handleName}
