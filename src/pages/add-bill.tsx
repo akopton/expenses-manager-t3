@@ -1,34 +1,53 @@
 import { Product } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { AddProductForm } from "~/components/AddProductForm/AddProductForm";
 import { SignInBtn } from "~/components/SignInBtn/SignInBtn";
 import { api } from "~/utils/api";
+import { decimalToFloat } from "~/utils/decimalToFloat";
 import { sumValues } from "~/utils/sumValues";
 
 export default function AddBillPage() {
   const products = api.products.getProducts.useQuery();
+  const addBill = api.bills.addBill.useMutation();
+  const bills = api.bills.getBills.useQuery();
+  const session = useSession();
+  const userId = session.data?.user?.id;
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [value, setValue] = useState<number>(0);
   const [isPaid, setIsPaid] = useState<boolean>(false);
+  const added_at = new Date();
+  const updated_at = new Date();
 
   const handleCheckbox = (
     e: React.FormEvent<HTMLInputElement>,
     el: Product
   ) => {
-    const products = items;
-
     e.currentTarget.checked
-      ? products.push(el)
-      : products.filter((item) => el.id !== item.id);
-
-    setItems(products);
-
-    const sumValue = sumValues(products);
-
-    setValue(sumValue);
+      ? setItems((prev) => [...prev, el])
+      : setItems((prev) => prev.filter((item) => el.id !== item.id));
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    //TODO: add bill to table
+
+    if (!userId) return;
+    await addBill.mutateAsync({
+      name,
+      items,
+      value,
+      added_at,
+      updated_at,
+      isPaid,
+    });
+  };
+
+  useEffect(() => {
+    setValue(() => sumValues(items));
+  }, [items]);
 
   return (
     <>
@@ -40,11 +59,12 @@ export default function AddBillPage() {
       <main className="flex min-h-screen flex-col items-center justify-center">
         <h1 className="text-3xl">add bill</h1>
         <div>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <input
               type="text"
               placeholder="name"
               onChange={(e) => setName(e.target.value)}
+              value={name}
             />
             <div>
               {products &&
@@ -72,9 +92,23 @@ export default function AddBillPage() {
                 onChange={() => setIsPaid((prev) => !prev)}
               />
             </label>
+            <input type="button" value="Add" onClick={handleSubmit} />
           </form>
 
           <div>value: {value}</div>
+        </div>
+        <div>
+          <h2>bills</h2>
+          <ul>
+            {bills &&
+              bills.data?.map((el) => {
+                return (
+                  <li key={el.id}>
+                    <span>{el.name}</span>
+                  </li>
+                );
+              })}
+          </ul>
         </div>
       </main>
     </>
