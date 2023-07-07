@@ -1,6 +1,4 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import styles from "./button.module.css";
-
 export const SignInBtn = () => {
   const session = useSession();
 

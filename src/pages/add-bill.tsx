@@ -1,25 +1,17 @@
 import { Product } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { AddProductForm } from "~/components/AddProductForm/AddProductForm";
-import { SignInBtn } from "~/components/SignInBtn/SignInBtn";
+import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
-import { decimalToFloat } from "~/utils/decimalToFloat";
 import { sumValues } from "~/utils/sumValues";
 
 export default function AddBillPage() {
   const products = api.products.getProducts.useQuery();
-  const addBill = api.bills.addBill.useMutation();
   const bills = api.bills.getBills.useQuery();
-  const session = useSession();
-  const userId = session.data?.user?.id;
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [value, setValue] = useState<number>(0);
   const [isPaid, setIsPaid] = useState<boolean>(false);
-  const added_at = new Date();
-  const updated_at = new Date();
 
   const handleCheckbox = (
     e: React.FormEvent<HTMLInputElement>,
@@ -33,16 +25,6 @@ export default function AddBillPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     //TODO: add bill to table
-
-    if (!userId) return;
-    addBill.mutateAsync({
-      name,
-      items,
-      value,
-      added_at,
-      updated_at,
-      isPaid,
-    });
   };
 
   useEffect(() => {

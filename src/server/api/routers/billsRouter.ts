@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { Product } from "@prisma/client";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const billsRouter = createTRPCRouter({
   addBill: protectedProcedure
