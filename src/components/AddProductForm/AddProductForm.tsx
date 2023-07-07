@@ -10,7 +10,7 @@ export const AddProductForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const count = 5;
-    return addProduct.mutateAsync({ name, value, count });
+    return addProduct.mutate({ name, value, count });
   };
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
