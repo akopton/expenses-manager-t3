@@ -2,12 +2,20 @@ import { signIn, signOut, useSession } from "next-auth/react";
 export const SignInBtn = () => {
   const session = useSession();
 
-  const handleSignIn = async () => {
-    await signIn();
+  const handleSignIn = () => {
+    try {
+      signIn();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
+  const handleSignOut = () => {
+    try {
+      signOut();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   if (session.status === "authenticated") {
