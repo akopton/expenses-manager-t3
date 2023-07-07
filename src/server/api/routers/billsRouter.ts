@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import type { Product } from "@prisma/client";
+import type { Bill, Product } from "@prisma/client";
 
 export const billsRouter = createTRPCRouter({
   addBill: protectedProcedure
@@ -8,7 +8,14 @@ export const billsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         value: z.number(),
-        items: z.any(),
+        items: z
+          .object({
+            id: z.string(),
+            name: z.string(),
+            value: z.number(),
+            count: z.number(),
+          })
+          .array(),
         added_at: z.date(),
         updated_at: z.date(),
         isPaid: z.boolean(),
@@ -16,13 +23,16 @@ export const billsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
-      const bill = await ctx.prisma.bill.create({
+      const itemsIds = input.items.map((item) => {
+        return item.id;
+      });
+      const bill: Bill = await ctx.prisma.bill.create({
         data: {
           name: input.name,
           value: input.value,
           items: {
-            connect: input.items.map((item: Product): { id: string } => ({
-              id: item.id,
+            connect: itemsIds.map((id: string) => ({
+              id: id,
             })),
           },
           added_at: input.added_at,
