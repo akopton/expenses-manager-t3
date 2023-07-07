@@ -21,7 +21,9 @@ export const billsRouter = createTRPCRouter({
           name: input.name,
           value: input.value,
           items: {
-            connect: input.items.map((item: Product) => ({ id: item.id })),
+            connect: input.items.map((item: Product): { id: string } => ({
+              id: item.id,
+            })),
           },
           added_at: input.added_at,
           updated_at: input.updated_at,
