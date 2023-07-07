@@ -1,7 +1,9 @@
 import type { Product } from "@prisma/client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { number } from "zod";
 import { api } from "~/utils/api";
+import { decimalToFloat } from "~/utils/decimalToFloat";
 import { sumValues } from "~/utils/sumValues";
 
 export default function AddBillPage() {

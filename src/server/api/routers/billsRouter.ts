@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import type { Bill, Product } from "@prisma/client";
+import { type Bill } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
 
 export const billsRouter = createTRPCRouter({
@@ -13,7 +13,7 @@ export const billsRouter = createTRPCRouter({
           .object({
             id: z.string(),
             name: z.string(),
-            value: z.instanceof(Decimal),
+            value: z.any(),
             count: z.number(),
           })
           .array(),
