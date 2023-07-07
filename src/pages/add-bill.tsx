@@ -1,5 +1,4 @@
-import { Product } from "@prisma/client";
-import { useSession } from "next-auth/react";
+import type { Product } from "@prisma/client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";

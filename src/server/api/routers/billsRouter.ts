@@ -7,7 +7,6 @@ export const billsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         value: z.number(),
-        items: z.any(),
         added_at: z.date(),
         updated_at: z.date(),
         isPaid: z.boolean(),
@@ -18,7 +17,6 @@ export const billsRouter = createTRPCRouter({
       const bill = await ctx.prisma.bill.create({
         data: {
           name: input.name,
-          items: { create: [...input.items] },
           value: input.value,
           added_at: input.added_at,
           updated_at: input.updated_at,

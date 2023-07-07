@@ -1,4 +1,4 @@
-import { Decimal } from "@prisma/client/runtime";
+import type { Decimal } from "@prisma/client/runtime";
 
 export const decimalToFloat = (num: Decimal) => {
   const string = num.toString();
