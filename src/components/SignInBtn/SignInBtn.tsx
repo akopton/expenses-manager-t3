@@ -12,14 +12,24 @@ export const SignInBtn = () => {
 
   if (session.status === "authenticated") {
     return (
-      <button className="btn" onClick={() => signIn()}>
+      <button
+        className="btn"
+        onClick={() => {
+          signIn();
+        }}
+      >
         Sign Out
       </button>
     );
   }
 
   return (
-    <button className="btn" onClick={() => signOut()}>
+    <button
+      className="btn"
+      onClick={() => {
+        signOut();
+      }}
+    >
       Sign In
     </button>
   );
