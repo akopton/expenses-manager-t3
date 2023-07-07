@@ -25,7 +25,7 @@ export const AddProductForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form className={styles.form}>
         <input
           type="text"
           onChange={handleName}
