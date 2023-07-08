@@ -1,11 +1,9 @@
-import { Prisma } from "@prisma/client";
+import { Product } from "@prisma/client";
 import Head from "next/head";
+import type { BillWithProducts } from "~/types/types";
 import { api } from "~/utils/api";
 
-type TBill = Prisma.BillGetPayload<{ include: { items: true } }>;
-type TProduct = Prisma.ProductGetPayload<undefined>;
-
-const ProductItem = (product: TProduct) => {
+const ProductItem = (product: Product) => {
   return (
     <li key={product.id} className="flex gap-3">
       <span>{product.name}</span>
@@ -15,7 +13,7 @@ const ProductItem = (product: TProduct) => {
   );
 };
 
-const BillCard = (bill: TBill) => {
+const BillCard = (bill: BillWithProducts) => {
   return (
     <li key={bill.id} className="border border-black">
       <span>{bill.name}</span>
@@ -31,6 +29,7 @@ const BillCard = (bill: TBill) => {
 
 export default function Dashboard() {
   const billsWithProducts = api.bills.getBillsWithProducts.useQuery();
+
   return (
     <>
       <Head>
@@ -42,7 +41,7 @@ export default function Dashboard() {
         <div>bills</div>
         <ul>
           {billsWithProducts &&
-            billsWithProducts.data?.map((bill) => {
+            billsWithProducts.data?.map((bill: BillWithProducts) => {
               return <BillCard {...bill} key={bill.id} />;
             })}
         </ul>

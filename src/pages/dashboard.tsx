@@ -1,3 +1,4 @@
+import { type Product } from "@prisma/client";
 import Head from "next/head";
 import { AddProductForm } from "~/components/AddProductForm/AddProductForm";
 import { SignInBtn } from "~/components/SignInBtn/SignInBtn";
@@ -19,7 +20,7 @@ export default function Dashboard() {
 
         <ul>
           {products &&
-            products.data?.map((el) => {
+            products.data?.map((el: Product) => {
               return <li key={el.id}>{el.name}</li>;
             })}
         </ul>

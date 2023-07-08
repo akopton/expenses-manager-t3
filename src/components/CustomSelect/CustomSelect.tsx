@@ -3,47 +3,44 @@ import React, { useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import styles from "./select.module.css";
 
-const product = Prisma.validator<Prisma.ProductArgs>()({});
-type TProduct = Prisma.ProductGetPayload<typeof product>;
-
 type SelectProps<T> = {
-  options: TProduct[];
+  options: T[];
   onSelect: (opt: T, isChecked: boolean) => void;
   selectedOptions: T[];
 };
 
 type OptionProps<T> = {
-  item: T;
+  option: T;
   onSelect: (opt: T, isChecked: boolean) => void;
-  isSelected: boolean | undefined;
+  isSelected: boolean;
 };
 
 const Option = (props: OptionProps<Product>) => {
-  const { item, isSelected, onSelect } = props;
+  const { option, isSelected, onSelect } = props;
   const [isChecked, setIsChecked] = useState<boolean>(
     isSelected ? isSelected : false
   );
 
   const handleCheckbox = (
     e: React.FormEvent<HTMLInputElement>,
-    item: Product
+    option: Product
   ) => {
     const isChecked = e.currentTarget.checked;
     setIsChecked(isChecked);
-    onSelect({ ...item }, isChecked);
+    onSelect({ ...option }, isChecked);
   };
 
   return (
     <li className={styles.listItem}>
-      <label htmlFor={item.id} className={styles.option}>
+      <label htmlFor={option.id} className={styles.option}>
         <input
           type="checkbox"
-          id={item.id}
+          id={option.id}
           checked={isChecked}
-          onChange={(e) => handleCheckbox(e, item)}
+          onChange={(e) => handleCheckbox(e, option)}
           className={styles.checkbox}
         />
-        {item.name}
+        {option.name}
       </label>
     </li>
   );
@@ -80,6 +77,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
           className={styles.input}
           value={searchValue}
           onChange={handleSearch}
+          placeholder="Wybierz z listy..."
         />
         {!isExpanded ? (
           <MdExpandMore className={styles.arrow} onClick={handleClick} />
@@ -92,7 +90,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
           {filteredOptions.map((el: Product) => {
             return (
               <Option
-                item={el}
+                option={el}
                 isSelected={
                   selectedOptions.find((opt) => opt.id === el.id) ? true : false
                 }

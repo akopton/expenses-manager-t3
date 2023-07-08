@@ -1,14 +1,11 @@
-import type { Decimal } from "@prisma/client/runtime";
-import { decimalToFloat } from "./decimalToFloat";
-
-export const sumValues = (
-  arr: { value: Decimal; count?: number }[]
+export const sumPlnValues = (
+  arr: { value: number; count?: number }[]
 ): number => {
   const sum = arr.reduce(
-    (acc: number, curr: { value: Decimal; count?: number }) => {
+    (acc: number, curr: { value: number; count?: number }) => {
       return curr.count
-        ? acc + decimalToFloat(curr.value) * 100 * curr.count
-        : acc + decimalToFloat(curr.value) * 100;
+        ? acc + curr.value * 100 * curr.count
+        : acc + curr.value * 100;
     },
     0
   );

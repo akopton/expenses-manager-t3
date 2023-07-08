@@ -1,10 +1,9 @@
-import { Prisma, type Product } from "@prisma/client";
+import { type Product } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
-import { sumValues } from "~/utils/sumValues";
-import { decimalToFloat } from "~/utils/decimalToFloat";
 import styles from "./form.module.css";
+import { sumPlnValues } from "~/utils/sumValues";
 
 type SelectedProductProps<T> = {
   product: T;
@@ -19,14 +18,18 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     if (e.currentTarget.id.includes("count")) {
+      const newCount = parseInt(e.currentTarget.value);
+      if (newCount < 1) return;
       updateProduct({
         id,
         name,
         value,
-        count: parseInt(e.currentTarget.value),
+        count: newCount,
       });
     } else {
-      const newValue = parseFloat(e.currentTarget.value);
+      let newValue = parseFloat(e.currentTarget.value);
+      if (newValue < 0) return;
+      if (e.currentTarget.value === "") newValue = 0;
       updateProduct({ id, name, value: newValue, count });
     }
   };
@@ -38,8 +41,9 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
         <input
           id={`${id}-value`}
           type="number"
-          value={value}
+          value={value ? value : ""}
           onChange={handleChange}
+          placeholder="0"
         />
       </label>
       <label htmlFor={`${id}-count`}>
@@ -55,14 +59,16 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
 };
 
 export const AddBillForm = () => {
-  const products = api.products.getProducts.useQuery();
-  const addBill = api.bills.addBill.useMutation();
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [isPaid, setIsPaid] = useState<boolean>(false);
-  const [value, setValue] = useState<number>(0);
+  const [sumValue, setSumValue] = useState<number>(0);
+  const [paymentDate, setPaymentDate] = useState<Date>();
   const added_at = new Date();
   const updated_at = new Date();
+
+  const products = api.products.getProducts.useQuery();
+  const addBill = api.bills.addBill.useMutation();
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);
@@ -73,7 +79,7 @@ export const AddBillForm = () => {
     await addBill.mutateAsync({
       name,
       items,
-      value,
+      value: sumValue,
       added_at,
       updated_at,
       isPaid,
@@ -96,6 +102,10 @@ export const AddBillForm = () => {
     });
     setItems(newProducts);
   };
+
+  useEffect(() => {
+    setSumValue(() => sumPlnValues(items));
+  }, [items]);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -128,6 +138,7 @@ export const AddBillForm = () => {
           );
         })}
       </ul>
+      <span>Suma: {sumValue}</span>
       <label htmlFor="isPaid">
         {isPaid ? "Zapłacone" : "Do zapłaty"}
         <input
