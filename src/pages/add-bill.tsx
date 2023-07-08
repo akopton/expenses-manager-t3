@@ -1,42 +1,7 @@
-import type { Product } from "@prisma/client";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
-import { api } from "~/utils/api";
-import { sumValues } from "~/utils/sumValues";
+import { AddBillForm } from "~/components/AddBillForm/AddBillForm";
 
 export default function AddBillPage() {
-  const products = api.products.getProducts.useQuery();
-  const addBill = api.bills.addBill.useMutation();
-  const [name, setName] = useState<string>("");
-  const [items, setItems] = useState<Product[]>([]);
-  const [value, setValue] = useState<number>(0);
-  const [isPaid, setIsPaid] = useState<boolean>(false);
-  const added_at = new Date();
-  const updated_at = new Date();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await addBill.mutateAsync({
-      name,
-      items,
-      value,
-      added_at,
-      updated_at,
-      isPaid,
-    });
-  };
-
-  useEffect(() => {
-    setValue(() => sumValues(items));
-  }, [items]);
-
-  const handleSelect = (opt: Product, isChecked: boolean) => {
-    isChecked
-      ? setItems((prev) => [...prev, opt])
-      : setItems((prev) => prev.filter((el) => el.id !== opt.id));
-  };
-
   return (
     <>
       <Head>
@@ -46,42 +11,7 @@ export default function AddBillPage() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <h1 className="text-3xl">add bill</h1>
-
-        <div>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-            />
-            <div>
-              {products.data && (
-                <CustomSelect
-                  data={products.data}
-                  onSelect={handleSelect}
-                  selectedOptions={items}
-                />
-              )}
-            </div>
-            <label htmlFor="isPaid">
-              Zapłacone?
-              <input
-                type="checkbox"
-                id="isPaid"
-                className=" ml-3"
-                checked={isPaid}
-                onChange={() => setIsPaid((prev) => !prev)}
-              />
-            </label>
-            <input type="button" value="Add" onClick={handleSubmit} />
-          </form>
-
-          <div>value: {value}</div>
-        </div>
-        <div>
-          <h2>bills</h2>
-        </div>
+        <AddBillForm />
       </main>
     </>
   );

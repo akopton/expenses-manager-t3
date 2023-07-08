@@ -1,5 +1,32 @@
+import { Bill, Prisma, Product } from "@prisma/client";
 import Head from "next/head";
 import { api } from "~/utils/api";
+import { decimalToFloat } from "~/utils/decimalToFloat";
+
+type TBill = Prisma.BillGetPayload<{ include: { items: true } }>;
+type TProduct = Prisma.ProductGetPayload<undefined>;
+
+const ProductItem = (product: TProduct) => {
+  return (
+    <li key={product.id}>
+      {product.name} {product.count}
+    </li>
+  );
+};
+
+const BillCard = (bill: TBill) => {
+  return (
+    <li key={bill.id} className="border border-black">
+      <span>{bill.name}</span>
+      <ul>
+        {bill.items.map((item) => {
+          return <ProductItem {...item} key={item.id} />;
+        })}
+      </ul>
+      <span>{decimalToFloat(bill.value).toFixed(2).replace(".", ",")} zł</span>
+    </li>
+  );
+};
 
 export default function Dashboard() {
   const billsWithProducts = api.bills.getBillsWithProducts.useQuery();
@@ -15,16 +42,7 @@ export default function Dashboard() {
         <ul>
           {billsWithProducts &&
             billsWithProducts.data?.map((bill) => {
-              return (
-                <li key={bill.id}>
-                  <span>{bill.name}</span>
-                  <ul>
-                    {bill.items.map((item) => {
-                      return <li key={item.id}>{item.name}</li>;
-                    })}
-                  </ul>
-                </li>
-              );
+              return <BillCard {...bill} key={bill.id} />;
             })}
         </ul>
       </main>
