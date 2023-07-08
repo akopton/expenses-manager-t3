@@ -1,13 +1,13 @@
 import { Prisma, type Product } from "@prisma/client";
-import React, { Key, KeyboardEventHandler, useMemo, useState } from "react";
-import { MdExpandMore } from "react-icons/md";
+import React, { useMemo, useState } from "react";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import styles from "./select.module.css";
 
 const product = Prisma.validator<Prisma.ProductArgs>()({});
 type TProduct = Prisma.ProductGetPayload<typeof product>;
 
 type SelectProps<T> = {
-  data: TProduct[];
+  options: TProduct[];
   onSelect: (opt: T, isChecked: boolean) => void;
   selectedOptions: T[];
 };
@@ -52,15 +52,24 @@ const Option = (props: OptionProps<Product>) => {
 export const CustomSelect = (props: SelectProps<Product>) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { data, onSelect, selectedOptions } = props;
+  const { options, onSelect, selectedOptions } = props;
 
   const filteredOptions = useMemo(() => {
-    return data.filter((el: Product) => el.name.includes(searchValue));
-  }, [searchValue, data]);
+    return options.filter((el: Product) => el.name.includes(searchValue));
+  }, [searchValue, options]);
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     setIsExpanded(true);
     setSearchValue(e.currentTarget.value);
+  };
+
+  const handleClick = () => {
+    setIsExpanded((prev) => !prev);
+
+    if (searchValue && isExpanded) {
+      setSearchValue("");
+      setIsExpanded(true);
+    }
   };
 
   return (
@@ -72,10 +81,11 @@ export const CustomSelect = (props: SelectProps<Product>) => {
           value={searchValue}
           onChange={handleSearch}
         />
-        <MdExpandMore
-          className={styles.arrow}
-          onClick={() => setIsExpanded((prev) => !prev)}
-        />
+        {!isExpanded ? (
+          <MdExpandMore className={styles.arrow} onClick={handleClick} />
+        ) : (
+          <MdExpandLess className={styles.arrow} onClick={handleClick} />
+        )}
       </div>
       {isExpanded && (
         <ul className={styles.list}>

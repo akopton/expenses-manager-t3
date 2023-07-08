@@ -60,21 +60,32 @@ model VerificationToken {
 }
 
 model Product {
-    id    String  @id @default(cuid())
-    name  String
-    value Decimal
-    count Int     @default(1)
-    bills Bill[]
+    id       String     @id @default(cuid())
+    name     String
+    value    Float
+    count    Int        @default(1)
+    BillItem BillItem[]
+}
+
+model BillItem {
+    id        String  @id @default(cuid())
+    name      String
+    billId    String
+    productId String
+    product   Product @relation(fields: [productId], references: [id])
+    value     Float // Custom value for the product in the bill
+    count     Int
+    bill      Bill    @relation(fields: [billId], references: [id])
 }
 
 model Bill {
-    id         String    @id @default(cuid())
+    id         String     @id @default(cuid())
     userId     String
     name       String
-    items      Product[]
-    value      Decimal
+    items      BillItem[]
+    value      Float
     added_at   DateTime
     updated_at DateTime
     isPaid     Boolean
-    owner      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    owner      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

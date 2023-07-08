@@ -17,7 +17,9 @@
 }
 
 .arrow {
+    font-size: 24px;
     cursor: pointer;
+    padding: 0;
 }
 
 .list { 
@@ -40,4 +42,3 @@
     cursor: pointer;
 }
 
-.checkbox[aria-checked=false]:checked {}

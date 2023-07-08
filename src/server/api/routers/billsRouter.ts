@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { type Bill } from "@prisma/client";
+import { type Bill, Prisma } from "@prisma/client";
+import { type User } from "next-auth";
+
+type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;
 
 export const billsRouter = createTRPCRouter({
   addBill: protectedProcedure
@@ -12,7 +15,7 @@ export const billsRouter = createTRPCRouter({
           .object({
             id: z.string(),
             name: z.string(),
-            value: z.any(),
+            value: z.number(),
             count: z.number(),
           })
           .array(),
@@ -21,18 +24,18 @@ export const billsRouter = createTRPCRouter({
         isPaid: z.boolean(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      const user = ctx.session.user;
-      const itemsIds = input.items.map((item) => {
-        return item.id;
-      });
+    .mutation(async ({ ctx, input }): Promise<Bill> => {
+      const user: User = ctx.session.user;
       const bill: Bill = await ctx.prisma.bill.create({
         data: {
           name: input.name,
           value: input.value,
           items: {
-            connect: itemsIds.map((id: string) => ({
-              id: id,
+            create: input.items.map((product, index) => ({
+              name: product.name,
+              product: { connect: { id: product.id } },
+              value: product.value,
+              count: product.count,
             })),
           },
           added_at: input.added_at,
@@ -40,19 +43,24 @@ export const billsRouter = createTRPCRouter({
           isPaid: input.isPaid,
           owner: { connect: { id: user.id } },
         },
+        include: {
+          items: true,
+        },
       });
       return bill;
     }),
 
-  getBills: protectedProcedure.query(async ({ ctx }) => {
+  getBills: protectedProcedure.query(async ({ ctx }): Promise<Bill[]> => {
     const bills = await ctx.prisma.bill.findMany();
     return bills;
   }),
 
-  getBillsWithProducts: protectedProcedure.query(async ({ ctx }) => {
-    const bills = await ctx.prisma.bill.findMany({
-      include: { items: true },
-    });
-    return bills;
-  }),
+  getBillsWithProducts: protectedProcedure.query(
+    async ({ ctx }): Promise<BillWithProducts[]> => {
+      const bills = await ctx.prisma.bill.findMany({
+        include: { items: true },
+      });
+      return bills;
+    }
+  ),
 });

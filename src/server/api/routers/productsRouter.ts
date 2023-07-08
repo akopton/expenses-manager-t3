@@ -11,7 +11,6 @@ export const productsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         value: z.number(),
-        count: z.number().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {

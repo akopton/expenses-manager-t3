@@ -1,15 +1,16 @@
-import { Bill, Prisma, Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import Head from "next/head";
 import { api } from "~/utils/api";
-import { decimalToFloat } from "~/utils/decimalToFloat";
 
 type TBill = Prisma.BillGetPayload<{ include: { items: true } }>;
 type TProduct = Prisma.ProductGetPayload<undefined>;
 
 const ProductItem = (product: TProduct) => {
   return (
-    <li key={product.id}>
-      {product.name} {product.count}
+    <li key={product.id} className="flex gap-3">
+      <span>{product.name}</span>
+      <span>{product.count}</span>
+      <span>{product.value.toFixed(2)}</span>
     </li>
   );
 };
@@ -23,7 +24,7 @@ const BillCard = (bill: TBill) => {
           return <ProductItem {...item} key={item.id} />;
         })}
       </ul>
-      <span>{decimalToFloat(bill.value).toFixed(2).replace(".", ",")} zł</span>
+      <span>{bill.value.toFixed(2)} zł</span>
     </li>
   );
 };
