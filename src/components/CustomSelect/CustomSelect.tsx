@@ -1,7 +1,6 @@
-import { api } from "~/utils/api";
-import { Prisma, Product } from "@prisma/client";
+import { Prisma, type Product } from "@prisma/client";
 import styles from "./select.module.css";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const product = Prisma.validator<Prisma.ProductArgs>()({});
 type TProduct = Prisma.ProductGetPayload<typeof product>;
@@ -54,7 +53,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
 
   const newData = useMemo(() => {
     return data.filter((el: Product) => el.name.includes(searchValue));
-  }, [searchValue]);
+  }, [searchValue, data]);
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     setSearchValue(e.currentTarget.value);

@@ -46,14 +46,8 @@ export default function AddBillPage() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <h1 className="text-3xl">add bill</h1>
-        {products.data && (
-          <CustomSelect
-            data={products.data}
-            onSelect={handleSelect}
-            selectedOptions={items}
-          />
-        )}
-        {/* <div>
+
+        <div>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -62,20 +56,13 @@ export default function AddBillPage() {
               value={name}
             />
             <div>
-              {products &&
-                products.data?.map((el) => {
-                  return (
-                    <label htmlFor={el.name} key={el.id}>
-                      {el.name}
-                      <input
-                        type="checkbox"
-                        id={el.name}
-                        className=" ml-3"
-                        onChange={(e) => handleCheckbox(e, el)}
-                      />
-                    </label>
-                  );
-                })}
+              {products.data && (
+                <CustomSelect
+                  data={products.data}
+                  onSelect={handleSelect}
+                  selectedOptions={items}
+                />
+              )}
             </div>
             <label htmlFor="isPaid">
               Zapłacone?
@@ -94,7 +81,7 @@ export default function AddBillPage() {
         </div>
         <div>
           <h2>bills</h2>
-        </div> */}
+        </div>
       </main>
     </>
   );
