@@ -2,7 +2,6 @@ import Head from "next/head";
 import { api } from "~/utils/api";
 
 export default function Dashboard() {
-  const bills = api.bills.getBills.useQuery();
   const billsWithProducts = api.bills.getBillsWithProducts.useQuery();
   return (
     <>
@@ -21,7 +20,7 @@ export default function Dashboard() {
                   <span>{bill.name}</span>
                   <ul>
                     {bill.items.map((item) => {
-                      return <li>{item.name}</li>;
+                      return <li key={item.id}>{item.name}</li>;
                     })}
                   </ul>
                 </li>
