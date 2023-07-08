@@ -1,10 +1,8 @@
 import type { Product } from "@prisma/client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { number } from "zod";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
-import { decimalToFloat } from "~/utils/decimalToFloat";
 import { sumValues } from "~/utils/sumValues";
 
 export default function AddBillPage() {
@@ -16,15 +14,6 @@ export default function AddBillPage() {
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const added_at = new Date();
   const updated_at = new Date();
-
-  const handleCheckbox = (
-    e: React.FormEvent<HTMLInputElement>,
-    el: Product
-  ) => {
-    e.currentTarget.checked
-      ? setItems((prev) => [...prev, el])
-      : setItems((prev) => prev.filter((item) => el.id !== item.id));
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,10 +31,10 @@ export default function AddBillPage() {
     setValue(() => sumValues(items));
   }, [items]);
 
-  const handleSelect = (isChecked: boolean, item: Product) => {
+  const handleSelect = (opt: Product, isChecked: boolean) => {
     isChecked
-      ? setItems((prev) => [...prev, item])
-      : setItems((prev) => prev.filter((el) => item.id !== el.id));
+      ? setItems((prev) => [...prev, opt])
+      : setItems((prev) => prev.filter((el) => el.id !== opt.id));
   };
 
   return (
@@ -58,7 +47,11 @@ export default function AddBillPage() {
       <main className="flex min-h-screen flex-col items-center justify-center">
         <h1 className="text-3xl">add bill</h1>
         {products.data && (
-          <CustomSelect data={products.data} onSelect={handleSelect} />
+          <CustomSelect
+            data={products.data}
+            onSelect={handleSelect}
+            selectedOptions={items}
+          />
         )}
         {/* <div>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>

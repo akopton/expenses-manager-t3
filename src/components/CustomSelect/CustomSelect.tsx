@@ -1,24 +1,28 @@
 import { api } from "~/utils/api";
 import { Prisma, Product } from "@prisma/client";
 import styles from "./select.module.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const product = Prisma.validator<Prisma.ProductArgs>()({});
 type TProduct = Prisma.ProductGetPayload<typeof product>;
 
-type SelectProps = {
+type SelectProps<T> = {
   data: TProduct[];
-  onSelect: (isChecked: boolean, item: Product) => void;
+  onSelect: (opt: T, isChecked: boolean) => void;
+  selectedOptions: T[];
 };
 
 type OptionProps = {
   item: Product;
-  onSelect: (isChecked: boolean, item: Product) => void;
+  onSelect: (opt: Product, isChecked: boolean) => void;
+  isSelected: boolean | undefined;
 };
 
 const Option = (props: OptionProps) => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-  const { item, onSelect } = props;
+  const { item, isSelected, onSelect } = props;
+  const [isChecked, setIsChecked] = useState<boolean>(
+    isSelected ? isSelected : false
+  );
 
   const handleCheckbox = (
     e: React.FormEvent<HTMLInputElement>,
@@ -26,7 +30,7 @@ const Option = (props: OptionProps) => {
   ) => {
     const isChecked = e.currentTarget.checked;
     setIsChecked(isChecked);
-    onSelect(isChecked, item);
+    onSelect({ ...item }, isChecked);
   };
 
   return (
@@ -44,9 +48,9 @@ const Option = (props: OptionProps) => {
   );
 };
 
-export const CustomSelect = (props: SelectProps) => {
+export const CustomSelect = (props: SelectProps<Product>) => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const { data, onSelect } = props;
+  const { data, onSelect, selectedOptions } = props;
 
   const newData = useMemo(() => {
     return data.filter((el: Product) => el.name.includes(searchValue));
@@ -54,6 +58,10 @@ export const CustomSelect = (props: SelectProps) => {
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     setSearchValue(e.currentTarget.value);
+  };
+
+  const handleSelectedOptions = (opt: Product, isChecked: boolean) => {
+    onSelect(opt, isChecked);
   };
 
   return (
@@ -66,7 +74,16 @@ export const CustomSelect = (props: SelectProps) => {
       />
       <ul className={styles.list}>
         {newData.map((el: Product) => {
-          return <Option item={el} onSelect={onSelect} key={el.id} />;
+          return (
+            <Option
+              item={el}
+              isSelected={
+                selectedOptions.find((opt) => opt.id === el.id) ? true : false
+              }
+              onSelect={handleSelectedOptions}
+              key={el.id}
+            />
+          );
         })}
       </ul>
     </div>
