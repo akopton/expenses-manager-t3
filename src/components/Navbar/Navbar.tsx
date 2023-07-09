@@ -1,10 +1,20 @@
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { type ReactNode, useContext } from "react";
+import { ThemeContext } from "~/context/ThemeContext";
 
 type TLink = {
   id: number;
   name: string;
   href: string;
+};
+
+const ToggleThemeBtn = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  return (
+    <div className="cursor-pointer" onClick={toggleTheme}>
+      change theme
+    </div>
+  );
 };
 
 export const Navbar = (): ReactNode => {
@@ -22,6 +32,7 @@ export const Navbar = (): ReactNode => {
           </li>
         ))}
       </ul>
+      <ToggleThemeBtn />
     </div>
   );
 };

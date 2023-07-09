@@ -7,3 +7,13 @@
 input:focus {
     outline: none;
 }
+
+.dark {
+    background: #333;
+    color: #fff;
+}
+
+.light {
+    color: #333;
+    background: #fff;
+}

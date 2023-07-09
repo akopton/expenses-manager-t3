@@ -14,11 +14,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ProtectedRoute>
-        <LayoutProvider>
-          <ThemeProvider>
+        <ThemeProvider>
+          <LayoutProvider>
             <Component {...pageProps} />
-          </ThemeProvider>
-        </LayoutProvider>
+          </LayoutProvider>
+        </ThemeProvider>
       </ProtectedRoute>
     </SessionProvider>
   );
