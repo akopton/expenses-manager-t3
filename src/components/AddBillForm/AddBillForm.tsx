@@ -1,4 +1,4 @@
-import { type Product } from "@prisma/client";
+import { Prisma, ProductPayload, type Product } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
