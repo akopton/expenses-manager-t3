@@ -12,10 +12,10 @@ export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (session.status === "authenticated" && router.pathname !== "/") {
     return (
-      <>
+      <div className="flex max-h-screen min-h-screen flex-col overflow-hidden overflow-hidden border-2">
         <Navbar />
         {children}
-      </>
+      </div>
     );
   }
 };

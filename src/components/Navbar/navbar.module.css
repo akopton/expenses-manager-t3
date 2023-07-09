@@ -1,1 +1,43 @@
-.btn {}
+.container {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 100px;
+    position: relative;
+}
+
+.themeBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+}
+
+.linksList {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.link {
+    font-size:2rem;
+    position: relative;
+    padding: 5px;
+}
+
+.link:after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: red;
+    transition: .3s ease;
+}
+
+.link:hover:after {
+    width: 100%;
+    transition: .3s ease;
+}

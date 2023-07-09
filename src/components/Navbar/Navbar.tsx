@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ToggleThemeBtn } from "../ToggleThemeBtn/ToggleThemeBtn";
+import styles from "./navbar.module.css";
+import { SignInBtn } from "../SignInBtn/SignInBtn";
 
 type TLink = {
   id: number;
@@ -14,15 +16,18 @@ export const Navbar = () => {
   ];
 
   return (
-    <div>
-      <ul>
+    <div className={styles.container}>
+      <div className={styles.themeBtn}>
+        <ToggleThemeBtn />
+      </div>
+      <ul className={styles.linksList}>
         {links.map((el: TLink) => (
-          <li key={el.id}>
+          <li className={styles.link} key={el.id}>
             <Link href={el.href}>{el.name}</Link>
           </li>
         ))}
       </ul>
-      <ToggleThemeBtn />
+      <SignInBtn />
     </div>
   );
 };
