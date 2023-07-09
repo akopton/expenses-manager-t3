@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { SignInBtn } from "~/components/SignInBtn/SignInBtn";
+import { ToggleThemeBtn } from "~/components/ToggleThemeBtn/ToggleThemeBtn";
 
 export default function Home() {
   return (
@@ -12,7 +13,10 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex h-screen">
+      <main className="relative flex h-screen">
+        <div className="absolute right-10 top-5">
+          <ToggleThemeBtn />
+        </div>
         <div className=" flex h-full flex-grow flex-col items-center justify-center gap-10 border-r-2 border-r-black">
           <h2 className="text-3xl">Sign in now with your Google account!</h2>
           <SignInBtn />

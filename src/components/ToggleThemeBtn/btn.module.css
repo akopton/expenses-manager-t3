@@ -1,0 +1,23 @@
+.switch {
+    padding: 5px 5px;
+    border: 2px solid;
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+
+.floatingPoint {
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 100%;
+    transition: .3s ease;
+}
+
+.icon {
+    font-size: 20px;
+}
