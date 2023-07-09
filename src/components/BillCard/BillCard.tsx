@@ -3,6 +3,7 @@ import { type Product } from "@prisma/client";
 import styles from "./billCard.module.css";
 import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
+import Link from "next/link";
 
 const ProductItem = (product: Product) => {
   return (
@@ -19,14 +20,16 @@ export const BillCard = (bill: BillWithProducts) => {
 
   return (
     <li key={bill.id} className={`${styles.billCard} ${styles[`${theme}`]}`}>
-      <span className={styles.billName}>{bill.name}</span>
+      <Link href={`/bills/${bill.id}`}>
+        <span className={styles.billName}>{bill.name}</span>
 
-      <div className={styles.bottomWrap}>
-        <span className={styles.date}>
-          {bill.isPaid ? "Zapłacony" : `Data płatności: ${bill.added_at}`}
-        </span>
-        <span className={styles.billValue}>{bill.value.toFixed(2)} zł</span>
-      </div>
+        <div className={styles.bottomWrap}>
+          <span className={styles.date}>
+            {bill.isPaid ? "Zapłacony" : `Data płatności: ${bill.added_at}`}
+          </span>
+          <span className={styles.billValue}>{bill.value.toFixed(2)} zł</span>
+        </div>
+      </Link>
     </li>
   );
 };
