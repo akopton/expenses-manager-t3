@@ -63,4 +63,13 @@ export const billsRouter = createTRPCRouter({
       return bills;
     }
   ),
+
+  getBillWithId: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const bill = await ctx.prisma.bill.findUnique({
+        where: { id: input.id },
+      });
+      return bill;
+    }),
 });
