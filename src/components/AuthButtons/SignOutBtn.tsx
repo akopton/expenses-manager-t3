@@ -11,7 +11,10 @@ export const SignOutBtn = () => {
   };
 
   return (
-    <button className={styles.btn} onClick={handleSignOut}>
+    <button
+      className={`${styles.btn} ${styles[`${theme}`]}`}
+      onClick={handleSignOut}
+    >
       Sign Out
     </button>
   );

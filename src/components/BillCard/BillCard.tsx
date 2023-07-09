@@ -22,10 +22,11 @@ export const BillCard = (bill: BillWithProducts) => {
     <li key={bill.id} className={`${styles.billCard} ${styles[`${theme}`]}`}>
       <Link href={`/bills/${bill.id}`}>
         <span className={styles.billName}>{bill.name}</span>
-
         <div className={styles.bottomWrap}>
           <span className={styles.date}>
-            {bill.isPaid ? "Zapłacony" : `Data płatności: ${bill.added_at}`}
+            {bill.isPaid
+              ? "Zapłacony"
+              : `Data płatności: ${bill.added_at.getDate().toString()}`}
           </span>
           <span className={styles.billValue}>{bill.value.toFixed(2)} zł</span>
         </div>

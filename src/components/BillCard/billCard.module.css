@@ -2,15 +2,16 @@
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
-    background: var(--primary-bg);
     border-radius: 20px;
     box-shadow: 0 0 10px 6px var(--primary-color), inset 0 0 10px 2px var(--primary-color);
+    backdrop-filter: blur(4px);
     cursor: pointer;
     transition: .3s ease;
 }
 
 .billCard:hover {
     transform: translate(-10px, -10px) scale(1.1);
+    filter: drop-shadow(10px 10px 10px var(--secondary-bg));
     transition: .3s ease;
 }
 
