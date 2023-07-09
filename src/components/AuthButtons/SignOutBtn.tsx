@@ -1,8 +1,8 @@
 import { signOut } from "next-auth/react";
 
-import styles from "./button.module.css";
 import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
+import styles from "./button.module.css";
 
 export const SignOutBtn = () => {
   const { theme } = useContext(ThemeContext);
@@ -11,10 +11,7 @@ export const SignOutBtn = () => {
   };
 
   return (
-    <button
-      className={`${styles.btn} ${theme !== undefined && styles[`${theme}`]}`}
-      onClick={handleSignOut}
-    >
+    <button className={styles.btn} onClick={handleSignOut}>
       Sign Out
     </button>
   );
