@@ -2,31 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-input:focus {
-    outline: none;
+:root {
+  --primary-bg: rgb(26, 28, 34);
+  --secondary-bg: rgb(61, 58, 80);
+  --primary-color: rgb(88, 14, 246);
+  --primary-font: rgb(247, 247, 247);
 }
 
 .dark {
-    background: #333;
-    color: #fff;
+  background-color: var(--primary-bg);
+  color: var(--primary-font);
+  transition: color 1s ease, background-color 1s ease;
 }
 
 .light {
-    color: #333;
-    background: #fff;
+  background-color: var(--primary-font);
+  color: var(--primary-bg);
+  transition: color 1s ease, background-color 1s ease;
 }
 
-@media (prefers-color-scheme: light) {
-    body {
-      background: #FFF;
-      color: #333;
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    body {
-      background: #333;
-      color: #FFF;
-    }
-  }
+input:focus {
+  outline: none;
+}
+
+input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--primary-bg) inset;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--primary-font);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-bg);
+}

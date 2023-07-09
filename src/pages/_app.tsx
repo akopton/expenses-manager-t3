@@ -4,7 +4,7 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ProtectedRoute } from "~/components/ProtectedRoute/ProtectedRoute";
-import { LayoutProvider } from "~/components/LayoutProvider/LayoutProvider";
+import { Layout } from "~/components/LayoutProvider/Layout";
 import { ThemeProvider } from "~/context/ThemeContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -15,9 +15,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ProtectedRoute>
         <ThemeProvider>
-          <LayoutProvider>
+          <Layout>
             <Component {...pageProps} />
-          </LayoutProvider>
+          </Layout>
         </ThemeProvider>
       </ProtectedRoute>
     </SessionProvider>
