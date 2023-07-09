@@ -9,7 +9,7 @@ type TLink = {
 };
 
 const ToggleThemeBtn = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { toggleTheme } = useContext(ThemeContext);
   return (
     <div className="cursor-pointer" onClick={toggleTheme}>
       change theme

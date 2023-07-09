@@ -15,14 +15,14 @@ export const SignInBtn = () => {
 
   if (session.status === "authenticated") {
     return (
-      <button className="btn" onClick={handleSignOut}>
+      <button className={styles.btn} onClick={handleSignOut}>
         Sign Out
       </button>
     );
   }
 
   return (
-    <button className="btn" onClick={handleSignIn}>
+    <button className={styles.btn} onClick={handleSignIn}>
       Sign In
     </button>
   );

@@ -1,4 +1,4 @@
-import { Product } from "@prisma/client";
+import { type Product } from "@prisma/client";
 import Head from "next/head";
 import type { BillWithProducts } from "~/types/types";
 import { api } from "~/utils/api";

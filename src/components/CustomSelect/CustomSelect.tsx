@@ -1,4 +1,4 @@
-import { Prisma, type Product } from "@prisma/client";
+import { type Product } from "@prisma/client";
 import React, { useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import styles from "./select.module.css";

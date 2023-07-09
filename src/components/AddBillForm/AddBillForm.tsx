@@ -65,7 +65,6 @@ export const AddBillForm = () => {
   const [items, setItems] = useState<Product[]>([]);
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [sumValue, setSumValue] = useState<number>(0);
-  const [paymentDate, setPaymentDate] = useState<Date>(new Date());
   const added_at = new Date();
   const updated_at = new Date();
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { type Bill, Prisma } from "@prisma/client";
+import { Product, type Bill, type Prisma } from "@prisma/client";
 import { type User } from "next-auth";
 
 type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;
@@ -31,7 +31,7 @@ export const billsRouter = createTRPCRouter({
           name: input.name,
           value: input.value,
           items: {
-            create: input.items.map((product, index) => ({
+            create: input.items.map((product: Product) => ({
               name: product.name,
               product: { connect: { id: product.id } },
               value: product.value,
