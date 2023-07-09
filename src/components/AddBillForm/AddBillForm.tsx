@@ -35,9 +35,9 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
   };
 
   return (
-    <li className="flex">
-      <span>{name}</span>
-      <label htmlFor={`${id}-value`}>
+    <li className={styles.selectedOption}>
+      <span className={styles.optionName}>{name}</span>
+      <label htmlFor={`${id}-value`} className={styles.optionValue}>
         <input
           id={`${id}-value`}
           type="number"
@@ -45,14 +45,16 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
           onChange={handleChange}
           placeholder="0"
         />
+        zł
       </label>
-      <label htmlFor={`${id}-count`}>
+      <label htmlFor={`${id}-count`} className={styles.optionCount}>
         <input
           id={`${id}-count`}
           type="number"
           value={count}
           onChange={handleChange}
         />
+        szt
       </label>
     </li>
   );
@@ -63,7 +65,7 @@ export const AddBillForm = () => {
   const [items, setItems] = useState<Product[]>([]);
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [sumValue, setSumValue] = useState<number>(0);
-  const [paymentDate, setPaymentDate] = useState<Date>();
+  const [paymentDate, setPaymentDate] = useState<Date>(new Date());
   const added_at = new Date();
   const updated_at = new Date();
 
@@ -109,7 +111,7 @@ export const AddBillForm = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <label htmlFor="name-input">
+      <label htmlFor="name-input" className={styles.nameInput}>
         <input
           id="name-input"
           type="text"
@@ -118,7 +120,7 @@ export const AddBillForm = () => {
           value={name}
         />
       </label>
-      <div>
+      <div className={styles.select}>
         {products.data && (
           <CustomSelect
             options={products.data}
@@ -127,7 +129,7 @@ export const AddBillForm = () => {
           />
         )}
       </div>
-      <ul>
+      <ul className={styles.selectedOptionsList}>
         {items.map((item) => {
           return (
             <SelectedProduct
@@ -138,17 +140,20 @@ export const AddBillForm = () => {
           );
         })}
       </ul>
-      <span>Suma: {sumValue}</span>
-      <label htmlFor="isPaid">
+      <span className={styles.sumValue}>
+        Suma: {sumValue.toFixed(2).replace(".", ",")} zł
+      </span>
+      <label htmlFor="isPaid" className={styles.isPaid}>
         {isPaid ? "Zapłacone" : "Do zapłaty"}
         <input
           type="checkbox"
           id="isPaid"
-          className=" ml-3"
+          className={styles.checkbox}
           checked={isPaid}
           onChange={() => setIsPaid((prev) => !prev)}
         />
       </label>
+      {!isPaid && <input type="text" />}
       <input type="submit" value="Add" onClick={handleSubmit} />
     </form>
   );
