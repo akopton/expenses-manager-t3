@@ -5,7 +5,8 @@ export const SignInBtn = () => {
   const session = useSession();
 
   const handleSignIn = async () => {
-    await signIn();
+    // for now its google, will be fixed in future
+    await signIn("google");
   };
 
   const handleSignOut = async () => {
