@@ -5,7 +5,7 @@ type TContext = {
   toggleTheme: () => void;
 };
 const context: TContext = {
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => {
     localStorage.setItem("theme", "light");
   },
