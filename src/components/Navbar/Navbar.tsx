@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ToggleThemeBtn } from "../ToggleThemeBtn/ToggleThemeBtn";
 import styles from "./navbar.module.css";
-import { SignInBtn } from "../SignInBtn/SignInBtn";
+import { SignInBtn } from "../AuthButtons/SignInBtn";
 import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
+import { SignOutBtn } from "../AuthButtons/SignOutBtn";
 
 type TLink = {
   id: number;
@@ -31,7 +32,7 @@ export const Navbar = () => {
           </li>
         ))}
       </ul>
-      <SignInBtn />
+      <SignOutBtn />
     </div>
   );
 };

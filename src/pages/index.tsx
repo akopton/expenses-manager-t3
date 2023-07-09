@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { SignInBtn } from "~/components/SignInBtn/SignInBtn";
+import { SignInBtn } from "~/components/AuthButtons/SignInBtn";
 import { ToggleThemeBtn } from "~/components/ToggleThemeBtn/ToggleThemeBtn";
 
 export default function Home() {
