@@ -3,7 +3,7 @@
     font-size: 1.5rem;
     border-radius: 1rem;
     transition: border-radius .3s ease;
-    box-shadow: 0 0 6px 2px var(--primary-color), inset 0 0 2px 1px var(--primary-color);
+    box-shadow: 0 0 6px 2px var(--primary-color), inset 0 0 4px 2px var(--primary-color);
 }
 
 .btn:hover {

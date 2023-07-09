@@ -87,5 +87,14 @@ model Bill {
     added_at   DateTime
     updated_at DateTime
     isPaid     Boolean
+    categoryId String
+    category   Category   @relation(fields: [categoryId], references: [id])
     owner      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+    id    String @id @default(cuid())
+    name  String
+    value Float?
+    bills Bill[]
 }
