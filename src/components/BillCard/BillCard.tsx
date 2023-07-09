@@ -1,6 +1,7 @@
 import type { BillWithProducts } from "~/types/types";
 import { type Product } from "@prisma/client";
 import styles from "./billCard.module.css";
+import { api } from "~/utils/api";
 
 const ProductItem = (product: Product) => {
   return (
