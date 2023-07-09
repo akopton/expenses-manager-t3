@@ -1,0 +1,43 @@
+.billCard {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    background: var(--primary-bg);
+    border-radius: 20px;
+    box-shadow: 0 0 10px 6px var(--primary-color), inset 0 0 10px 2px var(--primary-color);
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.billCard:hover {
+    transform: translate(-10px, -10px) scale(1.1);
+    transition: .3s ease;
+}
+
+.billName {
+    align-self: center;
+}
+
+.bottomWrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.billValue {}
+
+.productList {}
+
+.product {}
+
+.productName {}
+
+.productCount {}
+
+.productValue {}
+
+.dark {
+}
+
+.light {
+}

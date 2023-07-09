@@ -1,7 +1,8 @@
 import type { BillWithProducts } from "~/types/types";
 import { type Product } from "@prisma/client";
 import styles from "./billCard.module.css";
-import { api } from "~/utils/api";
+import { useContext } from "react";
+import { ThemeContext } from "~/context/ThemeContext";
 
 const ProductItem = (product: Product) => {
   return (
@@ -14,15 +15,18 @@ const ProductItem = (product: Product) => {
 };
 
 export const BillCard = (bill: BillWithProducts) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <li key={bill.id} className={styles.billCard}>
+    <li key={bill.id} className={`${styles.billCard} ${styles[`${theme}`]}`}>
       <span className={styles.billName}>{bill.name}</span>
-      <ul className={styles.productList}>
-        {bill.items.map((item) => {
-          return <ProductItem {...item} key={item.id} />;
-        })}
-      </ul>
-      <span>{bill.value.toFixed(2)} zł</span>
+
+      <div className={styles.bottomWrap}>
+        <span className={styles.date}>
+          {bill.isPaid ? "Zapłacony" : `Data płatności: ${bill.added_at}`}
+        </span>
+        <span className={styles.billValue}>{bill.value.toFixed(2)} zł</span>
+      </div>
     </li>
   );
 };
