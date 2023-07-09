@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ProtectedRoute } from "~/components/ProtectedRoute/ProtectedRoute";
 import { LayoutProvider } from "~/components/LayoutProvider/LayoutProvider";
+import { ThemeProvider } from "~/context/ThemeContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,7 +15,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ProtectedRoute>
         <LayoutProvider>
-          <Component {...pageProps} />
+          <ThemeProvider>
+            <Component {...pageProps} />
+          </ThemeProvider>
         </LayoutProvider>
       </ProtectedRoute>
     </SessionProvider>
