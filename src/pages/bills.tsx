@@ -1,31 +1,8 @@
 import { type Product } from "@prisma/client";
 import Head from "next/head";
+import { BillCard } from "~/components/BillCard/BillCard";
 import type { BillWithProducts } from "~/types/types";
 import { api } from "~/utils/api";
-
-const ProductItem = (product: Product) => {
-  return (
-    <li key={product.id} className="flex gap-3">
-      <span>{product.name}</span>
-      <span>{product.count}</span>
-      <span>{product.value.toFixed(2)}</span>
-    </li>
-  );
-};
-
-const BillCard = (bill: BillWithProducts) => {
-  return (
-    <li key={bill.id} className="border border-black">
-      <span>{bill.name}</span>
-      <ul>
-        {bill.items.map((item) => {
-          return <ProductItem {...item} key={item.id} />;
-        })}
-      </ul>
-      <span>{bill.value.toFixed(2)} zł</span>
-    </li>
-  );
-};
 
 export default function Dashboard() {
   const billsWithProducts = api.bills.getBillsWithProducts.useQuery();
