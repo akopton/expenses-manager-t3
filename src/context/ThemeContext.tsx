@@ -1,7 +1,7 @@
 import { type ReactNode, createContext, useEffect, useState } from "react";
 
 type TContext = {
-  theme: string | undefined;
+  theme: string;
   toggleTheme: () => void;
 };
 const context: TContext = {
@@ -13,7 +13,7 @@ const context: TContext = {
 export const ThemeContext = createContext(context);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<string>();
+  const [theme, setTheme] = useState<string>("light");
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
