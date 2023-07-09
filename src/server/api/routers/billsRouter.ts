@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { Product, type Bill, type Prisma } from "@prisma/client";
+import { type Product, type Bill, type Prisma } from "@prisma/client";
 import { type User } from "next-auth";
 
 type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;

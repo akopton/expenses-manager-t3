@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { type ReactNode, createContext, useEffect, useState } from "react";
 
 type TContext = {
   theme: string | undefined;
@@ -6,7 +6,9 @@ type TContext = {
 };
 const context: TContext = {
   theme: "dark",
-  toggleTheme: () => {},
+  toggleTheme: () => {
+    localStorage.setItem("theme", "light");
+  },
 };
 export const ThemeContext = createContext(context);
 
