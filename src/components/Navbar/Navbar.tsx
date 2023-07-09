@@ -5,6 +5,7 @@ import { SignInBtn } from "../AuthButtons/SignInBtn";
 import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
 import { SignOutBtn } from "../AuthButtons/SignOutBtn";
+import { useRouter } from "next/router";
 
 type TLink = {
   id: number;
@@ -14,6 +15,8 @@ type TLink = {
 
 export const Navbar = () => {
   const { theme } = useContext(ThemeContext);
+  const { pathname } = useRouter();
+
   const links: TLink[] = [
     { id: 1, name: "Dashboard", href: "/dashboard" },
     { id: 2, name: "Bills", href: "/bills" },
@@ -27,7 +30,12 @@ export const Navbar = () => {
       </div>
       <ul className={styles.linksList}>
         {links.map((el: TLink) => (
-          <li className={styles.link} key={el.id}>
+          <li
+            className={`${styles.link} ${
+              pathname.includes(el.href) && styles.active
+            }`}
+            key={el.id}
+          >
             <Link href={el.href}>{el.name}</Link>
           </li>
         ))}
