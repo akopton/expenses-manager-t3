@@ -4,7 +4,6 @@ import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 import Link from "next/link";
 import { convertToPln } from "~/utils/convertToPln";
-import { AddModelBtn } from "../AddModelBtn/AddModelBtn";
 
 type GridListProps<T> = {
   data: T[];
@@ -48,10 +47,7 @@ export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
 
   return (
     <div className={gridStyles.container}>
-      <div className={gridStyles.topWrap}>
-        <h2 className={gridStyles.title}>{props.title}</h2>
-        <AddModelBtn model={props.itemType} />
-      </div>
+      <h2 className={gridStyles.title}>{props.title}</h2>
       <div className={gridStyles.gridWrapper}>
         <button
           className={gridStyles.slideBtn}
