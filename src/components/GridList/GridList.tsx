@@ -2,6 +2,7 @@ import { usePagination } from "~/hooks/usePagination";
 import { RiAddFill } from "react-icons/ri";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import styles from "./grid.module.css";
+import Link from "next/link";
 
 type GridListProps<T> = {
   data: T[];
@@ -11,6 +12,7 @@ type GridListProps<T> = {
 };
 
 type ItemProps<T> = {
+  id: string;
   name: string;
   value: number;
 };
@@ -18,8 +20,10 @@ type ItemProps<T> = {
 const Item = <T,>(props: ItemProps<T>) => {
   return (
     <li className={styles.item}>
-      <span>{props.name}</span>
-      <span>{props.value.toFixed(2)}</span>
+      <Link href={`/bills/categories/${props.name}`} className={styles.link}>
+        <span>{props.name}</span>
+        <span>{props.value}</span>
+      </Link>
     </li>
   );
 };
@@ -47,8 +51,8 @@ export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
           gridTemplateRows: `repeat(${rows}, 1fr)`,
         }}
       >
-        {currentItems.map((el) => {
-          return <Item<T> {...el} />;
+        {currentItems.map((el, idx) => {
+          return <Item<T> {...el} key={idx} />;
         })}
       </ul>
       <div className={styles.navBtns}>

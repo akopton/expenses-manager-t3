@@ -1,32 +1,32 @@
 import Head from "next/head";
 import { GridList } from "~/components/GridList/GridList";
-import { usePagination } from "~/hooks/usePagination";
+
 type TCategory = {
-  id: number;
+  id: string;
   name: string;
   bills: never[];
   value: number;
 };
 
 type TSet = {
-  id: number;
+  id: string;
   name: string;
   bills: never[];
   value: number;
 };
 
-export default function Dashboard() {
+export default function BillsPage() {
   const sets = [
-    { id: 1, title: "something", name: "remont", bills: [], value: 250.49 },
-    { id: 2, title: "something", name: "wyjazd", bills: [], value: 137.37 },
+    { id: "1", title: "something", name: "remont", bills: [], value: 250.49 },
+    { id: "2", title: "something", name: "wyjazd", bills: [], value: 137.37 },
   ];
   const categories = [
-    { id: 1, name: "budowlane", bills: [], value: 250.49 },
-    { id: 2, name: "spożywcze", bills: [], value: 89.92 },
-    { id: 3, name: "samochód", bills: [], value: 200 },
-    { id: 4, name: "opłaty", bills: [], value: 137.37 },
-    { id: 5, name: "gry", bills: [], value: 139.99 },
-    { id: 6, name: "przejmności", bills: [], value: 150.89 },
+    { id: "1", name: "budowlane", bills: [], value: 250.49 },
+    { id: "2", name: "spożywcze", bills: [], value: 89.92 },
+    { id: "3", name: "samochód", bills: [], value: 200 },
+    { id: "4", name: "opłaty", bills: [], value: 137.37 },
+    { id: "5", name: "gry", bills: [], value: 139.99 },
+    { id: "6", name: "przejmności", bills: [], value: 150.89 },
   ];
   return (
     <>
