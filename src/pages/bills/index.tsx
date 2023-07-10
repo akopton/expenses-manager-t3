@@ -1,7 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
-import { usePagination } from "~/hooks/usePagination";
-
+import { GridList } from "~/components/GridList/GridList";
 type TCategory = {
   id: number;
   name: string;
@@ -9,16 +7,18 @@ type TCategory = {
   value: number;
 };
 
-const Card = (props: TCategory) => {
-  return (
-    <li className="flex flex-col items-center justify-center border-2 border-red-500">
-      <span>{props.name}</span>
-      <span>{props.value.toFixed(2)}</span>
-    </li>
-  );
+type TSet = {
+  id: number;
+  name: string;
+  bills: never[];
+  value: number;
 };
 
 export default function Dashboard() {
+  const sets = [
+    { id: 1, title: "something", name: "remont", bills: [], value: 250.49 },
+    { id: 2, title: "something", name: "wyjazd", bills: [], value: 137.37 },
+  ];
   const categories = [
     { id: 1, name: "1", bills: [], value: 250.49 },
     { id: 2, name: "2", bills: [], value: 89.92 },
@@ -35,17 +35,6 @@ export default function Dashboard() {
     { id: 13, name: "13", bills: [], value: 137.37 },
     { id: 14, name: "14", bills: [], value: 137.37 },
   ];
-
-  const { currentPage, currentItems, showPage } = usePagination<TCategory>(
-    3,
-    categories
-  );
-
-  const sets = [
-    { id: 1, name: "remont", bills: [], value: 250.49 },
-    { id: 2, name: "wyjazd", bills: [], value: 137.37 },
-  ];
-
   return (
     <>
       <Head>
@@ -56,16 +45,11 @@ export default function Dashboard() {
       <main className="flex h-screen items-center px-5 py-4">
         <div className="flex h-full w-1/2 flex-col items-center border-2 border-red-500">
           <h2>Kategorie</h2>
-          <ul className="grid h-full w-full grid-cols-2 grid-rows-2 overflow-hidden">
-            {currentItems.map((el) => {
-              return <Card {...el} key={el.id}></Card>;
-            })}
-          </ul>
-          <button onClick={() => showPage(currentPage - 1)}>-</button>
-          <button onClick={() => showPage(currentPage + 1)}>+</button>
+          <GridList<TCategory> data={categories} rows={2} cols={2} />
         </div>
         <div className="flex w-1/2 flex-col items-center justify-center">
           <h2>Zestawy</h2>
+          <GridList<TSet> data={sets} rows={2} cols={2} />
         </div>
       </main>
     </>
