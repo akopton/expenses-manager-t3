@@ -1,6 +1,7 @@
 import Head from "next/head";
+import { AddBillForm } from "~/components/AddBillForm/AddBillForm";
 
-export default function Dashboard() {
+export default function AddBillPage() {
   return (
     <>
       <Head>
@@ -9,7 +10,9 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-grow flex-col items-center justify-center">
-        <div>Tablica</div>
+        <div>add bill</div>
+        <form></form>
+        <AddBillForm />
       </main>
     </>
   );
