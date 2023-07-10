@@ -8,6 +8,13 @@
     padding: 10px 200px;
 }
 
+.topWrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .grid {
     height: 100%;
     width: 100%;

@@ -39,7 +39,7 @@ export default function Dashboard() {
         <GridList<TCategory>
           title={"Kategorie"}
           data={categories}
-          rows={2}
+          rows={3}
           cols={2}
         />
         <GridList<TSet> title={"Zestawy"} data={sets} rows={2} cols={2} />

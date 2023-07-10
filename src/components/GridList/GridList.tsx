@@ -24,12 +24,18 @@ const Item = <T,>(props: ItemProps<T>) => {
 
 export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
   const { data, rows, cols } = props;
-  const { currentPage, currentItems, showPage } = usePagination<T>(4, data);
+  const itemsPerPage = rows * cols;
+  const { currentPage, currentItems, showPage } = usePagination<T>(
+    itemsPerPage,
+    data
+  );
 
   return (
     <div className={styles.container}>
-      <h2>{props.title}</h2>
-
+      <div className={styles.topWrap}>
+        <h2>{props.title}</h2>
+        <button>+</button>
+      </div>
       <ul
         className={styles.grid}
         style={{
