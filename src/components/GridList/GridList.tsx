@@ -1,8 +1,10 @@
 import { usePagination } from "~/hooks/usePagination";
 import { RiAddFill } from "react-icons/ri";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import styles from "./grid.module.css";
+import gridStyles from "./grid.module.css";
+import itemStyles from "./item.module.css";
 import Link from "next/link";
+import { convertToPln } from "~/utils/convertToPln";
 
 type GridListProps<T> = {
   data: T[];
@@ -14,15 +16,22 @@ type GridListProps<T> = {
 type ItemProps<T> = {
   id: string;
   name: string;
+  bills: T[];
   value: number;
 };
 
 const Item = <T,>(props: ItemProps<T>) => {
   return (
-    <li className={styles.item}>
-      <Link href={`/bills/categories/${props.name}`} className={styles.link}>
-        <span>{props.name}</span>
-        <span>{props.value}</span>
+    <li className={itemStyles.item}>
+      <Link
+        href={`/bills/categories/${props.name}`}
+        className={itemStyles.link}
+      >
+        <span className={itemStyles.itemName}>{props.name}</span>
+        <span className={itemStyles.itemValue}>
+          {convertToPln(props.value)}
+        </span>
+        <span className={itemStyles.itemBillsCount}>{props.bills.length}</span>
       </Link>
     </li>
   );
@@ -37,40 +46,48 @@ export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.topWrap}>
-        <h2 className={styles.title}>{props.title}</h2>
-        <button className={styles.addBtn}>
-          <RiAddFill />
+    <div className={gridStyles.container}>
+      <div className={gridStyles.topWrap}>
+        <h2 className={gridStyles.title}>{props.title}</h2>
+        <button className={gridStyles.addBtn}>
+          <RiAddFill className={gridStyles.addBtnIcon} />
         </button>
       </div>
-      <ul
-        className={styles.grid}
-        style={{
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-          gridTemplateRows: `repeat(${rows}, 1fr)`,
-        }}
-      >
-        {currentItems.map((el, idx) => {
-          return <Item<T> {...el} key={idx} />;
-        })}
-      </ul>
-      <div className={styles.navBtns}>
+      <div className={gridStyles.gridWrapper}>
         <button
-          className={styles.btn}
+          className={gridStyles.slideBtn}
           onClick={() => showPage(currentPage - 1)}
           disabled={data.length > itemsPerView ? false : true}
         >
-          <FaArrowLeftLong className={styles.slideOutLeft} />
-          <FaArrowLeftLong className={styles.slideInLeft} />
+          {data.length > itemsPerView && (
+            <>
+              <FaArrowLeftLong className={gridStyles.slideOutLeft} />
+              <FaArrowLeftLong className={gridStyles.slideInLeft} />
+            </>
+          )}
         </button>
+        <ul
+          className={gridStyles.grid}
+          style={{
+            gridTemplateColumns: `repeat(${cols}, 1fr)`,
+            gridTemplateRows: `repeat(${rows}, 1fr)`,
+          }}
+        >
+          {currentItems.map((el, idx) => {
+            return <Item<T> {...el} key={idx} />;
+          })}
+        </ul>
         <button
-          className={styles.btn}
+          className={gridStyles.slideBtn}
           onClick={() => showPage(currentPage + 1)}
           disabled={data.length > itemsPerView ? false : true}
         >
-          <FaArrowRightLong className={styles.slideInRight} />
-          <FaArrowRightLong className={styles.slideOutRight} />
+          {data.length > itemsPerView && (
+            <>
+              <FaArrowRightLong className={gridStyles.slideInRight} />
+              <FaArrowRightLong className={gridStyles.slideOutRight} />
+            </>
+          )}
         </button>
       </div>
     </div>

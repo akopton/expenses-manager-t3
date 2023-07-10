@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     gap: 25px;
-    padding: 10px 200px;
+    padding: 10px 100px;
 }
 
 .topWrap {
@@ -26,14 +26,24 @@
     justify-content: center;
     font-size: 2rem;
     border-radius: 15px;
-    border: 2px solid var(--primary-font);
-    color: var(--primary-font);
     transition: .15s ease;
 }
 
 .addBtn:hover {
     border-radius: 20px;
     transition: .15s ease;
+}
+.addBtnIcon {
+    text-shadow: 24px 24px var(--primary-color);
+}
+
+.gridWrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
 }
 
 .grid {
@@ -43,76 +53,35 @@
     gap: 50px;
 }
 
-.item {
-    border: 2px solid var(--primary-color);
-    border-radius: 20px;
-    box-shadow: 0 0 10px 6px var(--primary-color), inset 0 0 10px 2px var(--primary-color);
-    cursor: pointer;
-    transition: .3s ease;
-}
 
-.item:hover {
-    transform: translate3d(-12px, -12px, -150px);
-    filter: drop-shadow(6px 6px 12px #7c7c7c);
-    transition: .3s ease;
-}
-
-.link {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.navBtns {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.btn {
-    padding: 5px 10px;
-    font-size: 1.5rem;
-    color: var(--primary-font);
-    border: 2px solid var(--primary-font);
-    border-radius: 8px;
+.slideBtn {
+    height: 20px;
+    width: 50px;
+    font-size: 2rem;
     overflow: hidden;
     cursor: pointer;
     position: relative;
 }
 
-
 /**** disabled buttons ****/
-.btn:disabled, .btn[disabled] {
-    border: 1px solid var(--secondary-bg);
-    color: var(--secondary-bg);
-    cursor: not-allowed;
-}
-
-.btn:disabled:hover .slideInRight, 
-.btn:disabled:hover .slideOutRight,
-.btn:disabled:hover .slideInLeft,
-.btn:disabled:hover .slideOutLeft {
-    animation: none;
+.slideBtn:disabled, .slideBtn[disabled] {
+    cursor: none;
 }
 
 /**** animations ****/
-.btn:hover .slideInRight {
+.slideBtn:hover .slideInRight {
     animation:  slide-out-right 1s infinite;
 }
 
-.btn:hover .slideOutRight {
+.slideBtn:hover .slideOutRight {
     animation: slide-in-right 1s infinite;
 }
 
-.btn:hover .slideInLeft {
+.slideBtn:hover .slideInLeft {
     animation:  slide-out-left 1s infinite;
 }
 
-.btn:hover .slideOutLeft {
+.slideBtn:hover .slideOutLeft {
     animation: slide-in-left 1s infinite;
 }
 
@@ -124,18 +93,26 @@
     transform: translate(-250%, -50%);
 }
 
+.slideInLeft,
+.slideInRight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @keyframes slide-out-right {
     0% {
-        transform: translateX(0);
+        transform: translate(-50%, -50%);
     }
     100% {
-        transform: translateX(200%);
+        transform: translate(180%, -50%);
     }
 }
 
 @keyframes slide-in-right {
     0% {
-        transform: translate(-250%, -50%);
+        transform: translate(-200%, -50%);
     }
     100% {
         transform: translate(-50%, -50%);
@@ -144,16 +121,16 @@
 
 @keyframes slide-out-left {
     0% {
-        transform: translateX(0);
+        transform: translate(-50%, -50%);
     }
     100% {
-        transform: translateX(-200%);
+        transform: translate(-200%, -50%);
     }
 }
 
 @keyframes slide-in-left {
     0% {
-        transform: translate(250%, -50%);
+        transform: translate(200%, -50%);
     }
     100% {
         transform: translate(-50%, -50%);
