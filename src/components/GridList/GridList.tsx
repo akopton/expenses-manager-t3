@@ -3,6 +3,7 @@ import styles from "./grid.module.css";
 
 type GridListProps<T> = {
   data: T[];
+  title?: string;
   rows: number;
   cols: number;
 };
@@ -22,16 +23,38 @@ const Item = <T,>(props: ItemProps<T>) => {
 };
 
 export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
-  const { currentPage, currentItems, showPage } = usePagination<T>(
-    3,
-    props.data
-  );
+  const { data, rows, cols } = props;
+  const { currentPage, currentItems, showPage } = usePagination<T>(4, data);
 
   return (
-    <ul className={styles.grid}>
-      {currentItems.map((el) => {
-        return <Item<T> {...el} />;
-      })}
-    </ul>
+    <div className={styles.container}>
+      <h2>{props.title}</h2>
+
+      <ul
+        className={styles.grid}
+        style={{
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          gridTemplateRows: `repeat(${rows}, 1fr)`,
+        }}
+      >
+        {currentItems.map((el) => {
+          return <Item<T> {...el} />;
+        })}
+      </ul>
+      <div className={styles.navBtns}>
+        <button
+          className={styles.btn}
+          onClick={() => showPage(currentPage - 1)}
+        >
+          {"<"}
+        </button>
+        <button
+          className={styles.btn}
+          onClick={() => showPage(currentPage + 1)}
+        >
+          {">"}
+        </button>
+      </div>
+    </div>
   );
 };

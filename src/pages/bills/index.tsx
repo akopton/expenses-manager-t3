@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { GridList } from "~/components/GridList/GridList";
+import { usePagination } from "~/hooks/usePagination";
 type TCategory = {
   id: number;
   name: string;
@@ -20,20 +21,12 @@ export default function Dashboard() {
     { id: 2, title: "something", name: "wyjazd", bills: [], value: 137.37 },
   ];
   const categories = [
-    { id: 1, name: "1", bills: [], value: 250.49 },
-    { id: 2, name: "2", bills: [], value: 89.92 },
-    { id: 3, name: "3", bills: [], value: 200 },
-    { id: 4, name: "4", bills: [], value: 137.37 },
-    { id: 5, name: "5", bills: [], value: 137.37 },
-    { id: 6, name: "6", bills: [], value: 137.37 },
-    { id: 7, name: "7", bills: [], value: 137.37 },
-    { id: 8, name: "8", bills: [], value: 137.37 },
-    { id: 9, name: "9", bills: [], value: 137.37 },
-    { id: 10, name: "10", bills: [], value: 137.37 },
-    { id: 11, name: "11", bills: [], value: 137.37 },
-    { id: 12, name: "12", bills: [], value: 137.37 },
-    { id: 13, name: "13", bills: [], value: 137.37 },
-    { id: 14, name: "14", bills: [], value: 137.37 },
+    { id: 1, name: "budowlane", bills: [], value: 250.49 },
+    { id: 2, name: "spożywcze", bills: [], value: 89.92 },
+    { id: 3, name: "samochód", bills: [], value: 200 },
+    { id: 4, name: "opłaty", bills: [], value: 137.37 },
+    { id: 5, name: "gry", bills: [], value: 139.99 },
+    { id: 6, name: "przejmności", bills: [], value: 150.89 },
   ];
   return (
     <>
@@ -43,14 +36,13 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen items-center px-5 py-4">
-        <div className="flex h-full w-1/2 flex-col items-center border-2 border-red-500">
-          <h2>Kategorie</h2>
-          <GridList<TCategory> data={categories} rows={2} cols={2} />
-        </div>
-        <div className="flex w-1/2 flex-col items-center justify-center">
-          <h2>Zestawy</h2>
-          <GridList<TSet> data={sets} rows={2} cols={2} />
-        </div>
+        <GridList<TCategory>
+          title={"Kategorie"}
+          data={categories}
+          rows={2}
+          cols={2}
+        />
+        <GridList<TSet> title={"Zestawy"} data={sets} rows={2} cols={2} />
       </main>
     </>
   );
