@@ -1,14 +1,58 @@
 .form {
+    height: 100%;
+    width: 100%;
     padding: 2rem;
-    border: 2px solid black;
+    display: flex;
 }
 
-.selectedOptionsList {
-    width: 100%;
+.nameInputWrapper {
+    display: flex;
+    flex-direction: column;
 }
 
-.selectedOption {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.nameInput {
+    font-size: 2rem;
+    width: 15rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.select {
+    width: 20rem;
+}
+
+.selectedOptionsWrapper {
+}
+
+.sumValue {}
+
+.isPaid {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2rem;
+}
+
+.checkbox {
+    height: 25px;
+    width: 25px;
+}
+
+.addBtn {
+    height: 4rem;
+    width: 10rem;
+    font-size: 2rem;
+    box-shadow: 0 0 8px 4px var(--primary-color), inset 0 0 6px 4px var(--primary-color);
+    border: 2px solid var(--primary-font);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .3s ease;
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.addBtn:hover {
+    border-radius: 20px;
+    transition: .3s ease;
 }

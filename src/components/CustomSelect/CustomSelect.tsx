@@ -2,12 +2,11 @@ import { type Product } from "@prisma/client";
 import React, { useContext, useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
-import styles from "./select.module.css";
-import { api } from "~/utils/api";
 import { ProductsContext } from "~/context/ProductsContext";
+import styles from "./select.module.css";
 
 type SelectProps<T> = {
-  options: T[];
+  options?: T[];
   onSelect: (opt: T, isChecked: boolean) => void;
   selectedOptions: T[];
 };
@@ -45,19 +44,25 @@ const AddProductForm = () => {
   };
 
   return (
-    <li className={styles.listItem}>
+    <li className={styles.option}>
       <input
         type="text"
         placeholder="Nazwa"
         value={productName}
         onChange={handleProductName}
+        className={styles.nameInput}
       />
-      <input
-        type="number"
-        placeholder="0"
-        value={productValue}
-        onChange={handleProductValue}
-      />
+      <label htmlFor="value">
+        <input
+          id="value"
+          type="number"
+          placeholder="0"
+          value={productValue}
+          onChange={handleProductValue}
+          className={styles.valueInput}
+        />
+        zł
+      </label>
       <button type="button" onClick={handleClick}>
         Add
       </button>
@@ -103,7 +108,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
   const [showAddProduct, setShowAddProduct] = useState<boolean>(false);
 
   const filteredOptions = useMemo(() => {
-    return options.filter((el: Product) => el.name.includes(searchValue));
+    return options?.filter((el: Product) => el.name.includes(searchValue));
   }, [searchValue, options]);
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
@@ -136,6 +141,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
           <MdExpandLess className={styles.arrow} onClick={handleClick} />
         )}
       </div>
+
       {isExpanded && (
         <ul className={styles.list}>
           <li>
@@ -149,7 +155,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
             </button>
           </li>
           {showAddProduct && <AddProductForm />}
-          {filteredOptions.map((el: Product) => {
+          {filteredOptions?.map((el: Product) => {
             return (
               <Option
                 option={el}

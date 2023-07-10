@@ -65,8 +65,8 @@ export const Navbar = () => {
                       : "var(--primary-font)",
                   boxShadow:
                     theme === "dark"
-                      ? "0 8px 4px 2px var(--primary-font)"
-                      : "0 8px 4px 2px var(--primary-bg)",
+                      ? "0 5px 4px var(--primary-font)"
+                      : "0 5px 4px var(--primary-bg)",
                   border: "none",
                 }}
               >

@@ -5,61 +5,7 @@ import { api } from "~/utils/api";
 import styles from "./form.module.css";
 import { sumPlnValues } from "~/utils/sumValues";
 import { ProductsContext } from "~/context/ProductsContext";
-
-type SelectedProductProps<T> = {
-  product: T;
-  updateProduct: (product: T) => void;
-};
-
-const SelectedProduct = (props: SelectedProductProps<Product>) => {
-  const {
-    product: { id, value, count, name },
-    updateProduct,
-  } = props;
-
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget.id.includes("count")) {
-      const newCount = parseInt(e.currentTarget.value);
-      if (newCount < 1) return;
-      updateProduct({
-        id,
-        name,
-        value,
-        count: newCount,
-      });
-    } else {
-      let newValue = parseFloat(e.currentTarget.value);
-      if (newValue < 0) return;
-      if (e.currentTarget.value === "") newValue = 0;
-      updateProduct({ id, name, value: newValue, count });
-    }
-  };
-
-  return (
-    <li className={styles.selectedOption}>
-      <span className={styles.optionName}>{name}</span>
-      <label htmlFor={`${id}-value`} className={styles.optionValue}>
-        <input
-          id={`${id}-value`}
-          type="number"
-          value={value ? value.toFixed(2) : ""}
-          onChange={handleChange}
-          placeholder="0"
-        />
-        zł
-      </label>
-      <label htmlFor={`${id}-count`} className={styles.optionCount}>
-        <input
-          id={`${id}-count`}
-          type="number"
-          value={count}
-          onChange={handleChange}
-        />
-        szt
-      </label>
-    </li>
-  );
-};
+import { ProductsTable } from "../ProductsTable/ProductsTable";
 
 export const AddBillForm = () => {
   const [name, setName] = useState<string>("");
@@ -68,9 +14,11 @@ export const AddBillForm = () => {
   const [sumValue, setSumValue] = useState<number>(0);
   const added_at = new Date();
   const updated_at = new Date();
+  const paymentDate = new Date();
   const addBill = api.bills.addBill.useMutation();
 
   const { products } = useContext(ProductsContext);
+  // const {categories} = useContext(CategoriesContext);
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);
@@ -111,49 +59,65 @@ export const AddBillForm = () => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <label htmlFor="name-input" className={styles.nameInput}>
-        <input
-          id="name-input"
-          type="text"
-          placeholder="name"
-          onChange={handleName}
-          value={name}
-        />
-      </label>
-      <div className={styles.select}>
-        {products && (
-          <CustomSelect
-            options={products}
-            onSelect={handleSelect}
-            selectedOptions={items}
+      <div>
+        <label htmlFor="name-input" className={styles.nameInputWrapper}>
+          Nazwa
+          <input
+            id="name-input"
+            type="text"
+            placeholder="name"
+            onChange={handleName}
+            value={name}
+            className={styles.nameInput}
           />
-        )}
+        </label>
+
+        <div className={styles.category}>Kategoria</div>
+        <div className={styles.set}>Dodaj do zestawu</div>
+
+        <label htmlFor="">
+          <input type="text" value={paymentDate.toLocaleDateString()} />
+        </label>
+
+        <label htmlFor="isPaid" className={styles.isPaid}>
+          <input
+            type="checkbox"
+            id="isPaid"
+            className={styles.checkbox}
+            checked={isPaid}
+            onChange={() => setIsPaid((prev) => !prev)}
+          />
+          <span>{isPaid ? "Zapłacone" : "Do zapłaty"}</span>
+        </label>
       </div>
-      <ul className={styles.selectedOptionsList}>
-        {items.map((item) => {
-          return (
-            <SelectedProduct
-              product={item}
-              updateProduct={updateProduct}
-              key={item.id}
-            />
-          );
-        })}
-      </ul>
-      <span className={styles.sumValue}>
-        Suma: {sumValue.toFixed(2).replace(".", ",")} zł
-      </span>
-      <label htmlFor="isPaid" className={styles.isPaid}>
-        {isPaid ? "Zapłacone" : "Do zapłaty"}
-        <input
-          type="checkbox"
-          id="isPaid"
-          className={styles.checkbox}
-          checked={isPaid}
-          onChange={() => setIsPaid((prev) => !prev)}
+
+      <div className={styles.select}>
+        <CustomSelect
+          options={products}
+          onSelect={handleSelect}
+          selectedOptions={items}
         />
-      </label>
-      <input type="submit" value="Add" onClick={handleSubmit} />
+      </div>
+
+      <div>
+        <div className={styles.selectedOptionsWrapper}>
+          <span>Produkty</span>
+          {items.length > 0 && (
+            <ProductsTable updateProduct={updateProduct} data={items} />
+          )}
+        </div>
+
+        <span className={styles.sumValue}>
+          Suma: {sumValue.toFixed(2).replace(".", ",")} zł
+        </span>
+      </div>
+
+      <input
+        type="submit"
+        value="Dodaj"
+        onClick={handleSubmit}
+        className={styles.addBtn}
+      />
     </form>
   );
 };
