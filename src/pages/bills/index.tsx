@@ -39,10 +39,17 @@ export default function BillsPage() {
         <GridList<TCategory>
           title={"Kategorie"}
           data={categories}
+          itemType={"category"}
           rows={2}
           cols={2}
         />
-        <GridList<TSet> title={"Zestawy"} data={sets} rows={2} cols={2} />
+        <GridList<TSet>
+          title={"Zestawy"}
+          itemType={"set"}
+          data={sets}
+          rows={2}
+          cols={2}
+        />
       </main>
     </>
   );

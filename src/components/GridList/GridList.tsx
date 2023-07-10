@@ -1,14 +1,15 @@
 import { usePagination } from "~/hooks/usePagination";
-import { RiAddFill } from "react-icons/ri";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 import Link from "next/link";
 import { convertToPln } from "~/utils/convertToPln";
+import { AddModelBtn } from "../AddModelBtn/AddModelBtn";
 
 type GridListProps<T> = {
   data: T[];
   title?: string;
+  itemType: string;
   rows: number;
   cols: number;
 };
@@ -49,9 +50,7 @@ export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
     <div className={gridStyles.container}>
       <div className={gridStyles.topWrap}>
         <h2 className={gridStyles.title}>{props.title}</h2>
-        <button className={gridStyles.addBtn}>
-          <RiAddFill className={gridStyles.addBtnIcon} />
-        </button>
+        <AddModelBtn model={props.itemType} />
       </div>
       <div className={gridStyles.gridWrapper}>
         <button
