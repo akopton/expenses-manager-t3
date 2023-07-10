@@ -1,11 +1,8 @@
-import Link from "next/link";
 import { ToggleThemeBtn } from "../ToggleThemeBtn/ToggleThemeBtn";
-import styles from "./navbar.module.css";
-import { SignInBtn } from "../AuthButtons/SignInBtn";
-import { useContext } from "react";
-import { ThemeContext } from "~/context/ThemeContext";
 import { SignOutBtn } from "../AuthButtons/SignOutBtn";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import styles from "./navbar.module.css";
 
 type TLink = {
   id: number;
@@ -14,17 +11,16 @@ type TLink = {
 };
 
 export const Navbar = () => {
-  const { theme } = useContext(ThemeContext);
   const { pathname } = useRouter();
 
   const links: TLink[] = [
-    { id: 1, name: "Dashboard", href: "/dashboard" },
-    { id: 2, name: "Bills", href: "/bills" },
-    { id: 3, name: "Analytics", href: "/analytics" },
+    { id: 1, name: "Tablica", href: "/dashboard" },
+    { id: 2, name: "Wydatki", href: "/bills" },
+    { id: 3, name: "Analiza", href: "/analytics" },
   ];
 
   return (
-    <div className={`${styles.container} ${styles[`${theme}`]}`}>
+    <div className={styles.container}>
       <div className={styles.themeBtn}>
         <ToggleThemeBtn />
       </div>

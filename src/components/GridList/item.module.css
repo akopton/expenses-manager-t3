@@ -1,5 +1,5 @@
 .item {
-    border: 2px solid var(--primary-color);
+    border: 2px solid var(--primary-font);
     border-radius: 20px;
     box-shadow: 0 0 10px 6px var(--primary-color), inset 0 0 10px 2px var(--primary-color);
     cursor: pointer;

@@ -17,16 +17,22 @@ export default function Home() {
         <div className="absolute right-10 top-5">
           <ToggleThemeBtn />
         </div>
+
         <div
           className="flex h-full flex-grow flex-col items-center justify-center gap-10"
-          style={{ boxShadow: "0 0 10px 2px var(--primary-color)" }}
+          style={{
+            boxShadow: "0 0 4px 2px var(--primary-color)",
+          }}
         >
           <h2 className="text-3xl">Sign in now with your Google account!</h2>
           <SignInBtn />
         </div>
+
         <div
           className="flex h-full w-3/5 flex-col items-center justify-center gap-10"
-          style={{ boxShadow: "0 0 10px 2px var(--primary-color)" }}
+          style={{
+            boxShadow: "0 0 4px 2px var(--primary-color)",
+          }}
         >
           <h1 className="text-5xl">Expenses Tracker App</h1>
           <p className="text-center text-2xl">
