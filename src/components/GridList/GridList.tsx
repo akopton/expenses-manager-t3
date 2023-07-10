@@ -1,4 +1,6 @@
 import { usePagination } from "~/hooks/usePagination";
+import { RiAddFill } from "react-icons/ri";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import styles from "./grid.module.css";
 
 type GridListProps<T> = {
@@ -24,17 +26,19 @@ const Item = <T,>(props: ItemProps<T>) => {
 
 export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
   const { data, rows, cols } = props;
-  const itemsPerPage = rows * cols;
+  const itemsPerView = rows * cols;
   const { currentPage, currentItems, showPage } = usePagination<T>(
-    itemsPerPage,
+    itemsPerView,
     data
   );
 
   return (
     <div className={styles.container}>
       <div className={styles.topWrap}>
-        <h2>{props.title}</h2>
-        <button>+</button>
+        <h2 className={styles.title}>{props.title}</h2>
+        <button className={styles.addBtn}>
+          <RiAddFill />
+        </button>
       </div>
       <ul
         className={styles.grid}
@@ -51,14 +55,18 @@ export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
         <button
           className={styles.btn}
           onClick={() => showPage(currentPage - 1)}
+          disabled={data.length > itemsPerView ? false : true}
         >
-          {"<"}
+          <FaArrowLeftLong className={styles.slideOutLeft} />
+          <FaArrowLeftLong className={styles.slideInLeft} />
         </button>
         <button
           className={styles.btn}
           onClick={() => showPage(currentPage + 1)}
+          disabled={data.length > itemsPerView ? false : true}
         >
-          {">"}
+          <FaArrowRightLong className={styles.slideInRight} />
+          <FaArrowRightLong className={styles.slideOutRight} />
         </button>
       </div>
     </div>

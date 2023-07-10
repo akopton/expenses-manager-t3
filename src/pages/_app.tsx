@@ -1,11 +1,11 @@
 import { type Session } from "next-auth";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
-import "~/styles/globals.css";
 import { ProtectedRoute } from "~/components/ProtectedRoute/ProtectedRoute";
 import { Layout } from "~/components/LayoutProvider/Layout";
 import { ThemeProvider } from "~/context/ThemeContext";
+import "~/styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

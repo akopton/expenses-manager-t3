@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 25px;
     padding: 10px 200px;
 }
 
@@ -13,6 +13,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.title {
+    font-size: 2rem;
+}
+
+.addBtn {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border-radius: 15px;
+    border: 2px solid var(--primary-font);
+    color: var(--primary-font);
+    transition: .15s ease;
+}
+
+.addBtn:hover {
+    transition: .15s ease;
 }
 
 .grid {
@@ -29,6 +49,15 @@
     justify-content: center;
     border: 2px solid var(--primary-color);
     border-radius: 20px;
+    box-shadow: 0 0 10px 6px var(--primary-color), inset 0 0 10px 2px var(--primary-color);
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.item:hover {
+    transform: translate3d(-12px, -12px, -150px);
+    filter: drop-shadow(6px 6px 12px #7c7c7c);
+    transition: .3s ease;
 }
 
 .navBtns {
@@ -39,8 +68,88 @@
 }
 
 .btn {
-    padding: 5px 20px;
-    font-size: 20px;
-    border: 1px solid var(--primary-color);
-    cursor: pointer
+    padding: 5px 10px;
+    font-size: 1.5rem;
+    color: var(--primary-font);
+    border: 2px solid var(--primary-font);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+
+/**** disabled buttons ****/
+.btn:disabled, .btn[disabled] {
+    border: 1px solid var(--secondary-bg);
+    color: var(--secondary-bg);
+    cursor: not-allowed;
+}
+
+.btn:disabled:hover .slideInRight, 
+.btn:disabled:hover .slideOutRight,
+.btn:disabled:hover .slideInLeft,
+.btn:disabled:hover .slideOutLeft {
+    animation: none;
+}
+
+/**** animations ****/
+.btn:hover .slideInRight {
+    animation:  slide-out-right 1s infinite;
+}
+
+.btn:hover .slideOutRight {
+    animation: slide-in-right 1s infinite;
+}
+
+.btn:hover .slideInLeft {
+    animation:  slide-out-left 1s infinite;
+}
+
+.btn:hover .slideOutLeft {
+    animation: slide-in-left 1s infinite;
+}
+
+.slideOutRight,
+.slideOutLeft {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-250%, -50%);
+}
+
+@keyframes slide-out-right {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        transform: translate(-250%, -50%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes slide-out-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-200%);
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        transform: translate(250%, -50%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
 }
