@@ -129,7 +129,7 @@ export const AddBillForm = () => {
         )}
       </div>
       <ul className={styles.selectedOptionsList}>
-        {items.map((item) => {
+        {/* {items.map((item) => {
           return (
             <SelectedProduct
               product={item}
@@ -137,7 +137,7 @@ export const AddBillForm = () => {
               key={item.id}
             />
           );
-        })}
+        })} */}
       </ul>
       <span className={styles.sumValue}>
         Suma: {sumValue.toFixed(2).replace(".", ",")} zł

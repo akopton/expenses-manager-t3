@@ -1,7 +1,9 @@
 import { type Product } from "@prisma/client";
 import React, { useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import { AiOutlinePlus } from "react-icons/ai";
 import styles from "./select.module.css";
+import { api } from "~/utils/api";
 
 type SelectProps<T> = {
   options: T[];
@@ -13,6 +15,46 @@ type OptionProps<T> = {
   option: T;
   onSelect: (opt: T, isChecked: boolean) => void;
   isSelected: boolean;
+};
+
+const AddProductForm = () => {
+  const [productName, setProductName] = useState<string>("");
+  const [productValue, setProductValue] = useState<string>("");
+  const addProduct = api.products.addProduct.useMutation();
+
+  const handleProductName = (e: React.FormEvent<HTMLInputElement>) => {
+    setProductName(e.currentTarget.value);
+  };
+
+  const handleProductValue = (e: React.FormEvent<HTMLInputElement>) => {
+    setProductValue(e.currentTarget.value);
+  };
+
+  const addNewProduct = async () => {
+    const name = productName;
+    const value = parseFloat(productValue);
+    await addProduct.mutateAsync({ name, value });
+  };
+
+  return (
+    <li className={styles.listItem}>
+      <input
+        type="text"
+        placeholder="Nazwa"
+        value={productName}
+        onChange={handleProductName}
+      />
+      <input
+        type="number"
+        placeholder="0"
+        value={productValue}
+        onChange={handleProductValue}
+      />
+      <button type="button" onClick={addNewProduct}>
+        Add
+      </button>
+    </li>
+  );
 };
 
 const Option = (props: OptionProps<Product>) => {
@@ -40,7 +82,7 @@ const Option = (props: OptionProps<Product>) => {
           onChange={(e) => handleCheckbox(e, option)}
           className={styles.checkbox}
         />
-        {option.name}
+        <span>{option.name}</span>
       </label>
     </li>
   );
@@ -50,6 +92,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const { options, onSelect, selectedOptions } = props;
+  const [showAddProduct, setShowAddProduct] = useState<boolean>(false);
 
   const filteredOptions = useMemo(() => {
     return options.filter((el: Product) => el.name.includes(searchValue));
@@ -87,6 +130,17 @@ export const CustomSelect = (props: SelectProps<Product>) => {
       </div>
       {isExpanded && (
         <ul className={styles.list}>
+          <li>
+            <button
+              type="button"
+              className={styles.addProductBtn}
+              onClick={() => setShowAddProduct((prev) => !prev)}
+            >
+              <AiOutlinePlus />
+              Dodaj produkt
+            </button>
+          </li>
+          {showAddProduct && <AddProductForm />}
           {filteredOptions.map((el: Product) => {
             return (
               <Option

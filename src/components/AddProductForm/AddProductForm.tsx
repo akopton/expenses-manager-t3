@@ -4,12 +4,13 @@ import { api } from "~/utils/api";
 
 export const AddProductForm = () => {
   const [name, setName] = useState<string>("");
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<string>("");
   const addProduct = api.products.addProduct.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addProduct.mutateAsync({ name, value });
+    const numberValue = parseFloat(value);
+    await addProduct.mutateAsync({ name, value: numberValue });
   };
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
@@ -18,7 +19,7 @@ export const AddProductForm = () => {
   };
 
   const handleValue = (e: React.FormEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.currentTarget.value);
+    const value = e.currentTarget.value;
     setValue(value);
   };
 

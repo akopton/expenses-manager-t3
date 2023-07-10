@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { AddBillForm } from "~/components/AddBillForm/AddBillForm";
+import { AddProductForm } from "~/components/AddProductForm/AddProductForm";
 
 export default function AddBillPage() {
   return (
