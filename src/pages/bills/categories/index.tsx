@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import { GridList } from "~/components/GridList/GridList";
 
 type TCategory = {
@@ -9,18 +8,7 @@ type TCategory = {
   value: number;
 };
 
-type TSet = {
-  id: string;
-  name: string;
-  bills: never[];
-  value: number;
-};
-
 export default function CategoriesPage() {
-  const sets = [
-    { id: "1", title: "something", name: "remont", bills: [], value: 250.49 },
-    { id: "2", title: "something", name: "wyjazd", bills: [], value: 137.37 },
-  ];
   const categories = [
     { id: "1", name: "budowlane", bills: [], value: 250.49 },
     { id: "2", name: "spożywcze", bills: [], value: 89.92 },

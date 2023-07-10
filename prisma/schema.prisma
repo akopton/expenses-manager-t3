@@ -89,12 +89,21 @@ model Bill {
     isPaid     Boolean
     categoryId String
     category   Category   @relation(fields: [categoryId], references: [id])
+    billSetId  String
+    BillSet    BillSet    @relation(fields: [billSetId], references: [id])
     owner      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Category {
     id    String @id @default(cuid())
     name  String
-    value Float?
+    value Float
+    bills Bill[]
+}
+
+model BillSet {
+    id    String @id @default(cuid())
+    name  String
+    value Float
     bills Bill[]
 }
