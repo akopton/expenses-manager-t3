@@ -1,5 +1,6 @@
 import { type Product } from "@prisma/client";
 import styles from "./table.module.css";
+import { useMemo, useState } from "react";
 
 type ProductsTableProps<T> = {
   data: T[];
@@ -47,7 +48,6 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
           placeholder="0"
           className={styles.input}
         />
-        <span className={styles.inputLabel}>zł</span>
       </label>
       <label htmlFor={`${id}-count`} className={styles.column}>
         <input
@@ -57,23 +57,70 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
           onChange={handleChange}
           className={styles.input}
         />
-        <span className={styles.inputLabel}>szt</span>
       </label>
     </li>
   );
 };
 
+type SortingProps = "name_down" | "name_up" | "value_down" | "value_up";
+
 export const ProductsTable = (props: ProductsTableProps<Product>) => {
   const { updateProduct, data } = props;
+  const [sortBy, setSortBy] = useState<SortingProps>();
+
+  const handleSort = (type: "name" | "value") => {
+    switch (type) {
+      case "name": {
+        if (sortBy === "name_down") setSortBy("name_up");
+        else setSortBy("name_down");
+        break;
+      }
+      case "value": {
+        if (sortBy === "value_down") setSortBy("value_up");
+        else setSortBy("value_down");
+        break;
+      }
+      default:
+        return;
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    switch (sortBy) {
+      case "name_down":
+        return data.sort((a, b) => a.name.localeCompare(b.name));
+      case "name_up":
+        return data.sort((a, b) => b.name.localeCompare(a.name));
+      case "value_down":
+        return data.sort((a, b) => a.value - b.value);
+      case "value_up":
+        return data.sort((a, b) => b.value - a.value);
+      default:
+        return data;
+    }
+  }, [data, sortBy]);
+
   return (
     <div className={styles.tableWrapper}>
       <div className={`${styles.row} ${styles.tableHeader}`}>
-        <span className={styles.column}>Nazwa</span>
-        <span className={styles.column}>Wartość</span>
-        <span className={styles.column}>Ilość</span>
+        <button
+          type="button"
+          className={styles.column}
+          onClick={() => handleSort("name")}
+        >
+          Nazwa
+        </button>
+        <button
+          type="button"
+          className={styles.column}
+          onClick={() => handleSort("value")}
+        >
+          Wartość (zł)
+        </button>
+        <span className={styles.column}>Ilość (szt)</span>
       </div>
       <ul className={styles.table}>
-        {data.map((el) => {
+        {sortedData.map((el) => {
           return (
             <SelectedProduct
               product={el}

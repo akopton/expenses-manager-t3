@@ -91,15 +91,14 @@ export const AddBillForm = () => {
         </label>
       </div>
 
-      <div className={styles.select}>
-        <CustomSelect
-          options={products}
-          onSelect={handleSelect}
-          selectedOptions={items}
-        />
-      </div>
-
       <div>
+        <div className={styles.select}>
+          <CustomSelect
+            options={products}
+            onSelect={handleSelect}
+            selectedOptions={items}
+          />
+        </div>
         <div className={styles.selectedOptionsWrapper}>
           <span>Produkty</span>
           {items.length > 0 && (

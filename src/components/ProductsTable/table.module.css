@@ -9,29 +9,27 @@
 }
 
 .table {
-    width: calc(100% + 6px);
     max-height: 200px;
     overflow-y: auto;
+    scrollbar-gutter: stable;
 }
 
 .row {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 20px;
     padding: 5px 0;
 }
 
 .column {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    max-width: 15rem;
-    padding: 0 5px;
+    width: 100%;
+    width: 9rem;
+    text-align: center;
 }
 
 .input {
-    max-width: 4rem;
+    width: 100%;
+    text-align: center;
 }
 
-.inputLabel {
-}
+

@@ -63,16 +63,18 @@ export const Navbar = () => {
                     theme === "dark"
                       ? "var(--primary-bg)"
                       : "var(--primary-font)",
-                  boxShadow:
-                    theme === "dark"
-                      ? "0 5px 4px var(--primary-font)"
-                      : "0 5px 4px var(--primary-bg)",
-                  border: "none",
+                  // boxShadow:
+                  //   theme === "dark"
+                  //     ? "0 5px 4px var(--primary-font)"
+                  //     : "0 5px 4px var(--primary-bg)",
                 }}
               >
                 {el.links.map((link) => {
                   return (
-                    <li key={link.id} className={styles.link}>
+                    <li
+                      key={link.id}
+                      className={`${styles.link} ${styles.additionalLink}`}
+                    >
                       <Link href={link.href}>{link.name}</Link>
                     </li>
                   );
