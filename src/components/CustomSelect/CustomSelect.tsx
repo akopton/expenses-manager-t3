@@ -1,9 +1,10 @@
 import { type Product } from "@prisma/client";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import styles from "./select.module.css";
 import { api } from "~/utils/api";
+import { ProductsContext } from "~/context/ProductsContext";
 
 type SelectProps<T> = {
   options: T[];
@@ -20,7 +21,7 @@ type OptionProps<T> = {
 const AddProductForm = () => {
   const [productName, setProductName] = useState<string>("");
   const [productValue, setProductValue] = useState<string>("");
-  const addProduct = api.products.addProduct.useMutation();
+  const { addNewProduct } = useContext(ProductsContext);
 
   const handleProductName = (e: React.FormEvent<HTMLInputElement>) => {
     setProductName(e.currentTarget.value);
@@ -30,10 +31,17 @@ const AddProductForm = () => {
     setProductValue(e.currentTarget.value);
   };
 
-  const addNewProduct = async () => {
+  const reset = () => {
+    setProductName("");
+    setProductValue("");
+  };
+
+  const handleClick = async () => {
     const name = productName;
     const value = parseFloat(productValue);
-    await addProduct.mutateAsync({ name, value });
+    await addNewProduct({ name, value });
+
+    reset();
   };
 
   return (
@@ -50,7 +58,7 @@ const AddProductForm = () => {
         value={productValue}
         onChange={handleProductValue}
       />
-      <button type="button" onClick={addNewProduct}>
+      <button type="button" onClick={handleClick}>
         Add
       </button>
     </li>

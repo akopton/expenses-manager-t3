@@ -1,9 +1,10 @@
-import { Prisma, ProductPayload, type Product } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { type Product } from "@prisma/client";
+import { useEffect, useState, useContext } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
 import styles from "./form.module.css";
 import { sumPlnValues } from "~/utils/sumValues";
+import { ProductsContext } from "~/context/ProductsContext";
 
 type SelectedProductProps<T> = {
   product: T;
@@ -41,7 +42,7 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
         <input
           id={`${id}-value`}
           type="number"
-          value={value ? value : ""}
+          value={value ? value.toFixed(2) : ""}
           onChange={handleChange}
           placeholder="0"
         />
@@ -67,9 +68,9 @@ export const AddBillForm = () => {
   const [sumValue, setSumValue] = useState<number>(0);
   const added_at = new Date();
   const updated_at = new Date();
-
-  const products = api.products.getProducts.useQuery();
   const addBill = api.bills.addBill.useMutation();
+
+  const { products } = useContext(ProductsContext);
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);
@@ -120,16 +121,16 @@ export const AddBillForm = () => {
         />
       </label>
       <div className={styles.select}>
-        {products.data && (
+        {products && (
           <CustomSelect
-            options={products.data}
+            options={products}
             onSelect={handleSelect}
             selectedOptions={items}
           />
         )}
       </div>
       <ul className={styles.selectedOptionsList}>
-        {/* {items.map((item) => {
+        {items.map((item) => {
           return (
             <SelectedProduct
               product={item}
@@ -137,7 +138,7 @@ export const AddBillForm = () => {
               key={item.id}
             />
           );
-        })} */}
+        })}
       </ul>
       <span className={styles.sumValue}>
         Suma: {sumValue.toFixed(2).replace(".", ",")} zł
@@ -152,7 +153,6 @@ export const AddBillForm = () => {
           onChange={() => setIsPaid((prev) => !prev)}
         />
       </label>
-      {!isPaid && <input type="text" />}
       <input type="submit" value="Add" onClick={handleSubmit} />
     </form>
   );

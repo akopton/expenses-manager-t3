@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { AddBillForm } from "~/components/AddBillForm/AddBillForm";
 import { AddProductForm } from "~/components/AddProductForm/AddProductForm";
+import { ProductsContext, ProductsProvider } from "~/context/ProductsContext";
 
 export default function AddBillPage() {
   return (
@@ -13,7 +14,9 @@ export default function AddBillPage() {
       <main className="flex flex-grow flex-col items-center justify-center">
         <div>add bill</div>
         <form></form>
-        <AddBillForm />
+        <ProductsProvider>
+          <AddBillForm />
+        </ProductsProvider>
       </main>
     </>
   );
