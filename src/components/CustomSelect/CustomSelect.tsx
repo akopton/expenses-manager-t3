@@ -4,6 +4,7 @@ import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ProductsContext } from "~/context/ProductsContext";
 import styles from "./select.module.css";
+import { ThemeContext } from "~/context/ThemeContext";
 
 type SelectProps<T> = {
   options?: T[];
@@ -61,10 +62,10 @@ const AddProductForm = () => {
           onChange={handleProductValue}
           className={styles.valueInput}
         />
-        zł
+        <span className={styles.inputLabel}>zł</span>
       </label>
-      <button type="button" onClick={handleClick}>
-        Add
+      <button type="button" onClick={handleClick} className={styles.btnAdd}>
+        Dodaj
       </button>
     </li>
   );
@@ -104,8 +105,9 @@ const Option = (props: OptionProps<Product>) => {
 export const CustomSelect = (props: SelectProps<Product>) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { options, onSelect, selectedOptions } = props;
   const [showAddProduct, setShowAddProduct] = useState<boolean>(false);
+  const { theme } = useContext(ThemeContext);
+  const { options, onSelect, selectedOptions } = props;
 
   const filteredOptions = useMemo(() => {
     return options?.filter((el: Product) => el.name.includes(searchValue));
@@ -126,7 +128,13 @@ export const CustomSelect = (props: SelectProps<Product>) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{
+        borderColor:
+          theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+      }}
+    >
       <div className={styles.search}>
         <input
           type="text"
@@ -144,16 +152,18 @@ export const CustomSelect = (props: SelectProps<Product>) => {
 
       {isExpanded && (
         <ul className={styles.list}>
-          <li>
-            <button
-              type="button"
-              className={styles.addProductBtn}
-              onClick={() => setShowAddProduct((prev) => !prev)}
-            >
-              <AiOutlinePlus />
-              Dodaj produkt
-            </button>
-          </li>
+          {!showAddProduct && (
+            <li>
+              <button
+                type="button"
+                className={styles.addProductBtn}
+                onClick={() => setShowAddProduct((prev) => !prev)}
+              >
+                <AiOutlinePlus />
+                Dodaj produkt
+              </button>
+            </li>
+          )}
           {showAddProduct && <AddProductForm />}
           {filteredOptions?.map((el: Product) => {
             return (

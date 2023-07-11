@@ -58,65 +58,86 @@ export const AddBillForm = () => {
   }, [items]);
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="name-input" className={styles.nameInputWrapper}>
-          Nazwa
-          <input
-            id="name-input"
-            type="text"
-            placeholder="name"
-            onChange={handleName}
-            value={name}
-            className={styles.nameInput}
-          />
-        </label>
+    <>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.formLeft}>
+          <label htmlFor="name-input" className={styles.inputWrapper}>
+            <span className={styles.sectionTitle}>Nazwa</span>
+            <input
+              id="name-input"
+              className={styles.input}
+              type="text"
+              placeholder="mleko"
+              onChange={handleName}
+              value={name}
+            />
+          </label>
 
-        <div className={styles.category}>Kategoria</div>
-        <div className={styles.set}>Dodaj do zestawu</div>
+          <label htmlFor="category-input" className={styles.inputWrapper}>
+            <span className={styles.sectionTitle}>Kategoria</span>
+            <input
+              id="category-input"
+              className={styles.input}
+              type="text"
+              placeholder="spożywcze"
+            />
+          </label>
 
-        <label htmlFor="">
-          <input type="text" value={paymentDate.toLocaleDateString()} />
-        </label>
+          <label
+            htmlFor="date-input"
+            className={styles.inputWrapper}
+            style={{ opacity: isPaid ? ".2" : "1" }}
+          >
+            <span className={styles.sectionTitle}>Data płatności</span>
+            <input
+              id="date-input"
+              className={styles.input}
+              type="text"
+              value={paymentDate.toLocaleDateString()}
+            />
+          </label>
 
-        <label htmlFor="isPaid" className={styles.isPaid}>
-          <input
-            type="checkbox"
-            id="isPaid"
-            className={styles.checkbox}
-            checked={isPaid}
-            onChange={() => setIsPaid((prev) => !prev)}
-          />
-          <span>{isPaid ? "Zapłacone" : "Do zapłaty"}</span>
-        </label>
-      </div>
-
-      <div>
-        <div className={styles.select}>
-          <CustomSelect
-            options={products}
-            onSelect={handleSelect}
-            selectedOptions={items}
-          />
+          <label htmlFor="isPaid" className={styles.isPaid}>
+            <input
+              type="checkbox"
+              id="isPaid"
+              className={styles.checkbox}
+              checked={isPaid}
+              onChange={() => setIsPaid((prev) => !prev)}
+            />
+            <span>{isPaid ? "Zapłacone" : "Do zapłaty"}</span>
+          </label>
         </div>
-        <div className={styles.selectedOptionsWrapper}>
-          <span>Produkty</span>
+
+        <div className={styles.formCenter}>
+          <span className={styles.sectionTitle}>Wybierz produkty</span>
+          <div className={styles.select}>
+            <CustomSelect
+              options={products}
+              onSelect={handleSelect}
+              selectedOptions={items}
+            />
+          </div>
+        </div>
+
+        <div className={styles.formRight}>
+          <span className={styles.sectionTitle}>Produkty</span>
           {items.length > 0 && (
             <ProductsTable updateProduct={updateProduct} data={items} />
           )}
+          <span className={styles.sectionTitle}>
+            Suma: {sumValue.toFixed(2).replace(".", ",")} zł
+          </span>
         </div>
-
-        <span className={styles.sumValue}>
-          Suma: {sumValue.toFixed(2).replace(".", ",")} zł
-        </span>
+      </form>
+      <div className={styles.bottomBtns}>
+        <button type="button" onClick={handleSubmit} className={styles.addBtn}>
+          Dodaj
+        </button>
+        <button type="button" onClick={handleSubmit} className={styles.addBtn}>
+          Dodaj do zestawu
+        </button>
       </div>
-
-      <input
-        type="submit"
-        value="Dodaj"
-        onClick={handleSubmit}
-        className={styles.addBtn}
-      />
-    </form>
+    </>
   );
 };
