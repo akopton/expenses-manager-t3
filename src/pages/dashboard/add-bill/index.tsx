@@ -11,7 +11,6 @@ export default function AddBillPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-grow flex-col items-center">
-        <div>add bill</div>
         <ProductsProvider>
           <AddBillForm />
         </ProductsProvider>

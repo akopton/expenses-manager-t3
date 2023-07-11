@@ -1,4 +1,4 @@
-import { type Product } from "@prisma/client";
+import { Category, type Product } from "@prisma/client";
 import { useEffect, useState, useContext } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
@@ -7,14 +7,22 @@ import { sumPlnValues } from "~/utils/sumValues";
 import { ProductsContext } from "~/context/ProductsContext";
 import { ProductsTable } from "../ProductsTable/ProductsTable";
 
+const sampleCategories = [
+  { id: 1, name: "spożywcze" },
+  { id: 2, name: "budowlane" },
+  { id: 3, name: "samochód" },
+  { id: 4, name: "opłaty" },
+];
+
 export const AddBillForm = () => {
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [sumValue, setSumValue] = useState<number>(0);
+  const [paymentDate, setPaymentDate] = useState<Date>(new Date());
+  const [category, setCategory] = useState<"">("");
   const added_at = new Date();
   const updated_at = new Date();
-  const paymentDate = new Date();
   const addBill = api.bills.addBill.useMutation();
 
   const { products } = useContext(ProductsContext);
@@ -28,8 +36,10 @@ export const AddBillForm = () => {
     e.preventDefault();
     await addBill.mutateAsync({
       name,
+      category,
       items,
       value: sumValue,
+      paymentDate,
       added_at,
       updated_at,
       isPaid,
@@ -57,6 +67,18 @@ export const AddBillForm = () => {
     setSumValue(() => sumPlnValues(items));
   }, [items]);
 
+  const handleCategorySearch = (e: React.FormEvent<HTMLInputElement>) => {
+    const myTimeout = setTimeout(() => {
+      sampleCategories.forEach((el) => {
+        if (el.name.includes(e.currentTarget.value)) {
+          console.log(e.currentTarget.value);
+        }
+      });
+    }, 1000);
+
+    clearTimeout(myTimeout);
+  };
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -80,6 +102,7 @@ export const AddBillForm = () => {
               className={styles.input}
               type="text"
               placeholder="spożywcze"
+              onKeyDown={handleCategorySearch}
             />
           </label>
 
@@ -94,6 +117,7 @@ export const AddBillForm = () => {
               className={styles.input}
               type="text"
               value={paymentDate.toLocaleDateString()}
+              disabled={isPaid ? true : false}
             />
           </label>
 

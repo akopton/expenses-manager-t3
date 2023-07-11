@@ -3,8 +3,9 @@ import React, { useContext, useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ProductsContext } from "~/context/ProductsContext";
-import styles from "./select.module.css";
 import { ThemeContext } from "~/context/ThemeContext";
+import { RiCloseCircleLine, RiCheckboxCircleLine } from "react-icons/ri";
+import styles from "./select.module.css";
 
 type SelectProps<T> = {
   options?: T[];
@@ -18,7 +19,11 @@ type OptionProps<T> = {
   isSelected: boolean;
 };
 
-const AddProductForm = () => {
+const AddProductForm = ({
+  setShowAddProduct,
+}: {
+  setShowAddProduct: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [productName, setProductName] = useState<string>("");
   const [productValue, setProductValue] = useState<string>("");
   const { addNewProduct } = useContext(ProductsContext);
@@ -37,6 +42,7 @@ const AddProductForm = () => {
   };
 
   const handleClick = async () => {
+    if (!productName) return;
     const name = productName;
     const value = parseFloat(productValue);
     await addNewProduct({ name, value });
@@ -45,7 +51,7 @@ const AddProductForm = () => {
   };
 
   return (
-    <li className={styles.option}>
+    <li className={`${styles.option} ${styles.productForm}`}>
       <input
         type="text"
         placeholder="Nazwa"
@@ -64,9 +70,23 @@ const AddProductForm = () => {
         />
         <span className={styles.inputLabel}>zł</span>
       </label>
-      <button type="button" onClick={handleClick} className={styles.btnAdd}>
-        Dodaj
-      </button>
+      {productName !== "" ? (
+        <button
+          type="button"
+          onClick={handleClick}
+          className={`${styles.btn} ${styles.confirm}`}
+        >
+          <RiCheckboxCircleLine />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowAddProduct(false)}
+          className={`${styles.btn} ${styles.close}`}
+        >
+          <RiCloseCircleLine />
+        </button>
+      )}
     </li>
   );
 };
@@ -120,6 +140,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
 
   const handleClick = () => {
     setIsExpanded((prev) => !prev);
+    // setShowAddProduct(false);
 
     if (searchValue && isExpanded) {
       setSearchValue("");
@@ -164,7 +185,9 @@ export const CustomSelect = (props: SelectProps<Product>) => {
               </button>
             </li>
           )}
-          {showAddProduct && <AddProductForm />}
+          {showAddProduct && (
+            <AddProductForm setShowAddProduct={setShowAddProduct} />
+          )}
           {filteredOptions?.map((el: Product) => {
             return (
               <Option
