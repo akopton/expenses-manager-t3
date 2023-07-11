@@ -39,6 +39,7 @@
     display: flex;
     flex-direction: column;
     font-size: 2rem;
+    position: relative;
 }
 
 .input {
@@ -46,6 +47,7 @@
     max-width: 80%;
     padding: .5rem;
     border-bottom: 3px solid var(--primary-color);
+    display: flex;
 }
 
 
@@ -101,4 +103,15 @@
     justify-content: center;
     gap: 50px;
     margin-top: 30px;
+}
+
+.categoriesList {
+    position: absolute;
+    top: 100%;
+    background: var(--primary-bg);
+    z-index: 2;
+    width: 80%;
+    padding: 20px 20px;
+    border: 1px solid var(--primary-color);
+    border-top: none;
 }
