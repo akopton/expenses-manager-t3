@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { type Product, type Bill, type Prisma } from "@prisma/client";
 import { type User } from "next-auth";
+import { connect } from "http2";
 
 type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;
 
@@ -11,6 +12,7 @@ export const billsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         value: z.number(),
+        category: z.string(),
         items: z
           .object({
             id: z.string(),
@@ -19,6 +21,7 @@ export const billsRouter = createTRPCRouter({
             count: z.number(),
           })
           .array(),
+        paymentDate: z.date(),
         added_at: z.date(),
         updated_at: z.date(),
         isPaid: z.boolean(),
@@ -29,6 +32,17 @@ export const billsRouter = createTRPCRouter({
       const bill: Bill = await ctx.prisma.bill.create({
         data: {
           name: input.name,
+          category: {
+            connectOrCreate: {
+              where: {
+                name: input.category,
+              },
+              create: {
+                name: input.category,
+                value: input.value,
+              },
+            },
+          },
           value: input.value,
           items: {
             create: input.items.map((product: Product) => ({
@@ -38,6 +52,7 @@ export const billsRouter = createTRPCRouter({
               count: product.count,
             })),
           },
+          paymentDate: input.paymentDate,
           added_at: input.added_at,
           updated_at: input.updated_at,
           isPaid: input.isPaid,
@@ -46,6 +61,11 @@ export const billsRouter = createTRPCRouter({
         include: {
           items: true,
         },
+      });
+
+      await ctx.prisma.category.update({
+        where: { name: input.category },
+        data: { value: { increment: input.value } },
       });
       return bill;
     }),
