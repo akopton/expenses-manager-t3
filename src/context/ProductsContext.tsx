@@ -1,11 +1,5 @@
 import { Product } from "@prisma/client";
-import React, {
-  createContext,
-  useEffect,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
 type ProductsContextProps<T> = {
