@@ -98,11 +98,9 @@ model Bill {
 
 model Category {
     id    String @id @default(cuid())
-    name  String
-    value Float
-    bills Bill[]
-
-    @@unique([name])
+    name  String @unique
+    value Float  @default(0)
+    Bill  Bill[]
 }
 
 model BillSet {
