@@ -30,7 +30,7 @@
     overflow-y: scroll;
     padding: 5px;
     gap: 10px;
-    height: 10rem;
+    height: 20rem;
 }
 
 .listItem {
@@ -63,10 +63,27 @@
     gap: 20px;
     font-size: 1.5rem;
     cursor: pointer;
+    position: relative;
 }
 
-.addProductBtn:hover {
-    background-color: var(--secondary-bg);
+.addProductBtn:after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 2px;
+    width: 0;
+    background-color: var(--primary-color);
+    transition: .3s ease;
+}
+
+.addProductBtn:hover:after {
+    width: 100%;
+}
+
+.productForm {
+    cursor: default; 
 }
 
 .nameInput {
@@ -79,9 +96,19 @@
     font-size: 1.2rem;
 }
 
-.btnAdd {
-    font-size: 1.2rem;
-    margin-left: 10px;
+.btn {
+    font-size: 2rem;
+    margin-left: 25px;
+    text-align: center;
+    transition: color .3s ease;
+}
+
+.close:hover {
+    color: red
+}
+
+.confirm:hover {
+    color: green;
 }
 
 .inputLabel {
