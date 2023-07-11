@@ -3,7 +3,8 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 import Link from "next/link";
-import { convertToPln } from "~/utils/convertToPln";
+import { sumPlnValues } from "~/utils/sumValues";
+import { Bill } from "@prisma/client";
 
 type GridListProps<T> = {
   data: T[];
@@ -13,14 +14,13 @@ type GridListProps<T> = {
   cols: number;
 };
 
-type ItemProps<T> = {
-  id: string;
+type ItemProps = {
   name: string;
-  bills: T[];
   value: number;
+  bills: Bill[];
 };
 
-const Item = <T,>(props: ItemProps<T>) => {
+const Item = <T extends ItemProps>(props: T) => {
   return (
     <li className={itemStyles.item}>
       <Link
@@ -29,7 +29,7 @@ const Item = <T,>(props: ItemProps<T>) => {
       >
         <span className={itemStyles.itemName}>{props.name}</span>
         <span className={itemStyles.itemValue}>
-          {convertToPln(props.value)}
+          {sumPlnValues(props.bills)}
         </span>
         <span className={itemStyles.itemBillsCount}>{props.bills.length}</span>
       </Link>
@@ -37,7 +37,7 @@ const Item = <T,>(props: ItemProps<T>) => {
   );
 };
 
-export const GridList = <T extends ItemProps<T>>(props: GridListProps<T>) => {
+export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
   const { data, rows, cols } = props;
   const itemsPerView = rows * cols;
   const { currentPage, currentItems, showPage } = usePagination<T>(
