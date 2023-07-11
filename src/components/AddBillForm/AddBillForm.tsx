@@ -1,32 +1,29 @@
-import { Category, type Product } from "@prisma/client";
-import { useEffect, useState, useContext } from "react";
+import { type Product } from "@prisma/client";
+import { useEffect, useState, useContext, useMemo, forwardRef } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
 import styles from "./form.module.css";
 import { sumPlnValues } from "~/utils/sumValues";
 import { ProductsContext } from "~/context/ProductsContext";
 import { ProductsTable } from "../ProductsTable/ProductsTable";
-
-const sampleCategories = [
-  { id: 1, name: "spożywcze" },
-  { id: 2, name: "budowlane" },
-  { id: 3, name: "samochód" },
-  { id: 4, name: "opłaty" },
-];
+import { replacePolishLetters } from "~/utils/replacePolishLetters";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const AddBillForm = () => {
+  const [hideCategories, setHideCategories] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [sumValue, setSumValue] = useState<number>(0);
   const [paymentDate, setPaymentDate] = useState<Date>(new Date());
-  const [category, setCategory] = useState<"">("");
+  const [category, setCategory] = useState<string>("");
   const added_at = new Date();
   const updated_at = new Date();
   const addBill = api.bills.addBill.useMutation();
 
   const { products } = useContext(ProductsContext);
-  // const {categories} = useContext(CategoriesContext);
+  const categories = api.categories.getCategories.useQuery();
 
   const handleName = (e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);
@@ -34,6 +31,7 @@ export const AddBillForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!paymentDate) return;
     await addBill.mutateAsync({
       name,
       category,
@@ -67,17 +65,11 @@ export const AddBillForm = () => {
     setSumValue(() => sumPlnValues(items));
   }, [items]);
 
-  const handleCategorySearch = (e: React.FormEvent<HTMLInputElement>) => {
-    const myTimeout = setTimeout(() => {
-      sampleCategories.forEach((el) => {
-        if (el.name.includes(e.currentTarget.value)) {
-          console.log(e.currentTarget.value);
-        }
-      });
-    }, 1000);
-
-    clearTimeout(myTimeout);
-  };
+  const filteredCategories = useMemo(() => {
+    return categories.data?.filter((el) =>
+      replacePolishLetters(el.name).includes(replacePolishLetters(category))
+    );
+  }, [category]);
 
   return (
     <>
@@ -102,24 +94,43 @@ export const AddBillForm = () => {
               className={styles.input}
               type="text"
               placeholder="spożywcze"
-              onKeyDown={handleCategorySearch}
+              onChange={(e) => setCategory(e.currentTarget.value)}
+              value={category}
+              autoComplete={"off"}
+              onFocus={() => setHideCategories(false)}
+              onBlur={() => {
+                setHideCategories(true);
+              }}
             />
+            {category &&
+              filteredCategories &&
+              filteredCategories.length > 0 && (
+                <ul
+                  className={styles.categoriesList}
+                  style={{ display: hideCategories ? "none" : "block" }}
+                >
+                  {filteredCategories?.map((cat) => {
+                    return <li key={cat.id}>{cat.name}</li>;
+                  })}
+                </ul>
+              )}
           </label>
 
-          <label
-            htmlFor="date-input"
+          <div
             className={styles.inputWrapper}
             style={{ opacity: isPaid ? ".2" : "1" }}
           >
             <span className={styles.sectionTitle}>Data płatności</span>
-            <input
-              id="date-input"
-              className={styles.input}
-              type="text"
-              value={paymentDate.toLocaleDateString()}
+            <DatePicker
+              dateFormat={"dd.MM.yyyy"}
               disabled={isPaid ? true : false}
+              selected={paymentDate}
+              className={styles.input}
+              onChange={(date) => {
+                if (date) setPaymentDate(date);
+              }}
             />
-          </label>
+          </div>
 
           <label htmlFor="isPaid" className={styles.isPaid}>
             <input
