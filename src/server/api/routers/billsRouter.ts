@@ -39,7 +39,6 @@ export const billsRouter = createTRPCRouter({
               },
               create: {
                 name: input.category,
-                value: input.value,
               },
             },
           },
