@@ -21,6 +21,40 @@ export const AddBillForm = () => {
   const added_at = new Date();
   const updated_at = new Date();
   const addBill = api.bills.addBill.useMutation();
+  const [addingState, setAddingState] = useState({
+    error: false,
+    loading: false,
+    success: false,
+  });
+
+  const reset = () => {
+    setName("");
+    setItems([]);
+    setIsPaid(false);
+    setSumValue(0);
+    setPaymentDate(new Date());
+    setCategory("");
+  };
+
+  const addNewBill = async () => {
+    setAddingState((prev) => ({ ...prev, loading: true }));
+    try {
+      await addBill.mutateAsync({
+        name,
+        category,
+        items,
+        value: sumValue,
+        paymentDate,
+        added_at,
+        updated_at,
+        isPaid,
+      });
+    } catch (err) {
+      setAddingState((prev) => ({ ...prev, loading: false, error: true }));
+    } finally {
+      setAddingState((prev) => ({ ...prev, error: false, success: true }));
+    }
+  };
 
   const { products } = useContext(ProductsContext);
   const categories = api.categories.getCategories.useQuery();
@@ -32,16 +66,8 @@ export const AddBillForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!paymentDate) return;
-    await addBill.mutateAsync({
-      name,
-      category,
-      items,
-      value: sumValue,
-      paymentDate,
-      added_at,
-      updated_at,
-      isPaid,
-    });
+    await addNewBill();
+    reset();
   };
 
   const handleSelect = (opt: Product, isChecked: boolean) => {
@@ -94,13 +120,12 @@ export const AddBillForm = () => {
               className={styles.input}
               type="text"
               placeholder="spożywcze"
-              onChange={(e) => setCategory(e.currentTarget.value)}
+              onChange={(e) => {
+                setHideCategories(false);
+                setCategory(e.currentTarget.value);
+              }}
               value={category}
               autoComplete={"off"}
-              onFocus={() => setHideCategories(false)}
-              onBlur={() => {
-                setHideCategories(true);
-              }}
             />
             {category &&
               filteredCategories &&
@@ -110,7 +135,17 @@ export const AddBillForm = () => {
                   style={{ display: hideCategories ? "none" : "block" }}
                 >
                   {filteredCategories?.map((cat) => {
-                    return <li key={cat.id}>{cat.name}</li>;
+                    return (
+                      <li
+                        key={cat.id}
+                        onClick={() => {
+                          setCategory(cat.name);
+                          setHideCategories(true);
+                        }}
+                      >
+                        {cat.name}
+                      </li>
+                    );
                   })}
                 </ul>
               )}
@@ -173,6 +208,15 @@ export const AddBillForm = () => {
           Dodaj do zestawu
         </button>
       </div>
+      {addingState.loading || addingState.error || addingState.success ? (
+        <div className={styles.statusModal}>
+          {addingState.success
+            ? "pomyślnie dodano"
+            : addingState.error
+            ? "wystąpił błąd"
+            : "proszę czekać"}
+        </div>
+      ) : null}
     </>
   );
 };
