@@ -49,6 +49,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     bills         Bill[]
+    billSets      BillSet[]
 }
 
 model VerificationToken {
@@ -79,19 +80,20 @@ model BillItem {
 }
 
 model Bill {
-    id         String     @id @default(cuid())
-    userId     String
-    name       String
-    items      BillItem[]
-    value      Float
-    added_at   DateTime
-    updated_at DateTime
-    isPaid     Boolean
-    categoryId String
-    category   Category   @relation(fields: [categoryId], references: [id])
-    billSetId  String?
-    BillSet    BillSet?   @relation(fields: [billSetId], references: [id])
-    owner      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id          String     @id @default(cuid())
+    userId      String
+    name        String
+    items       BillItem[]
+    value       Float
+    added_at    DateTime
+    updated_at  DateTime
+    paymentDate DateTime
+    isPaid      Boolean
+    categoryId  String
+    category    Category   @relation(fields: [categoryId], references: [id])
+    billSetId   String?
+    BillSet     BillSet?   @relation(fields: [billSetId], references: [id])
+    owner       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Category {
@@ -99,11 +101,15 @@ model Category {
     name  String
     value Float
     bills Bill[]
+
+    @@unique([name])
 }
 
 model BillSet {
-    id    String @id @default(cuid())
-    name  String
-    value Float
-    bills Bill[]
+    id     String @id @default(cuid())
+    name   String
+    value  Float
+    bills  Bill[]
+    userId String
+    owners User[]
 }
