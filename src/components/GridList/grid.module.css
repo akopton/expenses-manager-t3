@@ -37,9 +37,9 @@
 
 
 .slideBtn {
-    height: 20px;
-    width: 50px;
-    font-size: 2rem;
+    height: 30px;
+    width: 60px;
+    font-size: 3rem;
     overflow: hidden;
     cursor: pointer;
     position: relative;
