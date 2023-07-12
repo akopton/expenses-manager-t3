@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { CustomList } from "~/components/CustomList/CustomList";
+import { Title } from "~/components/Title/Title";
 import { BillWithProducts } from "~/types/types";
 import { api } from "~/utils/api";
 
@@ -23,20 +24,24 @@ export default function Dashboard() {
           Tablica
         </div>
         <div className="flex flex-col items-center justify-center gap-4 border-l-2 p-5">
-          {billsToPay.data && (
-            <CustomList<BillWithProducts>
-              data={billsToPay.data}
-              title="Nadchodzące wydatki"
-              itemsPerPage={4}
-            />
-          )}
-          {billsByDate.data && (
-            <CustomList<BillWithProducts>
-              data={billsByDate.data}
-              title="Ostatnio dodane"
-              itemsPerPage={4}
-            />
-          )}
+          <div className="w-full px-10">
+            <Title text="Nadchodzące wydatki" />
+            {billsToPay.data && (
+              <CustomList<BillWithProducts>
+                data={billsToPay.data}
+                itemsPerPage={4}
+              />
+            )}
+          </div>
+          <div className="w-full px-10">
+            <Title text="Ostatnio dodane" />
+            {billsByDate.data && (
+              <CustomList<BillWithProducts>
+                data={billsByDate.data}
+                itemsPerPage={4}
+              />
+            )}
+          </div>
         </div>
       </main>
     </>
