@@ -60,10 +60,12 @@
     border-radius: 10px;
     width: 100%;
     position: relative;
+    font-weight: 500;
 }
 
 .listItem:hover {
     background-color: var(--primary-color);
+    color: var(--primary-font);
 }
 
 .itemName {
@@ -75,7 +77,7 @@
 
 .listItem:hover .nameTooltip {
     opacity: 1;
-    transition: opacity .3s ease .5s;
+    transition: opacity .2s ease .5s;
 }
 
 .nameTooltip {
@@ -89,7 +91,7 @@
     color: var(--primary-bg);
     padding: 2px 4px;
     border-radius: 4px;
-    transition: opacity .3s ease;
+    transition: opacity .2s ease;
 }
 
 .tooltipArrow {
