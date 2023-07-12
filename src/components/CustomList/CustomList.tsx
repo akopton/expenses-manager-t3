@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { BillWithProducts } from "~/types/types";
 import { usePagination } from "~/hooks/usePagination";
 import { HiArrowNarrowUp, HiArrowNarrowDown } from "react-icons/hi";
+import { useState } from "react";
 import styles from "./list.module.css";
 
 type customType = BillWithProducts;
@@ -14,15 +15,37 @@ type CustomListProps<T> = {
 
 const ListItem = <T extends customType>(props: T) => {
   const { id, name, added_at, isPaid, paymentDate } = props;
+
+  const [showNameTooltip, setShowNameTooltip] = useState<boolean>(false);
+
+  const showTooltip = () => {
+    setShowNameTooltip(true);
+  };
+  const hideTooltip = () => {
+    setShowNameTooltip(false);
+  };
+
   return (
     <li>
       <Link href={`/bills/${id}`} className={styles.listItem}>
-        <span className={styles.itemName}>{name}</span>
+        <span
+          className={styles.itemName}
+          onMouseEnter={showTooltip}
+          onMouseLeave={hideTooltip}
+        >
+          {name}
+        </span>
         <span className={styles.itemDate}>
           {isPaid
             ? added_at.toLocaleDateString()
             : paymentDate.toLocaleDateString()}
         </span>
+        {showNameTooltip && (
+          <div className={styles.nameTooltip}>
+            <span>{name}</span>
+            <div className={styles.tooltipArrow} />
+          </div>
+        )}
       </Link>
     </li>
   );
