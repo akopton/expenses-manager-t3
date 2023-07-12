@@ -27,7 +27,7 @@
     flex-direction: column;
     align-items: start;
     justify-content: start;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 5px;
     gap: 10px;
     height: 20rem;
