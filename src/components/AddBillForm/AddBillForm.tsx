@@ -9,6 +9,8 @@ import { ProductsTable } from "../ProductsTable/ProductsTable";
 import { replacePolishLetters } from "~/utils/replacePolishLetters";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { LoadingStatusModal } from "../LoadingStatusModal/LoadingStatusModal";
+import { useLoadingState } from "~/hooks/useLoadingState";
 
 export const AddBillForm = () => {
   const [hideCategories, setHideCategories] = useState<boolean>(false);
@@ -21,11 +23,8 @@ export const AddBillForm = () => {
   const added_at = new Date();
   const updated_at = new Date();
   const addBill = api.bills.addBill.useMutation();
-  const [addingState, setAddingState] = useState({
-    error: false,
-    loading: false,
-    success: false,
-  });
+  const { error, loading, success, handleLoadingStatus, resetStatus } =
+    useLoadingState();
 
   const reset = () => {
     setName("");
@@ -37,7 +36,7 @@ export const AddBillForm = () => {
   };
 
   const addNewBill = async () => {
-    setAddingState((prev) => ({ ...prev, loading: true }));
+    handleLoadingStatus("loading");
     try {
       await addBill.mutateAsync({
         name,
@@ -50,9 +49,9 @@ export const AddBillForm = () => {
         isPaid,
       });
     } catch (err) {
-      setAddingState((prev) => ({ ...prev, loading: false, error: true }));
+      handleLoadingStatus("error");
     } finally {
-      setAddingState((prev) => ({ ...prev, error: false, success: true }));
+      handleLoadingStatus("success");
     }
   };
 
@@ -96,6 +95,10 @@ export const AddBillForm = () => {
       replacePolishLetters(el.name).includes(replacePolishLetters(category))
     );
   }, [category]);
+
+  const CustomComponent = () => {
+    return <div>siema mordo</div>;
+  };
 
   return (
     <>
@@ -208,15 +211,27 @@ export const AddBillForm = () => {
           Dodaj do zestawu
         </button>
       </div>
-      {addingState.loading || addingState.error || addingState.success ? (
-        <div className={styles.statusModal}>
-          {addingState.success
-            ? "pomyślnie dodano"
-            : addingState.error
-            ? "wystąpił błąd"
-            : "proszę czekać"}
-        </div>
-      ) : null}
+      {loading && (
+        <LoadingStatusModal
+          status="loading"
+          message="Proszę czekać"
+          closeModal={resetStatus}
+        />
+      )}
+      {error && (
+        <LoadingStatusModal
+          status="error"
+          message="Wystąpił błąd"
+          closeModal={resetStatus}
+        />
+      )}
+      {success && (
+        <LoadingStatusModal
+          status="success"
+          message="Pomyślnie dodano"
+          closeModal={resetStatus}
+        />
+      )}
     </>
   );
 };
