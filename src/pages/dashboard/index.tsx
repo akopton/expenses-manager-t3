@@ -3,12 +3,8 @@ import Link from "next/link";
 import { CustomList } from "~/components/CustomList/CustomList";
 import { BillWithProducts } from "~/types/types";
 import { api } from "~/utils/api";
-import { useState } from "react";
 
 export default function Dashboard() {
-  const [notPaidBills, setNotPaidBills] = useState<BillWithProducts[]>([]);
-  const [lastAddedBills, setLastAddedBills] = useState<BillWithProducts[]>([]);
-
   const billsByDate = api.bills.getBillsByAddedDate.useQuery(1);
   const billsToPay = api.bills.getNotPaidBills.useQuery(10);
 
