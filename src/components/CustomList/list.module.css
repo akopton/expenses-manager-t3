@@ -59,10 +59,40 @@
     padding: .5rem 1rem;
     border-radius: 10px;
     width: 100%;
+    position: relative;
 }
 
 .listItem:hover {
     background-color: var(--primary-color);
+}
+
+.itemName {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+}
+
+.nameTooltip {
+    position: absolute;
+    font-size: .8rem;
+    top: -16px;
+    left: 10px;
+    white-space: nowrap;
+    background-color: var(--primary-font);
+    color: var(--primary-bg);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.tooltipArrow {
+    position: absolute;
+    height: 8px;
+    width: 8px;
+    rotate: 45deg;
+    bottom: -4px;
+    background-color: var(--primary-font);
+    left: 20px;
 }
 
 .itemDate {
