@@ -7,7 +7,6 @@ import { useState, useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
 
 type TLink = {
-  id: number;
   name: string;
   href: string;
   links?: TLink[];
@@ -17,19 +16,18 @@ export const Navbar = () => {
   const { pathname } = useRouter();
 
   const links: TLink[] = [
-    { id: 1, name: "Tablica", href: "/dashboard" },
+    { name: "Tablica", href: "/dashboard" },
     {
-      id: 2,
       name: "Wydatki",
       href: "/bills",
       links: [
-        { id: 1, name: "Kategorie", href: "/bills/categories" },
-        { id: 2, name: "Zestawy", href: "/bills/sets" },
-        { id: 3, name: "Miesiące", href: "/bills/months" },
-        { id: 4, name: "Lata", href: "/bills/years" },
+        { name: "Kategorie", href: "/bills/categories" },
+        { name: "Zestawy", href: "/bills/sets" },
+        { name: "Miesiące", href: "/bills/months" },
+        { name: "Lata", href: "/bills/years" },
       ],
     },
-    { id: 3, name: "Analiza", href: "/analytics" },
+    { name: "Analiza", href: "/analytics" },
   ];
 
   const [showLinks, setShowLinks] = useState<boolean>(false);
@@ -40,12 +38,12 @@ export const Navbar = () => {
         <ToggleThemeBtn />
       </div>
       <ul className={styles.linksList}>
-        {links.map((el: TLink) => (
+        {links.map((el: TLink, idx: number) => (
           <li
             className={`${styles.link} ${
               pathname.includes(el.href) && styles.active
             }`}
-            key={el.id}
+            key={idx}
             onMouseEnter={() => {
               el.links?.length && setShowLinks(true);
             }}
@@ -63,16 +61,12 @@ export const Navbar = () => {
                     theme === "dark"
                       ? "var(--primary-bg)"
                       : "var(--primary-font)",
-                  // boxShadow:
-                  //   theme === "dark"
-                  //     ? "0 5px 4px var(--primary-font)"
-                  //     : "0 5px 4px var(--primary-bg)",
                 }}
               >
-                {el.links.map((link) => {
+                {el.links.map((link: TLink, idx: number) => {
                   return (
                     <li
-                      key={link.id}
+                      key={idx}
                       className={`${styles.link} ${styles.additionalLink}`}
                     >
                       <Link href={link.href}>{link.name}</Link>
