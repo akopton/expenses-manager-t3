@@ -96,10 +96,6 @@ export const AddBillForm = () => {
     );
   }, [category]);
 
-  const CustomComponent = () => {
-    return <div>siema mordo</div>;
-  };
-
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit}>
