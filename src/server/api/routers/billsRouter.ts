@@ -91,4 +91,44 @@ export const billsRouter = createTRPCRouter({
       });
       return bill;
     }),
+
+  getBillsByAddedDate: protectedProcedure
+    .input(z.number())
+    .query(async ({ ctx, input }) => {
+      const daysDiff = Date.now() - 24 * 60 * 60 * 1000 * input;
+      const daysDiffString = new Date(daysDiff).toISOString();
+      const bills = await ctx.prisma.bill.findMany({
+        where: {
+          added_at: {
+            gte: daysDiffString,
+          },
+        },
+        orderBy: { added_at: "desc" },
+        include: {
+          items: true,
+        },
+      });
+      return bills;
+    }),
+
+  getNotPaidBills: protectedProcedure
+    .input(z.number())
+    .query(async ({ ctx, input }) => {
+      const daysDiff = Date.now() + 24 * 60 * 60 * 1000 * input;
+      const daysDiffString = new Date(daysDiff).toISOString();
+      const bills = await ctx.prisma.bill.findMany({
+        where: {
+          isPaid: false,
+          paymentDate: {
+            gte: new Date(),
+            lte: daysDiffString,
+          },
+        },
+        orderBy: { paymentDate: "asc" },
+        include: {
+          items: true,
+        },
+      });
+      return bills;
+    }),
 });
