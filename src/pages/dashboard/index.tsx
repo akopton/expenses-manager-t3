@@ -23,23 +23,25 @@ export default function Dashboard() {
         <Link href="/dashboard/add-bill" className="absolute right-0 top-0">
           Nowy rachunek
         </Link>
-        <div className="span col-span-2 flex items-center justify-center">
+        <div className="span col-span-3 flex items-center justify-center">
           Tablica
         </div>
-        {billsByDate.data && (
-          <CustomList<BillWithProducts>
-            data={billsByDate.data}
-            title="Ostatnio dodane"
-            itemsPerPage={4}
-          />
-        )}
-
-        {billsToPay.data && (
-          <CustomList<BillWithProducts>
-            data={billsToPay.data}
-            title="Nadchodzące wydatki"
-          />
-        )}
+        <div className="flex flex-col items-center justify-center gap-4 border-l-2 p-5">
+          {billsToPay.data && (
+            <CustomList<BillWithProducts>
+              data={billsToPay.data}
+              title="Nadchodzące wydatki"
+              itemsPerPage={4}
+            />
+          )}
+          {billsByDate.data && (
+            <CustomList<BillWithProducts>
+              data={billsByDate.data}
+              title="Ostatnio dodane"
+              itemsPerPage={4}
+            />
+          )}
+        </div>
       </main>
     </>
   );
