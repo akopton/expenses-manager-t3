@@ -1,15 +1,14 @@
 import styles from "./list.module.css";
 
-const ListItem = () => {
+const ListItem = (props: any) => {
   return <li className={styles.listItem}></li>;
 };
-export const CustomList = () => {
+export const CustomList = (data: any) => {
   return (
     <ul className={styles.list}>
-      <ListItem />
-      <ListItem />
-      <ListItem />
-      <ListItem />
+      {data.map((el: any) => {
+        return <ListItem {...el} key={el.id} />;
+      })}
     </ul>
   );
 };
