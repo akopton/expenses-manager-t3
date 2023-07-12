@@ -69,12 +69,7 @@ export const billsRouter = createTRPCRouter({
       return bill;
     }),
 
-  getBills: protectedProcedure.query(async ({ ctx }): Promise<Bill[]> => {
-    const bills = await ctx.prisma.bill.findMany();
-    return bills;
-  }),
-
-  getBillsWithProducts: protectedProcedure.query(
+  getBills: protectedProcedure.query(
     async ({ ctx }): Promise<BillWithProducts[]> => {
       const bills = await ctx.prisma.bill.findMany({
         include: { items: true },
@@ -128,6 +123,18 @@ export const billsRouter = createTRPCRouter({
         include: {
           items: true,
         },
+      });
+      return bills;
+    }),
+
+  getBillsByCategory: protectedProcedure
+    .input(z.object({ name: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const bills = await ctx.prisma.bill.findMany({
+        where: {
+          category: { name: input.name },
+        },
+        include: { items: true },
       });
       return bills;
     }),
