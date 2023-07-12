@@ -16,7 +16,7 @@ const ListItem = <T extends customType>(props: T) => {
   const { id, name, added_at, isPaid, paymentDate } = props;
   return (
     <li>
-      <Link href={`/bills/$${id}`} className={styles.listItem}>
+      <Link href={`/bills/${id}`} className={styles.listItem}>
         <span className={styles.itemName}>{name}</span>
         <span className={styles.itemDate}>
           {isPaid
@@ -30,8 +30,8 @@ const ListItem = <T extends customType>(props: T) => {
 
 export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
   const { data, title, itemsPerPage } = props;
-  const { currentItems, currentPage, showPage } = usePagination<T>(
-    itemsPerPage ? itemsPerPage : 10,
+  const { currentItems, currentPage, showPage, totalPages } = usePagination<T>(
+    itemsPerPage ? itemsPerPage : 6,
     data
   );
 
@@ -43,25 +43,36 @@ export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
   return (
     <div className={styles.container}>
       {title && <span className={styles.title}>{title}</span>}
-      <div className={styles.content}>
-        <ul className={styles.list} onWheel={handleScroll}>
-          {currentItems.map((el: T) => {
-            return <ListItem<T> {...el} key={el.id} />;
-          })}
-        </ul>
-        <div className={styles.scrollButtons}>
-          <button
-            className={styles.btn}
-            onClick={() => showPage(currentPage - 1)}
-          >
-            <HiArrowNarrowUp />
-          </button>
-          <button
-            className={styles.btn}
-            onClick={() => showPage(currentPage - 1)}
-          >
-            <HiArrowNarrowDown />
-          </button>
+      <ul
+        className={styles.list}
+        onWheel={handleScroll}
+        style={{
+          gridTemplateRows: `repeat(${itemsPerPage ? itemsPerPage : 6},1fr)`,
+        }}
+      >
+        {currentItems.map((el: T) => {
+          return <ListItem<T> {...el} key={el.id} />;
+        })}
+      </ul>
+      <div className={styles.bottomWrap}>
+        {totalPages > 1 && (
+          <div className={styles.scrollBtns}>
+            <button
+              className={styles.btn}
+              onClick={() => showPage(currentPage - 1)}
+            >
+              <HiArrowNarrowUp />
+            </button>
+            <button
+              className={styles.btn}
+              onClick={() => showPage(currentPage + 1)}
+            >
+              <HiArrowNarrowDown />
+            </button>
+          </div>
+        )}
+        <div className={styles.pageCount}>
+          {currentPage}/{totalPages}
         </div>
       </div>
     </div>
