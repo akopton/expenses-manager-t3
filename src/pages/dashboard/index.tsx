@@ -1,7 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
+import { CustomList } from "~/components/CustomList/CustomList";
+import { BillWithProducts } from "~/types/types";
+import { api } from "~/utils/api";
 
 export default function Dashboard() {
+  const bills = api.bills.getBillsWithProducts.useQuery();
+
   return (
     <>
       <Head>
@@ -11,6 +16,7 @@ export default function Dashboard() {
       </Head>
       <main className="flex flex-grow flex-col items-center justify-center">
         <div>Tablica</div>
+        {bills.data && <CustomList<BillWithProducts> data={bills.data} />}
         <Link href="/dashboard/add-bill">Nowy rachunek</Link>
       </main>
     </>
