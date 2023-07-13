@@ -10,7 +10,7 @@ type ProductsContextProps<T> = {
 const context: ProductsContextProps<Product> = {
   products: [],
   addNewProduct: async (product: { name: string; value: number }) => {
-    return;
+    await new Promise((resolve) => resolve(product));
   },
 };
 
