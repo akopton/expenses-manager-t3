@@ -51,7 +51,7 @@ const AddProductForm = ({
   };
 
   return (
-    <li className={`${styles.option} ${styles.productForm}`}>
+    <li className={styles.option + " " + styles.productForm}>
       <input
         type="text"
         placeholder="Nazwa"
@@ -74,7 +74,7 @@ const AddProductForm = ({
         <button
           type="button"
           onClick={handleClick}
-          className={`${styles.btn} ${styles.confirm}`}
+          className={styles.btn + " " + styles.confirm}
         >
           <RiCheckboxCircleLine />
         </button>
@@ -82,7 +82,7 @@ const AddProductForm = ({
         <button
           type="button"
           onClick={() => setShowAddProduct(false)}
-          className={`${styles.btn} ${styles.close}`}
+          className={styles.btn + " " + styles.close}
         >
           <RiCloseCircleLine />
         </button>

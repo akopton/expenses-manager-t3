@@ -9,7 +9,9 @@ type ProductsContextProps<T> = {
 
 const context: ProductsContextProps<Product> = {
   products: [],
-  addNewProduct: async (product: { name: string; value: number }) => {},
+  addNewProduct: async (product: { name: string; value: number }) => {
+    return;
+  },
 };
 
 export const ProductsContext = createContext(context);

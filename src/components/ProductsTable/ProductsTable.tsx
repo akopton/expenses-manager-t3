@@ -102,7 +102,7 @@ export const ProductsTable = (props: ProductsTableProps<Product>) => {
 
   return (
     <div className={styles.tableWrapper}>
-      <div className={`${styles.row} ${styles.tableHeader}`}>
+      <div className={styles.row + " " + styles.tableHeader}>
         <button
           type="button"
           className={styles.column}

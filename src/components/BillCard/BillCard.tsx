@@ -19,7 +19,7 @@ export const BillCard = (bill: BillWithProducts) => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <li key={bill.id} className={`${styles.billCard} ${styles[`${theme}`]}`}>
+    <li key={bill.id} className={styles.billCard + " " + styles[`${theme}`]}>
       <Link href={`/bills/${bill.id}`}>
         <span className={styles.billName}>{bill.name}</span>
         <div className={styles.bottomWrap}>
