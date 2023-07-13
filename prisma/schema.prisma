@@ -97,17 +97,20 @@ model Bill {
 }
 
 model Category {
-    id    String @id @default(cuid())
-    name  String @unique
-    value Float  @default(0)
-    bills Bill[]
+    id         String    @id @default(cuid())
+    name       String    @unique
+    value      Float     @default(0)
+    updated_at DateTime?
+    bills      Bill[]
 }
 
 model BillSet {
-    id     String @id @default(cuid())
-    name   String
-    value  Float
-    bills  Bill[]
-    userId String
-    owners User[]
+    id         String    @id @default(cuid())
+    name       String
+    value      Float
+    added_at   DateTime  @default(now())
+    updated_at DateTime?
+    bills      Bill[]
+    userId     String
+    owners     User[]
 }
