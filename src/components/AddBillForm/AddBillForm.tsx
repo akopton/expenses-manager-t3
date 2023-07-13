@@ -11,6 +11,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { LoadingStatusModal } from "../LoadingStatusModal/LoadingStatusModal";
 import { useLoadingState } from "~/hooks/useLoadingState";
+import { useRouter } from "next/router";
+import { ThemeContext } from "~/context/ThemeContext";
 
 export const AddBillForm = () => {
   const [hideCategories, setHideCategories] = useState<boolean>(false);
@@ -26,6 +28,8 @@ export const AddBillForm = () => {
   const { error, loading, success, handleLoadingStatus, resetStatus } =
     useLoadingState();
 
+  const router = useRouter();
+  const { theme } = useContext(ThemeContext);
   const reset = () => {
     setName("");
     setItems([]);
@@ -33,6 +37,12 @@ export const AddBillForm = () => {
     setSumValue(0);
     setPaymentDate(new Date());
     setCategory("");
+  };
+
+  const getCategory = () => {
+    const category = router.query.id as string;
+    if (!category) return;
+    setCategory(category);
   };
 
   const addNewBill = async () => {
@@ -88,6 +98,7 @@ export const AddBillForm = () => {
 
   useEffect(() => {
     setSumValue(() => sumPlnValues(items));
+    getCategory();
   }, [items]);
 
   const filteredCategories = useMemo(() => {
@@ -120,18 +131,26 @@ export const AddBillForm = () => {
               type="text"
               placeholder="spożywcze"
               onChange={(e) => {
-                setHideCategories(false);
                 setCategory(e.currentTarget.value);
               }}
+              onFocus={() => setHideCategories(false)}
+              onBlur={() => setHideCategories(true)}
               value={category}
               autoComplete={"off"}
+              disabled={router.query.id ? true : false}
             />
             {category &&
               filteredCategories &&
               filteredCategories.length > 0 && (
                 <ul
                   className={styles.categoriesList}
-                  style={{ display: hideCategories ? "none" : "block" }}
+                  style={{
+                    display: hideCategories ? "none" : "block",
+                    background:
+                      theme === "dark"
+                        ? "var(--primary-bg)"
+                        : "var(--primary-font)",
+                  }}
                 >
                   {filteredCategories?.map((cat) => {
                     return (
@@ -142,7 +161,9 @@ export const AddBillForm = () => {
                           setHideCategories(true);
                         }}
                       >
-                        {cat.name}
+                        <button className={styles.categoryItem}>
+                          {cat.name}
+                        </button>
                       </li>
                     );
                   })}
