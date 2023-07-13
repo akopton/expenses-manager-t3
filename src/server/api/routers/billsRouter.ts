@@ -2,7 +2,6 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { type Product, type Bill, type Prisma } from "@prisma/client";
 import { type User } from "next-auth";
-import { connect } from "http2";
 
 type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;
 
@@ -28,8 +27,8 @@ export const billsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }): Promise<Bill> => {
-      const user: User = ctx.session.user;
-      const bill: Bill = await ctx.prisma.bill.create({
+      const user = ctx.session.user;
+      const bill = await ctx.prisma.bill.create({
         data: {
           name: input.name,
           category: {
@@ -64,15 +63,17 @@ export const billsRouter = createTRPCRouter({
 
       await ctx.prisma.category.update({
         where: { name: input.category },
-        data: { value: { increment: input.value } },
+        data: { value: { increment: input.value }, updated_at: new Date() },
       });
       return bill;
     }),
 
   getBills: protectedProcedure.query(
     async ({ ctx }): Promise<BillWithProducts[]> => {
+      const user = ctx.session.user;
       const bills = await ctx.prisma.bill.findMany({
         include: { items: true },
+        where: { owner: user },
       });
       return bills;
     }
@@ -90,10 +91,12 @@ export const billsRouter = createTRPCRouter({
   getBillsByAddedDate: protectedProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
+      const user = ctx.session.user;
       const daysDiff = Date.now() - 24 * 60 * 60 * 1000 * input;
       const daysDiffString = new Date(daysDiff).toISOString();
       const bills = await ctx.prisma.bill.findMany({
         where: {
+          owner: user,
           added_at: {
             gte: daysDiffString,
           },
@@ -109,10 +112,12 @@ export const billsRouter = createTRPCRouter({
   getNotPaidBills: protectedProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
+      const user = ctx.session.user;
       const daysDiff = Date.now() + 24 * 60 * 60 * 1000 * input;
       const daysDiffString = new Date(daysDiff).toISOString();
       const bills = await ctx.prisma.bill.findMany({
         where: {
+          owner: user,
           isPaid: false,
           paymentDate: {
             gte: new Date(),
@@ -130,8 +135,10 @@ export const billsRouter = createTRPCRouter({
   getBillsByCategory: protectedProcedure
     .input(z.object({ name: z.string() }))
     .query(async ({ ctx, input }) => {
+      const user = ctx.session.user;
       const bills = await ctx.prisma.bill.findMany({
         where: {
+          owner: user,
           category: { name: input.name },
         },
         include: { items: true },

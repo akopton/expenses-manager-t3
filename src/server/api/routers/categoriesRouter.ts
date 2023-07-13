@@ -7,11 +7,24 @@ export const categoriesRouter = createTRPCRouter({
     return categories;
   }),
 
+  getCategoriesWithBillsCount: protectedProcedure.query(async ({ ctx }) => {
+    const categories = await ctx.prisma.category.findMany({
+      include: { _count: true },
+      orderBy: {
+        updated_at: "asc",
+      },
+    });
+
+    return categories;
+  }),
+
   getCategoriesWithBills: protectedProcedure.query(async ({ ctx }) => {
     const categories = await ctx.prisma.category.findMany({
       include: { bills: true },
+      orderBy: {
+        updated_at: "asc",
+      },
     });
-
     return categories;
   }),
 
