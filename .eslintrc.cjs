@@ -21,7 +21,7 @@ const config = {
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
-    "@typescript-eslint/restrict-template-expressions": "warn",
+    "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
