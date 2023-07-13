@@ -41,7 +41,7 @@ export const Navbar = () => {
         {links.map((el: TLink, idx: number) => (
           <li
             className={`${styles.link as string} ${
-              pathname.includes(el.href) && (styles.active as string)
+              pathname.includes(el.href) ? (styles.active as string) : ""
             }
             `}
             key={idx}
