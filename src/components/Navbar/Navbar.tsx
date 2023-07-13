@@ -40,9 +40,10 @@ export const Navbar = () => {
       <ul className={styles.linksList}>
         {links.map((el: TLink, idx: number) => (
           <li
-            className={
-              styles.link + " " + pathname.includes(el.href) && styles.active
+            className={`${styles.link as string} ${
+              pathname.includes(el.href) && (styles.active as string)
             }
+            `}
             key={idx}
             onMouseEnter={() => {
               el.links?.length && setShowLinks(true);
@@ -67,7 +68,9 @@ export const Navbar = () => {
                   return (
                     <li
                       key={idx}
-                      className={styles.link + " " + styles.additionalLink}
+                      className={`${styles.link as string} ${
+                        styles.additionalLink as string
+                      }`}
                     >
                       <Link href={link.href}>{link.name}</Link>
                     </li>
