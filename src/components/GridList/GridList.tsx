@@ -3,6 +3,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 import Link from "next/link";
+import { User } from ".prisma/client";
 
 type GridListProps<T> = {
   data: T[];
@@ -15,8 +16,9 @@ type GridListProps<T> = {
 type ItemProps = {
   name: string;
   value: number;
-  _count: { bills: number };
+  _count?: { bills: number };
   updated_at: Date | null;
+  owners?: User[];
 };
 
 const Item = <T extends ItemProps>(props: T) => {
@@ -31,7 +33,7 @@ const Item = <T extends ItemProps>(props: T) => {
           {props.value.toFixed(2).replace(".", ",")} zł
         </span>
         <span className={itemStyles.itemBillsCount}>
-          Ilość rachunków: {props._count.bills}
+          Ilość rachunków: {props._count?.bills}
         </span>
         {props.updated_at && (
           <span className={itemStyles.lastUpdate}>
@@ -43,6 +45,11 @@ const Item = <T extends ItemProps>(props: T) => {
             })}
           </span>
         )}
+        <ul>
+          {props.owners?.map((owner) => {
+            return <li key={owner.id}>{owner.email}</li>;
+          })}
+        </ul>
       </Link>
     </li>
   );

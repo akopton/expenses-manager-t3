@@ -1,19 +1,12 @@
+import { Prisma } from "@prisma/client";
 import Head from "next/head";
 import { GridList } from "~/components/GridList/GridList";
+import { api } from "~/utils/api";
 
-type TSet = {
-  id: string;
-  name: string;
-  bills: never[];
-  value: number;
-};
+type TSet = Prisma.BillSetGetPayload<{ include: { owners: true } }>;
 
 export default function SetsPage() {
-  const sets = [
-    { id: "1", title: "something", name: "remont", bills: [], value: 250.49 },
-    { id: "2", title: "something", name: "wyjazd", bills: [], value: 137.37 },
-  ];
-
+  const sets = api.billSets.getAllSets.useQuery();
   return (
     <>
       <Head>
@@ -22,13 +15,15 @@ export default function SetsPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen items-center px-5 py-4">
-        <GridList<TSet>
-          title={"Zestawy"}
-          data={sets}
-          itemType={"set"}
-          rows={2}
-          cols={4}
-        />
+        {sets.data && (
+          <GridList<TSet>
+            title={"Zestawy"}
+            data={sets.data}
+            itemType={"set"}
+            rows={2}
+            cols={4}
+          />
+        )}
       </main>
     </>
   );
