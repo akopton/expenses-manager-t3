@@ -24,6 +24,21 @@
     box-shadow: 0 0 4px 2px var(--primary-color);
 }
 
+.header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    padding: .5rem 1rem;
+}
+
+.headerLeft {
+    text-align: left;
+}
+
+.headerRight {
+    text-align: right;
+}
+
 .list {
     display: grid;
     width: 100%;
@@ -31,8 +46,11 @@
 }
 
 .bottomWrap {
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .scrollBtns { 

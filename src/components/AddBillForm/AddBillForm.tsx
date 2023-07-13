@@ -1,5 +1,5 @@
 import { type Product } from "@prisma/client";
-import { useEffect, useState, useContext, useMemo, forwardRef } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
 import styles from "./form.module.css";
@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { ThemeContext } from "~/context/ThemeContext";
 
 export const AddBillForm = () => {
-  const [hideCategories, setHideCategories] = useState<boolean>(false);
+  const [hideCategories, setHideCategories] = useState<boolean>(true);
   const [name, setName] = useState<string>("");
   const [items, setItems] = useState<Product[]>([]);
   const [isPaid, setIsPaid] = useState<boolean>(false);
@@ -131,15 +131,15 @@ export const AddBillForm = () => {
               type="text"
               placeholder="spożywcze"
               onChange={(e) => {
+                setHideCategories(false);
                 setCategory(e.currentTarget.value);
               }}
-              onFocus={() => setHideCategories(false)}
-              onBlur={() => setHideCategories(true)}
               value={category}
               autoComplete={"off"}
               disabled={router.query.id ? true : false}
             />
-            {category &&
+            {!hideCategories &&
+              category &&
               filteredCategories &&
               filteredCategories.length > 0 && (
                 <ul
@@ -161,9 +161,7 @@ export const AddBillForm = () => {
                           setHideCategories(true);
                         }}
                       >
-                        <button className={styles.categoryItem}>
-                          {cat.name}
-                        </button>
+                        {cat.name}
                       </li>
                     );
                   })}

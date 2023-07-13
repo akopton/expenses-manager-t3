@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useLoadingState = () => {
   const [loading, setLoading] = useState(false);

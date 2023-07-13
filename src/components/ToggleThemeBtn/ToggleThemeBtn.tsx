@@ -6,7 +6,7 @@ export const ToggleThemeBtn = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <div
+    <button
       className={styles.switch}
       onClick={toggleTheme}
       style={
@@ -30,6 +30,6 @@ export const ToggleThemeBtn = () => {
       <div className={styles.icon}>
         <BsMoon />
       </div>
-    </div>
+    </button>
   );
 };

@@ -1,6 +1,11 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { api } from "~/utils/api";
 
 export default function AnalyticsPage() {
+  const billItems = api.billItems.getBillItems.useQuery();
+  const sesh = useSession();
+
   return (
     <>
       <Head>
@@ -10,6 +15,15 @@ export default function AnalyticsPage() {
       </Head>
       <main className="flex flex-grow flex-col items-center justify-center">
         <div>Analiza</div>
+        <div>{sesh.data?.user.email}</div>
+        {billItems &&
+          billItems.data?.map((el, idx) => {
+            return (
+              <div key={idx}>
+                Nazwa: {el.name}, ilość: {el._count.toString()}
+              </div>
+            );
+          })}
       </main>
     </>
   );

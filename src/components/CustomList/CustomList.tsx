@@ -2,26 +2,33 @@ import Link from "next/link";
 import type { BillWithProducts } from "~/types/types";
 import { usePagination } from "~/hooks/usePagination";
 import { HiArrowNarrowUp, HiArrowNarrowDown } from "react-icons/hi";
-import { useState } from "react";
 import styles from "./list.module.css";
 
 type customType = BillWithProducts;
 
+type ListItemProps<T> = {
+  data: T;
+  listType?: "to-pay" | "last-added";
+};
+
 type CustomListProps<T> = {
   data: T[];
-  title?: string;
+  listType?: "to-pay" | "last-added";
   itemsPerPage?: number;
 };
 
-const ListItem = <T extends customType>(props: T) => {
-  const { id, name, added_at, isPaid, paymentDate } = props;
+const ListItem = <T extends customType>(props: ListItemProps<T>) => {
+  const {
+    data: { id, name, added_at, paymentDate },
+    listType,
+  } = props;
 
   return (
     <li>
       <Link href={`/bills/${id}`} className={styles.listItem}>
         <span className={styles.itemName}>{name}</span>
         <span className={styles.itemDate}>
-          {isPaid
+          {listType === "last-added"
             ? added_at.toLocaleDateString()
             : paymentDate.toLocaleDateString()}
         </span>
@@ -35,7 +42,7 @@ const ListItem = <T extends customType>(props: T) => {
 };
 
 export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
-  const { data, title, itemsPerPage } = props;
+  const { data, itemsPerPage, listType } = props;
   const { currentItems, currentPage, showPage, totalPages } = usePagination<T>(
     itemsPerPage ? itemsPerPage : 6,
     data
@@ -48,7 +55,10 @@ export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
 
   return (
     <div className={styles.container}>
-      {title && <span className={styles.title}>{title}</span>}
+      {/* <div className={styles.header}>
+        <span className={styles.headerLeft}>Nazwa</span>
+        <span className={styles.headerRight}>Data dodania</span>
+      </div> */}
       <ul
         className={styles.list}
         onWheel={handleScroll}
@@ -57,11 +67,11 @@ export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
         }}
       >
         {currentItems.map((el: T) => {
-          return <ListItem<T> {...el} key={el.id} />;
+          return <ListItem<T> data={el} listType={listType} key={el.id} />;
         })}
       </ul>
-      <div className={styles.bottomWrap}>
-        {totalPages > 1 && (
+      {totalPages > 1 && (
+        <div className={styles.bottomWrap}>
           <div className={styles.scrollBtns}>
             <button
               className={styles.btn}
@@ -76,11 +86,11 @@ export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
               <HiArrowNarrowDown />
             </button>
           </div>
-        )}
-        <div className={styles.pageCount}>
-          {currentPage}/{totalPages}
+          <div className={styles.pageCount}>
+            {currentPage}/{totalPages}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

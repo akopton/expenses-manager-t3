@@ -3,8 +3,6 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 import Link from "next/link";
-import { sumPlnValues } from "~/utils/sumValues";
-import { Bill } from "@prisma/client";
 
 type GridListProps<T> = {
   data: T[];
@@ -17,7 +15,8 @@ type GridListProps<T> = {
 type ItemProps = {
   name: string;
   value: number;
-  bills: Bill[];
+  _count: { bills: number };
+  updated_at: Date | null;
 };
 
 const Item = <T extends ItemProps>(props: T) => {
@@ -27,11 +26,23 @@ const Item = <T extends ItemProps>(props: T) => {
         href={`/bills/categories/${props.name}`}
         className={itemStyles.link}
       >
-        <span className={itemStyles.itemName}>{props.name}</span>
+        <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>
         <span className={itemStyles.itemValue}>
-          {sumPlnValues(props.bills)}
+          {props.value.toFixed(2).replace(".", ",")} zł
         </span>
-        <span className={itemStyles.itemBillsCount}>{props.bills.length}</span>
+        <span className={itemStyles.itemBillsCount}>
+          Ilość rachunków: {props._count.bills}
+        </span>
+        {props.updated_at && (
+          <span className={itemStyles.lastUpdate}>
+            Ostatnia aktualizacja: <br />
+            {props.updated_at.toLocaleDateString()},
+            {props.updated_at.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </span>
+        )}
       </Link>
     </li>
   );

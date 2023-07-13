@@ -5,12 +5,12 @@ import { api } from "~/utils/api";
 
 export type CategoryWithBills = Prisma.CategoryGetPayload<{
   include: {
-    bills: true;
+    _count: true;
   };
 }>;
 
 export default function CategoriesPage() {
-  const categories = api.categories.getCategoriesWithBills.useQuery();
+  const categories = api.categories.getCategoriesWithBillsCount.useQuery();
 
   return (
     <>
