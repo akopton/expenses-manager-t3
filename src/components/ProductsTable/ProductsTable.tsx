@@ -14,6 +14,7 @@ type SelectedProductProps<T> = {
 
 const SelectedProduct = (props: SelectedProductProps<Product>) => {
   const {
+    product,
     product: { id, value, count, name },
     updateProduct,
   } = props;
@@ -23,6 +24,7 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
       const newCount = parseInt(e.currentTarget.value);
       if (newCount < 1) return;
       updateProduct({
+        ...product,
         id,
         name,
         value,
@@ -32,7 +34,7 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
       let newValue = parseFloat(e.currentTarget.value);
       if (newValue < 0) return;
       if (e.currentTarget.value === "") newValue = 0;
-      updateProduct({ id, name, value: newValue, count });
+      updateProduct({ ...product, id, name, value: newValue, count });
     }
   };
 
