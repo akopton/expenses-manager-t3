@@ -7,7 +7,6 @@ import { ThemeContext } from "~/context/ThemeContext";
 import { RiCloseCircleLine, RiCheckboxCircleLine } from "react-icons/ri";
 import styles from "./select.module.css";
 import { useLoadingState } from "~/hooks/useLoadingState";
-import { LoadingStatusModal } from "../LoadingStatusModal/LoadingStatusModal";
 
 type SelectProps<T> = {
   options?: T[];
@@ -44,7 +43,7 @@ const AddProductForm = ({
     setProductValue("");
   };
 
-  const handleClick = async () => {
+  const handleAdd = async () => {
     if (!productName) return;
     const name = productName;
     const value = parseFloat(productValue);
@@ -52,8 +51,10 @@ const AddProductForm = ({
     try {
       await addNewProduct({ name, value });
       handleLoadingStatus("success");
+      setTimeout(() => resetStatus(), 2000);
     } catch (err) {
       handleLoadingStatus("error");
+      setTimeout(() => resetStatus(), 2000);
     }
     reset();
   };
@@ -83,7 +84,7 @@ const AddProductForm = ({
       {productName !== "" ? (
         <button
           type="button"
-          onClick={handleClick}
+          onClick={handleAdd}
           className={`${styles.btn as string} ${styles.confirm as string}`}
         >
           <RiCheckboxCircleLine />
@@ -98,16 +99,24 @@ const AddProductForm = ({
         </button>
       )}
       {loading && (
-        <div className="absolute left-0 top-0 h-full w-full bg-primaryColor">
-          loading
+        <div className="absolute left-0 top-0 h-full w-full rounded-md bg-primaryColor px-3">
+          Dodawanie...
         </div>
       )}
       {error && (
         <div
-          className="absolute left-0 top-0 h-full w-full bg-primaryColor"
+          className="absolute left-0 top-0 h-full w-full rounded-md bg-primaryColor px-3"
           onClick={resetStatus}
         >
-          Podany produkt już istnieje
+          Produkt już istnieje
+        </div>
+      )}
+      {success && (
+        <div
+          className="absolute left-0 top-0 h-full w-full rounded-md bg-primaryColor px-3"
+          onClick={resetStatus}
+        >
+          Dodano produkt
         </div>
       )}
     </li>

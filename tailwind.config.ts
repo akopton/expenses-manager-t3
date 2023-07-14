@@ -5,6 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primaryColorTransparent: "rgba(88, 14, 246, .4)",
         primaryColor: "rgb(88, 14, 246)",
         primaryFont: "rgb(247, 247, 247)",
         primaryBg: "rgb(26, 28, 34)",

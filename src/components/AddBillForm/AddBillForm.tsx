@@ -160,6 +160,7 @@ export const AddBillForm = () => {
                           setCategory(cat.name);
                           setHideCategories(true);
                         }}
+                        className={styles.categoryItem}
                       >
                         {cat.name}
                       </li>
