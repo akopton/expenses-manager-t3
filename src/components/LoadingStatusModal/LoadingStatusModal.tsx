@@ -2,7 +2,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import styles from "./modal.module.css";
 
 type StatusProps = {
-  status: string;
+  status: "error" | "loading" | "success";
   message?: string;
   closeModal: () => void;
 };
@@ -17,9 +17,11 @@ const Loader = () => {
     </div>
   );
 };
+
 const Error = () => {
   return <div></div>;
 };
+
 const Success = () => {
   return <AiOutlineCheckCircle className={styles.success} />;
 };

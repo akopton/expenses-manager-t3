@@ -6,6 +6,8 @@ import { ProductsContext } from "~/context/ProductsContext";
 import { ThemeContext } from "~/context/ThemeContext";
 import { RiCloseCircleLine, RiCheckboxCircleLine } from "react-icons/ri";
 import styles from "./select.module.css";
+import { useLoadingState } from "~/hooks/useLoadingState";
+import { LoadingStatusModal } from "../LoadingStatusModal/LoadingStatusModal";
 
 type SelectProps<T> = {
   options?: T[];
@@ -27,7 +29,8 @@ const AddProductForm = ({
   const [productName, setProductName] = useState<string>("");
   const [productValue, setProductValue] = useState<string>("");
   const { addNewProduct } = useContext(ProductsContext);
-
+  const { error, loading, success, handleLoadingStatus, resetStatus } =
+    useLoadingState();
   const handleProductName = (e: React.FormEvent<HTMLInputElement>) => {
     setProductName(e.currentTarget.value);
   };
@@ -45,8 +48,13 @@ const AddProductForm = ({
     if (!productName) return;
     const name = productName;
     const value = parseFloat(productValue);
-    await addNewProduct({ name, value });
-
+    handleLoadingStatus("loading");
+    try {
+      await addNewProduct({ name, value });
+      handleLoadingStatus("success");
+    } catch (err) {
+      handleLoadingStatus("error");
+    }
     reset();
   };
 
@@ -88,6 +96,19 @@ const AddProductForm = ({
         >
           <RiCloseCircleLine />
         </button>
+      )}
+      {loading && (
+        <div className="absolute left-0 top-0 h-full w-full bg-primaryColor">
+          loading
+        </div>
+      )}
+      {error && (
+        <div
+          className="absolute left-0 top-0 h-full w-full bg-primaryColor"
+          onClick={resetStatus}
+        >
+          Podany produkt już istnieje
+        </div>
       )}
     </li>
   );

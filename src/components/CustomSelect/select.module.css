@@ -83,6 +83,7 @@
 }
 
 .productForm {
+    position: relative;
     cursor: default; 
 }
 

@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -15,6 +16,7 @@ export const productsRouter = createTRPCRouter({
       });
       return products;
     }),
+
   addProduct: protectedProcedure
     .input(
       z.object({

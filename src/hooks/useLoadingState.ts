@@ -29,7 +29,7 @@ export const useLoadingState = () => {
     setLoading(false);
   };
 
-  const handleLoadingStatus = (type: string) => {
+  const handleLoadingStatus = (type: "loading" | "error" | "success") => {
     switch (type) {
       case "loading":
         handleLoading();
