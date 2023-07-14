@@ -98,6 +98,7 @@ model Bill {
     updated_at  DateTime
     paymentDate DateTime
     isPaid      Boolean
+    paid_at     DateTime?
     categoryId  String
     category    Category   @relation(fields: [categoryId], references: [id])
     billSetId   String?

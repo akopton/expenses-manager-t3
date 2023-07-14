@@ -174,7 +174,7 @@ export const AddBillForm = () => {
             className={styles.inputWrapper}
             style={{ opacity: isPaid ? ".2" : "1" }}
           >
-            <span className={styles.sectionTitle}>Data płatności</span>
+            <span className={styles.sectionTitle}>Termin płatności</span>
             <DatePicker
               dateFormat={"dd.MM.yyyy"}
               disabled={isPaid ? true : false}

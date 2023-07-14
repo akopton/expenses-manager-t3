@@ -59,6 +59,7 @@ export const billsRouter = createTRPCRouter({
           added_at: input.added_at,
           updated_at: input.updated_at,
           isPaid: input.isPaid,
+          paid_at: input.isPaid ? input.paymentDate : null,
           owner: { connect: { id: user.id } },
         },
         include: {
