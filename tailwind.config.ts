@@ -4,6 +4,25 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        myBounce: {
+          "0%": {
+            transform: "none",
+            animationTimingFunction: "cubic-bezier(0,0,0.2,1)",
+          },
+          "100%": {
+            transform: "none",
+            animationTimingFunction: "cubic-bezier(0,0,0.2,1)",
+          },
+          "50%": {
+            transform: "translateY(-25%)",
+            animationTimingFunction: "cubic-bezier(0.8,0,1,1)",
+          },
+        },
+      },
+      animation: {
+        myAnimation: "myBounce 1s infinite",
+      },
       colors: {
         primaryColorTransparent: "rgba(88, 14, 246, .4)",
         primaryColor: "rgb(88, 14, 246)",
@@ -22,3 +41,12 @@ export default {
   },
   plugins: [],
 } satisfies Config;
+
+// 0%, 100% {
+//   transform: translateY(-25%);
+//   animation-timing-function: cubic-bezier(0.8,0,1,1);
+// }
+// 50% {
+//   transform: none;
+//   animation-timing-function: cubic-bezier(0,0,0.2,1);
+// }

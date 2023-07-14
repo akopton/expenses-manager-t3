@@ -17,12 +17,58 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="relative grid h-screen grid-cols-4">
-        <Link href="/dashboard/add-bill" className="absolute right-0 top-0">
-          Nowy rachunek
-        </Link>
-        <div className="span col-span-2 flex items-center justify-center">
-          <div>Ostatnio zaktualizowane zestawy</div>
-          <div></div>
+        <div className="span col-span-2 flex flex-col items-center justify-center gap-10 px-10">
+          <div className="flex flex-col items-center gap-10">
+            <Link
+              href="/dashboard/add-bill"
+              className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+            >
+              Nowy rachunek
+            </Link>
+            <Link
+              href={"/dashboard"}
+              className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+            >
+              Najpopularniejsze kategorie
+            </Link>
+            <Link
+              href={"/dashboard"}
+              className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+            >
+              Najpopularniejsze zestawy
+            </Link>
+          </div>
+          <div className="flex w-full flex-col items-center gap-4 text-center">
+            <span className="w-full text-center text-3xl">
+              Te zestawy zostały ostatnio zaktualizowane
+            </span>
+            <ul className="flex w-full items-center justify-around">
+              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
+                <span className="text-2xl">Zestaw</span>
+                <span className="text-2xl">aktualizacja</span>
+                <span className="text-2xl">osoba</span>
+                <span className="text-2xl">strzałka</span>
+              </li>
+              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
+                <span className="text-2xl">Zestaw</span>
+                <span className="text-2xl">aktualizacja</span>
+                <span className="text-2xl">osoba</span>
+                <span className="text-2xl">strzałka</span>
+              </li>
+              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
+                <span className="text-2xl">Zestaw</span>
+                <span className="text-2xl">aktualizacja</span>
+                <span className="text-2xl">osoba</span>
+                <span className="text-2xl">strzałka</span>
+              </li>
+              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
+                <span className="text-2xl">Zestaw</span>
+                <span className="text-2xl">aktualizacja</span>
+                <span className="text-2xl">osoba</span>
+                <span className="text-2xl">strzałka</span>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="w-full px-10">
           <Title text="Nadchodzące wydatki" />
