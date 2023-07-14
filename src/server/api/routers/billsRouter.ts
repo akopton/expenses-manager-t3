@@ -34,20 +34,25 @@ export const billsRouter = createTRPCRouter({
           category: {
             connectOrCreate: {
               where: {
-                name: input.category,
+                name_userId: {
+                  name: input.category,
+                  userId: user.id,
+                },
               },
               create: {
                 name: input.category,
+                owner: { connect: { id: user.id } },
               },
             },
           },
           value: input.value,
           items: {
-            create: input.items.map((product: Product) => ({
-              name: product.name,
-              product: { connect: { id: product.id } },
-              value: product.value,
-              count: product.count,
+            create: input.items.map((item) => ({
+              name: item.name,
+              product: { connect: { id: item.id } },
+              value: item.value,
+              count: item.count,
+              owner: { connect: { id: user.id } },
             })),
           },
           paymentDate: input.paymentDate,
@@ -62,7 +67,7 @@ export const billsRouter = createTRPCRouter({
       });
 
       await ctx.prisma.category.update({
-        where: { name: input.category },
+        where: { name_userId: { name: input.category, userId: user.id } },
         data: { value: { increment: input.value }, updated_at: new Date() },
       });
       return bill;

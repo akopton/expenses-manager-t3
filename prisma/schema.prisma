@@ -41,15 +41,18 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String     @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?    @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
     bills         Bill[]
+    categories    Category[]
     billSets      BillSet[]
+    product       Product[]
+    billItem      BillItem[]
 }
 
 model VerificationToken {
@@ -66,6 +69,10 @@ model Product {
     value    Float
     count    Int        @default(1)
     BillItem BillItem[]
+    owner    User       @relation(fields: [userId], references: [id])
+    userId   String
+
+    @@unique([name, userId])
 }
 
 model BillItem {
@@ -77,6 +84,8 @@ model BillItem {
     value     Float // Custom value for the product in the bill
     count     Int
     bill      Bill    @relation(fields: [billId], references: [id])
+    owner     User    @relation(fields: [userId], references: [id])
+    userId    String
 }
 
 model Bill {
@@ -92,16 +101,20 @@ model Bill {
     categoryId  String
     category    Category   @relation(fields: [categoryId], references: [id])
     billSetId   String?
-    BillSet     BillSet?   @relation(fields: [billSetId], references: [id])
+    billSet     BillSet?   @relation(fields: [billSetId], references: [id])
     owner       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Category {
     id         String    @id @default(cuid())
-    name       String    @unique
+    name       String
     value      Float     @default(0)
     updated_at DateTime?
     bills      Bill[]
+    owner      User      @relation(fields: [userId], references: [id])
+    userId     String
+
+    @@unique([name, userId])
 }
 
 model BillSet {
@@ -111,6 +124,5 @@ model BillSet {
     added_at   DateTime  @default(now())
     updated_at DateTime?
     bills      Bill[]
-    userId     String
     owners     User[]
 }
