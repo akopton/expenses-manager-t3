@@ -4,6 +4,7 @@ import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 import Link from "next/link";
 import { User } from ".prisma/client";
+import { useRouter } from "next/router";
 
 type GridListProps<T> = {
   data: T[];
@@ -22,12 +23,10 @@ type ItemProps = {
 };
 
 const Item = <T extends ItemProps>(props: T) => {
+  const router = useRouter();
   return (
     <li className={itemStyles.item}>
-      <Link
-        href={`/bills/categories/${props.name}`}
-        className={itemStyles.link}
-      >
+      <Link href={`${router.asPath}/${props.name}`} className={itemStyles.link}>
         <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>
         <span className={itemStyles.itemValue}>
           {props.value.toFixed(2).replace(".", ",")} zł

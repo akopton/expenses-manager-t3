@@ -6,7 +6,26 @@ import { api } from "~/utils/api";
 type TSet = Prisma.BillSetGetPayload<{ include: { owners: true } }>;
 
 export default function SetsPage() {
-  const sets = api.billSets.getAllSets.useQuery();
+  // const sets = api.billSets.getAllSets.useQuery();
+
+  const sets: TSet[] = [
+    {
+      id: "dsadsa",
+      name: "set 1",
+      value: 0,
+      added_at: new Date(),
+      updated_at: new Date(),
+      owners: [],
+    },
+    {
+      id: "ldskadaskd",
+      name: "set 2",
+      value: 0,
+      added_at: new Date(),
+      updated_at: new Date(),
+      owners: [],
+    },
+  ];
   return (
     <>
       <Head>
@@ -15,15 +34,13 @@ export default function SetsPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen items-center px-5 py-4">
-        {sets.data && (
-          <GridList<TSet>
-            title={"Zestawy"}
-            data={sets.data}
-            itemType={"set"}
-            rows={2}
-            cols={4}
-          />
-        )}
+        <GridList<TSet>
+          title={"Zestawy"}
+          data={sets}
+          itemType={"set"}
+          rows={2}
+          cols={4}
+        />
       </main>
     </>
   );

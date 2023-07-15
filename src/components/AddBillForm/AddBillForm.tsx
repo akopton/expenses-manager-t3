@@ -40,7 +40,9 @@ export const AddBillForm = () => {
   };
 
   const getCategory = () => {
-    const category = router.query.id as string;
+    if (!router.asPath.includes("categories")) return;
+
+    const category = router.query.name as string;
     if (!category) return;
     setCategory(category);
   };
@@ -136,7 +138,11 @@ export const AddBillForm = () => {
               }}
               value={category}
               autoComplete={"off"}
-              disabled={router.query.id ? true : false}
+              disabled={
+                router.asPath.includes("categories") && router.query.name
+                  ? true
+                  : false
+              }
             />
             {!hideCategories &&
               category &&
