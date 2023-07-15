@@ -7,6 +7,7 @@
   --secondary-bg: rgb(61, 58, 80);
   --primary-color: rgb(88, 14, 246);
   --primary-font: rgb(247, 247, 247);
+  --primary-color-hover: rgba(88, 14, 246, .5);
 }
 
 .dark {

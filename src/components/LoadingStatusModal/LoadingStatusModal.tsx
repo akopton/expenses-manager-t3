@@ -54,6 +54,14 @@ export const LoadingStatusModal = (props: StatusProps) => {
           <div>
             <Error />
           </div>
+          <div className={styles.links}>
+            <button onClick={closeModal} className={styles.link}>
+              Powrót
+            </button>
+            <Link href={previousRoute} className={styles.link}>
+              Strona główna
+            </Link>
+          </div>
         </div>
         <div className={styles.blur} onClick={closeModal} />
       </>
@@ -68,9 +76,13 @@ export const LoadingStatusModal = (props: StatusProps) => {
           <div>
             <Success />
           </div>
-          <div>
-            <button onClick={closeModal}>Dodaj następny</button>
-            <Link href={previousRoute}>Wróć do strony głównej</Link>
+          <div className={styles.links}>
+            <button onClick={closeModal} className={styles.link}>
+              Dodaj następny
+            </button>
+            <Link href={previousRoute} className={styles.link}>
+              Strona główna
+            </Link>
           </div>
         </div>
         <div className={styles.blur} onClick={closeModal} />

@@ -35,6 +35,25 @@
     z-index: 0;
 }
 
+.links {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.link {
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  background: var(--primary-color);
+  border-radius: 8px;
+}
+
+.link:hover {
+  background: var(--primary-color-hover);
+}
+
 .success,
 .error {
     width: 3.5rem;
