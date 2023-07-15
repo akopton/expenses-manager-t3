@@ -21,16 +21,16 @@ export default function Dashboard() {
         <div className="col-span-2 flex flex-col items-center gap-10">
           <h2 className="text-5xl">Cześć {sesh.data?.user.name}!</h2>
           <div className="flex w-full justify-center">
-            {billsToPay.data && (
-              <div className="w-full px-10">
-                <Title text="Nadchodzące wydatki" />
+            <div className="w-full px-10">
+              <Title text="Nadchodzące wydatki" />
+              {billsToPay.data && (
                 <CustomList<BillWithProducts>
                   data={billsToPay.data}
                   itemsPerPage={4}
                   listType="to-pay"
                 />
-              </div>
-            )}
+              )}
+            </div>
             <div className="w-full px-10">
               <Title text="Ostatnio dodane" />
               {billsByDate.data && (

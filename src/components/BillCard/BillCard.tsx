@@ -4,6 +4,7 @@ import styles from "./billCard.module.css";
 import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ProductItem = (product: Product) => {
   return (
@@ -17,13 +18,14 @@ const ProductItem = (product: Product) => {
 
 export const BillCard = (bill: BillWithProducts) => {
   const { theme } = useContext(ThemeContext);
+  const router = useRouter();
 
   return (
     <li
       key={bill.id}
       className={`${styles.billCard as string} ${styles[`${theme}`] as string}`}
     >
-      <Link href={`/bills/${bill.id}`}>
+      <Link href={`${router.asPath}/${bill.id}`}>
         <span className={styles.billName}>{bill.name}</span>
         <div className={styles.bottomWrap}>
           <span className={styles.date}>
