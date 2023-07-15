@@ -1,5 +1,8 @@
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { MdErrorOutline } from "react-icons/md";
 import styles from "./modal.module.css";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 type StatusProps = {
   status: "error" | "loading" | "success";
@@ -19,7 +22,7 @@ const Loader = () => {
 };
 
 const Error = () => {
-  return <div></div>;
+  return <MdErrorOutline className={styles.error} />;
 };
 
 const Success = () => {
@@ -28,6 +31,8 @@ const Success = () => {
 
 export const LoadingStatusModal = (props: StatusProps) => {
   const { status, message, closeModal } = props;
+  const router = useRouter();
+  const previousRoute = router.asPath.replace("/add-bill", "");
 
   if (status === "loading") {
     return (
@@ -62,6 +67,10 @@ export const LoadingStatusModal = (props: StatusProps) => {
           <span className={styles.modalMessage}>{message}</span>
           <div>
             <Success />
+          </div>
+          <div>
+            <button onClick={closeModal}>Dodaj następny</button>
+            <Link href={previousRoute}>Wróć do strony głównej</Link>
           </div>
         </div>
         <div className={styles.blur} onClick={closeModal} />

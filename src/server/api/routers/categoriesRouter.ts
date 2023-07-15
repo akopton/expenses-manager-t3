@@ -16,7 +16,7 @@ export const categoriesRouter = createTRPCRouter({
       where: { owner: user },
       include: { _count: true },
       orderBy: {
-        updated_at: "asc",
+        updated_at: "desc",
       },
     });
 
@@ -29,7 +29,7 @@ export const categoriesRouter = createTRPCRouter({
       where: { owner: user },
       include: { bills: true },
       orderBy: {
-        updated_at: "asc",
+        updated_at: "desc",
       },
     });
     return categories;

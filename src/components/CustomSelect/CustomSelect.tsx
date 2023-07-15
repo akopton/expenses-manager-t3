@@ -1,5 +1,5 @@
 import { type Product } from "@prisma/client";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ProductsContext } from "~/context/ProductsContext";
@@ -125,9 +125,7 @@ const AddProductForm = ({
 
 const Option = (props: OptionProps<Product>) => {
   const { option, isSelected, onSelect } = props;
-  const [isChecked, setIsChecked] = useState<boolean>(
-    isSelected ? isSelected : false
-  );
+  const [isChecked, setIsChecked] = useState<boolean>(isSelected);
 
   const handleCheckbox = (
     e: React.FormEvent<HTMLInputElement>,
@@ -137,6 +135,10 @@ const Option = (props: OptionProps<Product>) => {
     setIsChecked(isChecked);
     onSelect({ ...option }, isChecked);
   };
+
+  useEffect(() => {
+    if (!isSelected) setIsChecked(false);
+  }, [isSelected]);
 
   return (
     <li className={styles.listItem}>
