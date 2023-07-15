@@ -1,4 +1,4 @@
-import { type Product } from "@prisma/client";
+import { Bill, type Product } from "@prisma/client";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -8,10 +8,17 @@ import { RiCloseCircleLine, RiCheckboxCircleLine } from "react-icons/ri";
 import styles from "./select.module.css";
 import { useLoadingState } from "~/hooks/useLoadingState";
 
+type customType = {
+  id: string;
+  name: string;
+  value: number;
+};
+
 type SelectProps<T> = {
-  options?: T[];
+  options: T[];
   onSelect: (opt: T, isChecked: boolean) => void;
   selectedOptions: T[];
+  showAddBtn?: boolean;
 };
 
 type OptionProps<T> = {
@@ -123,14 +130,11 @@ const AddProductForm = ({
   );
 };
 
-const Option = (props: OptionProps<Product>) => {
+const Option = <T extends customType>(props: OptionProps<T>) => {
   const { option, isSelected, onSelect } = props;
   const [isChecked, setIsChecked] = useState<boolean>(isSelected);
 
-  const handleCheckbox = (
-    e: React.FormEvent<HTMLInputElement>,
-    option: Product
-  ) => {
+  const handleCheckbox = (e: React.FormEvent<HTMLInputElement>, option: T) => {
     const isChecked = e.currentTarget.checked;
     setIsChecked(isChecked);
     onSelect({ ...option }, isChecked);
@@ -156,15 +160,15 @@ const Option = (props: OptionProps<Product>) => {
   );
 };
 
-export const CustomSelect = (props: SelectProps<Product>) => {
+export const CustomSelect = <T extends customType>(props: SelectProps<T>) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [showAddProduct, setShowAddProduct] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
-  const { options, onSelect, selectedOptions } = props;
+  const { options, onSelect, selectedOptions, showAddBtn } = props;
 
   const filteredOptions = useMemo(() => {
-    return options?.filter((el: Product) => el.name.includes(searchValue));
+    return options?.filter((el) => el.name.includes(searchValue));
   }, [searchValue, options]);
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
@@ -207,7 +211,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
 
       {isExpanded && (
         <ul className={styles.list}>
-          {!showAddProduct && (
+          {showAddBtn && !showAddProduct && (
             <li>
               <button
                 type="button"
@@ -222,7 +226,7 @@ export const CustomSelect = (props: SelectProps<Product>) => {
           {showAddProduct && (
             <AddProductForm setShowAddProduct={setShowAddProduct} />
           )}
-          {filteredOptions?.map((el: Product) => {
+          {filteredOptions?.map((el) => {
             return (
               <Option
                 option={el}

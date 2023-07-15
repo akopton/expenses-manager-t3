@@ -207,11 +207,14 @@ export const AddBillForm = () => {
         <div className={styles.formCenter}>
           <span className={styles.sectionTitle}>Wybierz produkty</span>
           <div className={styles.select}>
-            <CustomSelect
-              options={products}
-              onSelect={handleSelect}
-              selectedOptions={items}
-            />
+            {products && (
+              <CustomSelect
+                options={products}
+                onSelect={handleSelect}
+                selectedOptions={items}
+                showAddBtn
+              />
+            )}
           </div>
         </div>
 
