@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { CustomList } from "~/components/CustomList/CustomList";
@@ -7,8 +8,8 @@ import { api } from "~/utils/api";
 
 export default function Dashboard() {
   const billsByDate = api.bills.getBillsByAddedDate.useQuery(1);
-  const billsToPay = api.bills.getNotPaidBills.useQuery(10);
-
+  const billsToPay = api.bills.getNotPaidBills.useQuery(1);
+  const sesh = useSession();
   return (
     <>
       <Head>
@@ -17,26 +18,29 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="relative grid h-screen grid-cols-4">
-        <div className="span col-span-2 flex flex-col items-center justify-center gap-10 px-10">
-          <div className="flex flex-col items-center gap-10">
-            <Link
-              href="/dashboard/add-bill"
-              className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
-            >
-              Nowy rachunek
-            </Link>
-            <Link
-              href={"/dashboard"}
-              className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
-            >
-              Najpopularniejsze kategorie
-            </Link>
-            <Link
-              href={"/dashboard"}
-              className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
-            >
-              Najpopularniejsze zestawy
-            </Link>
+        <div className="col-span-2 flex flex-col items-center gap-10">
+          <h2 className="text-5xl">Cześć {sesh.data?.user.name}!</h2>
+          <div className="flex w-full justify-center">
+            {billsToPay.data && (
+              <div className="w-full px-10">
+                <Title text="Nadchodzące wydatki" />
+                <CustomList<BillWithProducts>
+                  data={billsToPay.data}
+                  itemsPerPage={4}
+                  listType="to-pay"
+                />
+              </div>
+            )}
+            <div className="w-full px-10">
+              <Title text="Ostatnio dodane" />
+              {billsByDate.data && (
+                <CustomList<BillWithProducts>
+                  data={billsByDate.data}
+                  itemsPerPage={4}
+                  listType="last-added"
+                />
+              )}
+            </div>
           </div>
           <div className="flex w-full flex-col items-center gap-4 text-center">
             <span className="w-full text-center text-3xl">
@@ -70,25 +74,25 @@ export default function Dashboard() {
             </ul>
           </div>
         </div>
-        <div className="w-full px-10">
-          <Title text="Nadchodzące wydatki" />
-          {billsToPay.data && (
-            <CustomList<BillWithProducts>
-              data={billsToPay.data}
-              itemsPerPage={4}
-              listType="to-pay"
-            />
-          )}
-        </div>
-        <div className="w-full px-10">
-          <Title text="Ostatnio dodane" />
-          {billsByDate.data && (
-            <CustomList<BillWithProducts>
-              data={billsByDate.data}
-              itemsPerPage={4}
-              listType="last-added"
-            />
-          )}
+        <div className="span col-span-2 flex flex-col items-center justify-center gap-20 px-10">
+          <Link
+            href="/dashboard/add-bill"
+            className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+          >
+            Nowy rachunek
+          </Link>
+          <Link
+            href={"/dashboard"}
+            className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+          >
+            Najpopularniejsze kategorie
+          </Link>
+          <Link
+            href={"/dashboard"}
+            className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+          >
+            Najpopularniejsze zestawy
+          </Link>
         </div>
       </main>
     </>
