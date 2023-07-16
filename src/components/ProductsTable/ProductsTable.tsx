@@ -1,6 +1,6 @@
 import { type Product } from "@prisma/client";
-import styles from "./table.module.css";
 import { useMemo, useState } from "react";
+import styles from "./table.module.css";
 
 type ProductsTableProps<T> = {
   data: T[];

@@ -2,17 +2,17 @@ import { type Product } from "@prisma/client";
 import { useEffect, useState, useContext, useMemo } from "react";
 import { CustomSelect } from "~/components/CustomSelect/CustomSelect";
 import { api } from "~/utils/api";
-import styles from "./form.module.css";
 import { sumPlnValues } from "~/utils/sumValues";
 import { ProductsContext } from "~/context/ProductsContext";
 import { ProductsTable } from "../ProductsTable/ProductsTable";
 import { replacePolishLetters } from "~/utils/replacePolishLetters";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { LoadingStatusModal } from "../LoadingStatusModal/LoadingStatusModal";
 import { useLoadingState } from "~/hooks/useLoadingState";
 import { useRouter } from "next/router";
 import { ThemeContext } from "~/context/ThemeContext";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import styles from "./form.module.css";
 
 export const AddBillForm = () => {
   const [hideCategories, setHideCategories] = useState<boolean>(true);

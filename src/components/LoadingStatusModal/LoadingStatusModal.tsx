@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdErrorOutline } from "react-icons/md";
-import styles from "./modal.module.css";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "./modal.module.css";
 
 type StatusProps = {
   status: "error" | "loading" | "success";

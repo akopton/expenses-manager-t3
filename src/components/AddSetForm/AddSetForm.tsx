@@ -1,9 +1,9 @@
 import type { Bill, User } from "@prisma/client";
 import { CustomSelect } from "../CustomSelect/CustomSelect";
-import styles from "./form.module.css";
 import { api } from "~/utils/api";
 import React, { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import styles from "./form.module.css";
 
 type FormProps = {
   onSubmit: (

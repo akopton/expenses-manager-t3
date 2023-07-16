@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
 import { BsMoon, BsSun } from "react-icons/bs";
 import styles from "./btn.module.css";
+
 export const ToggleThemeBtn = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 

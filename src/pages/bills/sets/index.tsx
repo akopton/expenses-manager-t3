@@ -5,6 +5,7 @@ import { GridList } from "~/components/GridList/GridList";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { Title } from "~/components/Title/Title";
 
 type TSet = Prisma.BillSetGetPayload<{ include: { owners: true } }>;
 
@@ -60,7 +61,7 @@ export default function SetsPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="grid h-screen grid-cols-5 px-5 py-4">
-        <div className="col-span-1 flex flex-col items-center py-5">
+        <div className="col-span-1 flex flex-col items-center justify-center">
           <AddSetForm
             onSubmit={submitForm}
             openFormBtn={router.query.id === "add-set" ? false : true}

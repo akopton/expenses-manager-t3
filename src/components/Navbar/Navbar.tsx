@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { ToggleThemeBtn } from "../ToggleThemeBtn/ToggleThemeBtn";
 import { SignOutBtn } from "../AuthButtons/SignOutBtn";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import styles from "./navbar.module.css";
 import { useState, useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
+import styles from "./navbar.module.css";
 
 type TLink = {
   name: string;
@@ -23,8 +23,6 @@ export const Navbar = () => {
       links: [
         { name: "Kategorie", href: "/bills/categories" },
         { name: "Zestawy", href: "/bills/sets" },
-        { name: "Miesiące", href: "/bills/months" },
-        { name: "Lata", href: "/bills/years" },
       ],
     },
     { name: "Analiza", href: "/analytics" },

@@ -1,12 +1,11 @@
-import { Bill, type Product } from "@prisma/client";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ProductsContext } from "~/context/ProductsContext";
 import { ThemeContext } from "~/context/ThemeContext";
 import { RiCloseCircleLine, RiCheckboxCircleLine } from "react-icons/ri";
-import styles from "./select.module.css";
 import { useLoadingState } from "~/hooks/useLoadingState";
+import styles from "./select.module.css";
 
 type customType = {
   id: string;

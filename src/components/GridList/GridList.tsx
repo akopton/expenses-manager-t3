@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { usePagination } from "~/hooks/usePagination";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import gridStyles from "./grid.module.css";
-import itemStyles from "./item.module.css";
-import Link from "next/link";
 import { User } from ".prisma/client";
 import { useRouter } from "next/router";
+import gridStyles from "./grid.module.css";
+import itemStyles from "./item.module.css";
 
 type GridListProps<T> = {
   data: T[];

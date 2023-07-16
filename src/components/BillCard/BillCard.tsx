@@ -1,10 +1,10 @@
 import type { BillWithProducts } from "~/types/types";
 import { type Product } from "@prisma/client";
-import styles from "./billCard.module.css";
 import { useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import styles from "./billCard.module.css";
 
 const ProductItem = (product: Product) => {
   return (
