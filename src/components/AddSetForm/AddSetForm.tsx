@@ -11,10 +11,13 @@ type FormProps = {
     selectedBills?: Bill[],
     selectedUsers?: User[]
   ) => Promise<void>;
+  openFormBtn?: boolean;
 };
 
 export const AddSetForm = (props: FormProps) => {
-  const [showForm, setShowForm] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState<boolean>(
+    props.openFormBtn ? false : true
+  );
   const [showSelect, setShowSelect] = useState<boolean>(false);
   const [showUsers, setShowUsers] = useState<boolean>(false);
 

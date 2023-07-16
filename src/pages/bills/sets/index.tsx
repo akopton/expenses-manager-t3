@@ -4,7 +4,7 @@ import { AddSetForm } from "~/components/AddSetForm/AddSetForm";
 import { GridList } from "~/components/GridList/GridList";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
-import { BillWithProducts } from "~/types/types";
+import { useRouter } from "next/router";
 
 type TSet = Prisma.BillSetGetPayload<{ include: { owners: true } }>;
 
@@ -12,6 +12,7 @@ export default function SetsPage() {
   const [billSets, setBillSets] = useState<TSet[]>();
   const { data } = api.billSets.getAllSets.useQuery();
   const addNewSetGetAll = api.billSets.addNewSetReturnAll.useMutation();
+  const router = useRouter();
 
   const submitForm = async (
     name: string,
@@ -60,7 +61,10 @@ export default function SetsPage() {
       </Head>
       <main className="grid h-screen grid-cols-5 px-5 py-4">
         <div className="col-span-1 flex flex-col items-center py-5">
-          <AddSetForm onSubmit={submitForm} />
+          <AddSetForm
+            onSubmit={submitForm}
+            openFormBtn={router.query.id === "add-set" ? false : true}
+          />
         </div>
         <div className="col-span-4 ">
           {billSets && (

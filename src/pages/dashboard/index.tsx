@@ -16,7 +16,11 @@ export default function Dashboard() {
 
   const links = [
     { id: 1, name: "Nowy rachunek", href: "/dashboard/add-bill" },
-    { id: 2, name: "Nowy zestaw", href: "/dashboard/add-bill" },
+    {
+      id: 2,
+      name: "Nowy zestaw",
+      href: { pathname: "/bills/sets", query: { id: "add-set" } },
+    },
     { id: 3, name: "Najpopularniejsze kategorie", href: "/dashboard" },
     { id: 4, name: "Najpopularniejsze zestawy", href: "/dashboard" },
   ];
