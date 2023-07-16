@@ -126,6 +126,7 @@ model BillSet {
     updated_at  DateTime?
     createdById String
     updatedById String?
+    // lastAddedBillId String 
     bills       Bill[]
     owners      User[]
 }

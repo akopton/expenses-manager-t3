@@ -19,7 +19,7 @@ export default function SetPage() {
   return (
     <>
       <Head>
-        <title>Elo mordo</title>
+        <title>{router.query.name}</title>
       </Head>
       <main>
         {set.data && (
@@ -38,11 +38,13 @@ export default function SetPage() {
                 }
               })}
             </ul>
-            <div className="border-2 border-primaryColor">
+            <div className="flex w-1/2 flex-col items-center border-2 border-primaryColor">
               <span>Rachunki:</span>
               <BillsList data={set.data.bills} />
-              <Link href={`${router.query.id}/add-bill`}>Dodaj istniejący</Link>
-              <Link href={`${router.query.id}/add-bill`}>Dodaj nowy</Link>
+              <div className="flex flex-col">
+                <Link href={`${setId}/add-bill`}>Dodaj istniejący</Link>
+                <Link href={`${setId}/add-bill`}>Dodaj nowy</Link>
+              </div>
             </div>
           </div>
         )}
