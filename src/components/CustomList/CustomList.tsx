@@ -55,10 +55,6 @@ export const CustomList = <T extends customType>(props: CustomListProps<T>) => {
 
   return (
     <div className={styles.container}>
-      {/* <div className={styles.header}>
-        <span className={styles.headerLeft}>Nazwa</span>
-        <span className={styles.headerRight}>Data dodania</span>
-      </div> */}
       <ul
         className={styles.list}
         onWheel={handleScroll}

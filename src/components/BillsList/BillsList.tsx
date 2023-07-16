@@ -1,5 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import styles from "./list.module.css";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 type BillWithProductsAndUser = Prisma.BillGetPayload<{
   include: { owner: true; items: true };
@@ -10,11 +12,18 @@ type ListProps<T> = {
 };
 
 const BillItem = (props: BillWithProductsAndUser) => {
-  const { name, items, owner } = props;
+  const router = useRouter();
+  const { id, name, items, owner } = props;
   return (
-    <li className={styles.item}>
-      <span>{name}</span>
-      <span>{owner.name}</span>
+    <li>
+      <Link
+        className={styles.item}
+        href={{ pathname: `${router.asPath}/${id}`, query: { id: id } }}
+        as={`${router.asPath}/${id}`}
+      >
+        <span>{name}</span>
+        <span>{owner.name}</span>
+      </Link>
     </li>
   );
 };

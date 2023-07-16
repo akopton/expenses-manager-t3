@@ -5,7 +5,6 @@ import { GridList } from "~/components/GridList/GridList";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Title } from "~/components/Title/Title";
 
 type TSet = Prisma.BillSetGetPayload<{ include: { owners: true } }>;
 
@@ -73,6 +72,7 @@ export default function SetsPage() {
               title={"Zestawy"}
               data={billSets}
               itemType={"set"}
+              route="/bills/sets"
               rows={2}
               cols={3}
             />

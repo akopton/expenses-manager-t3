@@ -2,7 +2,6 @@ import Link from "next/link";
 import { usePagination } from "~/hooks/usePagination";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { User } from ".prisma/client";
-import { useRouter } from "next/router";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
 
@@ -27,14 +26,15 @@ type ItemProps = {
 
 const Item = <T extends ItemProps>(props: T) => {
   const { route } = props;
-  const router = useRouter();
+
   return (
     <li className={itemStyles.item}>
       <Link
         href={{
-          pathname: `${route ? route : router.asPath}/${props.name}`,
-          query: { id: props.id },
+          pathname: `${route}/[name]`,
+          query: { name: props.name, id: props.id },
         }}
+        as={`${route}/${props.name}`}
         className={itemStyles.link}
       >
         <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>
@@ -54,11 +54,6 @@ const Item = <T extends ItemProps>(props: T) => {
             })}
           </span>
         )}
-        {/* <ul>
-          {props.owners?.map((owner) => {
-            return <li key={owner.id}>{owner.email}</li>;
-          })}
-        </ul> */}
       </Link>
     </li>
   );

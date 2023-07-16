@@ -25,6 +25,7 @@ export default function CategoriesPage() {
             title={"Kategorie"}
             data={categories.data}
             itemType={"category"}
+            route="/bills/categories"
             rows={2}
             cols={4}
           />

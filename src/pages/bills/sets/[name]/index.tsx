@@ -1,10 +1,8 @@
-import { Bill } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { BillsList } from "~/components/BillsList/BillsList";
-import { GridList } from "~/components/GridList/GridList";
 import { api } from "~/utils/api";
 import { convertToPln } from "~/utils/convertToPln";
 
