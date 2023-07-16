@@ -12,6 +12,17 @@ export const billSetsRouter = createTRPCRouter({
     return sets;
   }),
 
+  getLastUpdated: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+    const sets = await ctx.prisma.billSet.findMany({
+      where: { owners: { some: user }, NOT: { updated_at: null } },
+      orderBy: { updated_at: "desc" },
+      include: { owners: true, _count: true },
+      take: 4,
+    });
+    return sets;
+  }),
+
   addNewSet: protectedProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -64,6 +75,7 @@ export const billSetsRouter = createTRPCRouter({
             },
             bills: { connect: input.bills.map((el) => ({ id: el.id })) },
             updatedById: user.id,
+            updated_at: new Date(),
           },
         });
       }
@@ -76,6 +88,7 @@ export const billSetsRouter = createTRPCRouter({
               connect: input.users.map((user) => ({ id: user.id })),
             },
             updatedById: user.id,
+            updated_at: new Date(),
           },
         });
       }

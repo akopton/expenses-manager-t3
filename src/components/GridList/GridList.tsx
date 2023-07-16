@@ -44,11 +44,11 @@ const Item = <T extends ItemProps>(props: T) => {
             })}
           </span>
         )}
-        <ul>
+        {/* <ul>
           {props.owners?.map((owner) => {
             return <li key={owner.id}>{owner.email}</li>;
           })}
-        </ul>
+        </ul> */}
       </Link>
     </li>
   );

@@ -10,7 +10,12 @@ export const userRouter = createTRPCRouter({
     });
   }),
 
-  getUsers: protectedProcedure.query(async ({ ctx, input }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    const users = await ctx.prisma.user.findMany();
+    return users;
+  }),
+
+  getUsersButCurrent: protectedProcedure.query(async ({ ctx, input }) => {
     const currentUser = ctx.session.user;
     const users = await ctx.prisma.user.findMany({
       where: {

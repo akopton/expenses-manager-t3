@@ -23,7 +23,7 @@ export const AddSetForm = (props: FormProps) => {
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
   const bills = api.bills.getBills.useQuery();
-  const users = api.users.getUsers.useQuery();
+  const users = api.users.getUsersButCurrent.useQuery();
   const { onSubmit } = props;
 
   const handleUsers = (user: User) => {

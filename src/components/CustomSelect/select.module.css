@@ -30,7 +30,7 @@
     overflow-y: auto;
     padding: 5px;
     gap: 10px;
-    height: 20rem;
+    max-height: 20rem;
 }
 
 .listItem {

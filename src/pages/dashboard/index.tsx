@@ -2,14 +2,25 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { CustomList } from "~/components/CustomList/CustomList";
+import { GridList } from "~/components/GridList/GridList";
 import { Title } from "~/components/Title/Title";
 import { BillWithProducts } from "~/types/types";
 import { api } from "~/utils/api";
+import { BillSet } from "@prisma/client";
 
 export default function Dashboard() {
   const billsByDate = api.bills.getBillsByAddedDate.useQuery(1);
   const billsToPay = api.bills.getNotPaidBills.useQuery(1);
+  const lastUpdatedSets = api.billSets.getLastUpdated.useQuery();
+  const users = api.users.getAll.useQuery();
   const sesh = useSession();
+
+  const getUserById = (id: string | null) => {
+    if (id === null) return;
+    const user = users.data?.find((user) => user.id === id);
+    return user;
+  };
+
   return (
     <>
       <Head>
@@ -21,7 +32,7 @@ export default function Dashboard() {
         <div className="col-span-2 flex flex-col items-center gap-10">
           <h2 className="text-5xl">Cześć {sesh.data?.user.name}!</h2>
           <div className="flex w-full justify-center">
-            <div className="w-full px-10">
+            <div className="w-full px-5">
               <Title text="Nadchodzące wydatki" />
               {billsToPay.data && (
                 <CustomList<BillWithProducts>
@@ -31,7 +42,7 @@ export default function Dashboard() {
                 />
               )}
             </div>
-            <div className="w-full px-10">
+            <div className="w-full px-5">
               <Title text="Ostatnio dodane" />
               {billsByDate.data && (
                 <CustomList<BillWithProducts>
@@ -42,36 +53,20 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-          <div className="flex w-full flex-col items-center gap-4 text-center">
-            <span className="w-full text-center text-3xl">
+          <div className="gap-4text-center r flex h-full w-full flex-col">
+            <span className="w-full text-center text-2xl">
               Te zestawy zostały ostatnio zaktualizowane
             </span>
-            <ul className="flex w-full items-center justify-around">
-              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
-                <span className="text-2xl">Zestaw</span>
-                <span className="text-2xl">aktualizacja</span>
-                <span className="text-2xl">osoba</span>
-                <span className="text-2xl">strzałka</span>
-              </li>
-              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
-                <span className="text-2xl">Zestaw</span>
-                <span className="text-2xl">aktualizacja</span>
-                <span className="text-2xl">osoba</span>
-                <span className="text-2xl">strzałka</span>
-              </li>
-              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
-                <span className="text-2xl">Zestaw</span>
-                <span className="text-2xl">aktualizacja</span>
-                <span className="text-2xl">osoba</span>
-                <span className="text-2xl">strzałka</span>
-              </li>
-              <li className="flex flex-col items-center gap-5 border-2 border-primaryColor px-4 py-7">
-                <span className="text-2xl">Zestaw</span>
-                <span className="text-2xl">aktualizacja</span>
-                <span className="text-2xl">osoba</span>
-                <span className="text-2xl">strzałka</span>
-              </li>
-            </ul>
+            <div className="flex w-full">
+              {lastUpdatedSets.data && (
+                <GridList<BillSet>
+                  data={lastUpdatedSets.data}
+                  rows={1}
+                  cols={2}
+                  itemType={"BillSet"}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className="span col-span-2 flex flex-col items-center justify-center gap-20 px-10">
