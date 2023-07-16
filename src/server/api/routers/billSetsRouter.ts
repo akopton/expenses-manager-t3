@@ -12,6 +12,20 @@ export const billSetsRouter = createTRPCRouter({
     return sets;
   }),
 
+  getSetById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const set = await ctx.prisma.billSet.findUnique({
+        where: { id: input.id },
+        include: {
+          owners: true,
+          _count: true,
+          bills: { include: { owner: true, items: true } },
+        },
+      });
+      return set;
+    }),
+
   getLastUpdated: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
     const sets = await ctx.prisma.billSet.findMany({

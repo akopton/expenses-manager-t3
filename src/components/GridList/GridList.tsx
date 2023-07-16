@@ -16,6 +16,7 @@ type GridListProps<T> = {
 };
 
 type ItemProps = {
+  id: string;
   name: string;
   value: number;
   _count?: { bills: number };
@@ -30,7 +31,10 @@ const Item = <T extends ItemProps>(props: T) => {
   return (
     <li className={itemStyles.item}>
       <Link
-        href={`${route ? route : router.asPath}/${props.name}`}
+        href={{
+          pathname: `${route ? route : router.asPath}/${props.name}`,
+          query: { id: props.id },
+        }}
         className={itemStyles.link}
       >
         <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>
