@@ -34,7 +34,7 @@ const Item = <T extends ItemProps>(props: T) => {
           pathname: `${route as string}/[name]`,
           query: { name: props.name, id: props.id },
         }}
-        as={`${route as string}/${props.name as string}`}
+        as={`${route as string}/${props.name}`}
         className={itemStyles.link}
       >
         <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>
