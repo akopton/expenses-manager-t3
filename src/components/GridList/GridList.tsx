@@ -31,10 +31,10 @@ const Item = <T extends ItemProps>(props: T) => {
     <li className={itemStyles.item}>
       <Link
         href={{
-          pathname: `${route}/[name]`,
+          pathname: `${route as string}/[name]`,
           query: { name: props.name, id: props.id },
         }}
-        as={`${route}/${props.name}`}
+        as={`${route as string}/${props.name as string}`}
         className={itemStyles.link}
       >
         <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>

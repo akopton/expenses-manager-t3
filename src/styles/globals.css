@@ -8,6 +8,7 @@
   --primary-color: rgb(88, 14, 246);
   --primary-font: rgb(247, 247, 247);
   --primary-color-hover: rgba(88, 14, 246, .5);
+  --primary-font-transparent: rgba(247, 247, 247, .5);
 }
 
 .dark {

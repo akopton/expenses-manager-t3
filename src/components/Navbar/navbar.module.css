@@ -1,73 +1,142 @@
-.container {
-    padding: 20px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 100px;
-    position: relative;
+@media screen and (max-width: 639px) {
+    .container {
+        padding: 10px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-height: 100vh;
+        z-index: 10;
+        background: var(--primary-font-transparent);
+        backdrop-filter: blur(6px);
+    }
+    
+    .hamburger {
+        height: 25px;
+        width: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        position: absolute;
+        top: 13px;
+        right: 13px;
+    }
+    
+    .piece {
+        height: 3px;
+        width: 100%;
+        background-color: var(--primary-font);
+    }
+    
+    .showLinks {
+        margin-top: 50px;
+        height: 100vh;
+        transition: .3s ease;
+    }
+    
+    .hideLinks {
+        height: 0;
+        overflow: hidden;
+        transition: .3s ease;
+    }
+    
+    .linksList {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 50px;
+    }
+    
+    .link {
+        font-size: 3rem;
+        position: relative;
+        padding: 5px;
+    }
+
+    .linkHidden {
+        display: none;
+    }
 }
 
-.themeBtn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 20px;
-}
+@media screen and (min-width: 640px) {
+    .hamburger {
+        display: none;
+    }
 
-.linksList {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-}
+    .container {
+        padding: 20px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 100px;
+        position: relative;
+    }
+    
+    .themeBtn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 20px;
+    }
+    
+    .linksList {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+    
+    .link {
+        font-size: 2rem;
+        position: relative;
+        padding: 5px;
+    }
+    
+    .link::after,
+    .active:after {
+        content: '';
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0px;
+        height: 2px;
+        background: var(--primary-font);
+        transition: width .3s ease;
+    }
+    
+    .active:after {
+        width: 100%;
+        box-shadow: 0 0 6px 2px var(--primary-color);
+    }
+    
+    
+    
+    .link:hover:after {
+        width: 100%;
+        box-shadow: 0 0 6px 2px var(--primary-color);
+        transition: width .3s ease;
+    }
+    
+    .additionalLinks {
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 10px;
+        text-align: center;
+        border: 2px solid var(--primary-color);
+        border-top: none;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 0 0 12px 12px;
+        z-index: 10;
+    }
+    
+    .additionalLink {
+        font-size: 1.5rem;
+    }
 
-.link {
-    font-size: 2rem;
-    position: relative;
-    padding: 5px;
-}
-
-.link::after,
-.active:after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0px;
-    height: 2px;
-    background: var(--primary-font);
-    transition: width .3s ease;
-}
-
-.active:after {
-    width: 100%;
-    box-shadow: 0 0 6px 2px var(--primary-color);
-}
-
-
-
-.link:hover:after {
-    width: 100%;
-    box-shadow: 0 0 6px 2px var(--primary-color);
-    transition: width .3s ease;
-}
-
-.additionalLinks {
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 10px;
-    text-align: center;
-    border: 2px solid var(--primary-color);
-    border-top: none;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 0 0 12px 12px;
-    z-index: 10;
-}
-
-.additionalLink {
-    font-size: 1.5rem;
 }

@@ -13,6 +13,9 @@ type TLink = {
 };
 
 export const Navbar = () => {
+  const [showLinks, setShowLinks] = useState<boolean>(false);
+  const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
+  const { theme } = useContext(ThemeContext);
   const { pathname } = useRouter();
 
   const links: TLink[] = [
@@ -28,14 +31,22 @@ export const Navbar = () => {
     { name: "Analiza", href: "/analytics" },
   ];
 
-  const [showLinks, setShowLinks] = useState<boolean>(false);
-  const { theme } = useContext(ThemeContext);
+  const showMenu = () => {
+    setIsMenuVisible((prev) => !prev);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.themeBtn}>
         <ToggleThemeBtn />
       </div>
-      <ul className={styles.linksList}>
+      <ul
+        className={`${styles.linksList as string} ${
+          isMenuVisible
+            ? (styles.showLinks as string)
+            : (styles.hideLinks as string)
+        }`}
+      >
         {links.map((el: TLink, idx: number) => (
           <li
             className={`${styles.link as string} ${
@@ -68,7 +79,7 @@ export const Navbar = () => {
                       key={idx}
                       className={`${styles.link as string} ${
                         styles.additionalLink as string
-                      }`}
+                      } ${styles.linkHidden as string}`}
                     >
                       <Link href={link.href}>{link.name}</Link>
                     </li>
@@ -78,8 +89,15 @@ export const Navbar = () => {
             )}
           </li>
         ))}
+        <li>
+          <SignOutBtn />
+        </li>
       </ul>
-      <SignOutBtn />
+      <div className={styles.hamburger} onClick={showMenu}>
+        <div className={styles.piece}></div>
+        <div className={styles.piece}></div>
+        <div className={styles.piece}></div>
+      </div>
     </div>
   );
 };
