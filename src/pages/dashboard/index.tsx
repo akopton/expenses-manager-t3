@@ -12,14 +12,14 @@ export default function Dashboard() {
   const billsByDate = api.bills.getBillsByAddedDate.useQuery(1);
   const billsToPay = api.bills.getNotPaidBills.useQuery(1);
   const lastUpdatedSets = api.billSets.getLastUpdated.useQuery();
-  const users = api.users.getAll.useQuery();
   const sesh = useSession();
 
-  const getUserById = (id: string | null) => {
-    if (id === null) return;
-    const user = users.data?.find((user) => user.id === id);
-    return user;
-  };
+  const links = [
+    { id: 1, name: "Nowy rachunek", href: "/dashboard/add-bill" },
+    { id: 2, name: "Nowy zestaw", href: "/dashboard/add-bill" },
+    { id: 3, name: "Najpopularniejsze kategorie", href: "/dashboard" },
+    { id: 4, name: "Najpopularniejsze zestawy", href: "/dashboard" },
+  ];
 
   return (
     <>
@@ -70,24 +70,17 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="span col-span-2 flex flex-col items-center justify-center gap-20 px-10">
-          <Link
-            href="/dashboard/add-bill"
-            className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
-          >
-            Nowy rachunek
-          </Link>
-          <Link
-            href={"/dashboard"}
-            className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
-          >
-            Najpopularniejsze kategorie
-          </Link>
-          <Link
-            href={"/dashboard"}
-            className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
-          >
-            Najpopularniejsze zestawy
-          </Link>
+          {links.map((link) => {
+            return (
+              <Link
+                href={link.href}
+                key={link.id}
+                className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+              >
+                {link.name}
+              </Link>
+            );
+          })}
         </div>
       </main>
     </>
