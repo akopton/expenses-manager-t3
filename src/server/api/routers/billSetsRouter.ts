@@ -1,7 +1,5 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { connect } from "http2";
-import { billsRouter } from "./billsRouter";
 
 export const billSetsRouter = createTRPCRouter({
   getAllSets: protectedProcedure.query(async ({ ctx }) => {
@@ -17,10 +15,12 @@ export const billSetsRouter = createTRPCRouter({
   addNewSet: protectedProcedure
     .input(z.object({ name: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const user = ctx.session.user;
       const set = await ctx.prisma.billSet.create({
         data: {
           name: input.name,
           value: 0,
+          createdById: user.id,
         },
       });
       return set;
@@ -41,6 +41,7 @@ export const billSetsRouter = createTRPCRouter({
           })
           .array()
           .optional(),
+        users: z.object({ id: z.string() }).array().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -50,6 +51,7 @@ export const billSetsRouter = createTRPCRouter({
           name: input.name,
           value: 0,
           owners: { connect: { id: user.id } },
+          createdById: user.id,
         },
       });
 
@@ -61,11 +63,26 @@ export const billSetsRouter = createTRPCRouter({
               increment: input.bills.reduce((acc, curr) => acc + curr.value, 0),
             },
             bills: { connect: input.bills.map((el) => ({ id: el.id })) },
+            updatedById: user.id,
+          },
+        });
+      }
+
+      if (input.users) {
+        await ctx.prisma.billSet.update({
+          where: { id: newSet.id },
+          data: {
+            owners: {
+              connect: input.users.map((user) => ({ id: user.id })),
+            },
+            updatedById: user.id,
           },
         });
       }
 
       const sets = await ctx.prisma.billSet.findMany({
+        where: { owners: { some: user } },
+        orderBy: { added_at: "desc" },
         include: { owners: true, _count: true },
       });
       return sets;
@@ -100,13 +117,3 @@ export const billSetsRouter = createTRPCRouter({
       return set;
     }),
 });
-
-// name        String
-//     items       BillItem[]
-//     value       Float
-//     added_at    DateTime
-//     updated_at  DateTime
-//     paymentDate DateTime
-//     isPaid      Boolean
-//     paid_at     DateTime?
-//     categoryId  String
