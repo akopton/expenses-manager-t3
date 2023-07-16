@@ -12,6 +12,7 @@ type GridListProps<T> = {
   itemType: string;
   rows: number;
   cols: number;
+  route?: string;
 };
 
 type ItemProps = {
@@ -20,13 +21,18 @@ type ItemProps = {
   _count?: { bills: number };
   updated_at: Date | null;
   owners?: User[];
+  route?: string;
 };
 
 const Item = <T extends ItemProps>(props: T) => {
+  const { route } = props;
   const router = useRouter();
   return (
     <li className={itemStyles.item}>
-      <Link href={`${router.asPath}/${props.name}`} className={itemStyles.link}>
+      <Link
+        href={`${route ? route : router.asPath}/${props.name}`}
+        className={itemStyles.link}
+      >
         <span className={itemStyles.itemName}>{props.name.toUpperCase()}</span>
         <span className={itemStyles.itemValue}>
           {props.value.toFixed(2).replace(".", ",")} zł
@@ -55,7 +61,7 @@ const Item = <T extends ItemProps>(props: T) => {
 };
 
 export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
-  const { data, rows, cols } = props;
+  const { data, rows, cols, route } = props;
   const itemsPerView = rows * cols;
   const { currentPage, currentItems, showPage } = usePagination<T>(
     itemsPerView,
@@ -86,7 +92,7 @@ export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
           }}
         >
           {currentItems.map((el, idx) => {
-            return <Item<T> {...el} key={idx} />;
+            return <Item<T> {...el} route={route} key={idx} />;
           })}
         </ul>
         <button

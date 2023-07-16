@@ -1,5 +1,5 @@
 import { type Product } from "@prisma/client";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import styles from "./table.module.css";
 
 type ProductsTableProps<T> = {
@@ -48,16 +48,17 @@ const SelectedProduct = (props: SelectedProductProps<Product>) => {
           value={value ? value : ""}
           onChange={handleChange}
           placeholder="0"
-          className={styles.input}
+          className={styles.inputValue}
         />
       </label>
       <label htmlFor={`${id}-count`} className={styles.column}>
         <input
           id={`${id}-count`}
           type="number"
-          value={count}
+          value={count ? count : ""}
           onChange={handleChange}
-          className={styles.input}
+          className={styles.inputCount}
+          placeholder="1"
         />
       </label>
     </li>

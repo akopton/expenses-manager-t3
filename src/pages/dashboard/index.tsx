@@ -68,6 +68,7 @@ export default function Dashboard() {
                   rows={1}
                   cols={2}
                   itemType={"BillSet"}
+                  route={"/bills/sets"}
                 />
               )}
             </div>
@@ -79,7 +80,7 @@ export default function Dashboard() {
               <Link
                 href={link.href}
                 key={link.id}
-                className="rounded-xl bg-primaryColor px-6 py-4 text-4xl hover:animate-myAnimation"
+                className="rounded-xl bg-primaryColor px-6 py-4 text-4xl text-white hover:animate-myAnimation"
               >
                 {link.name}
               </Link>

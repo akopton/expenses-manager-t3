@@ -8,11 +8,13 @@
 .tableHeader {
     border-bottom: 2px solid var(--primary-color);
     margin-bottom: 5px;
+    overflow-y: hidden;
+    scrollbar-gutter: stable both-edges;
 }
 
 .table {
     overflow-y: auto;
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable both-edges;
 }
 
 .row {
@@ -26,11 +28,24 @@
     width: 100%;
     max-width: 12rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-.input {
-    width: 100%;
+.inputValue {
+    width: 50%;
     text-align: center;
 }
 
+.inputCount {
+    width: 30%;
+    text-align: center;
+}
 
+.inputValue:focus,
+.inputCount:focus {
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+}
