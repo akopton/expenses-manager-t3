@@ -1,26 +1,39 @@
-import { Bill } from "@prisma/client";
+import type { Bill, User } from "@prisma/client";
 import { CustomSelect } from "../CustomSelect/CustomSelect";
 import styles from "./form.module.css";
 import { api } from "~/utils/api";
 import React, { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 type FormProps = {
   onSubmit: (
-    e: React.FormEvent,
     name: string,
-    selectedBills: Bill[]
+    selectedBills?: Bill[],
+    selectedUsers?: User[]
   ) => Promise<void>;
 };
 
 export const AddSetForm = (props: FormProps) => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [showSelect, setShowSelect] = useState<boolean>(false);
+  const [showUsers, setShowUsers] = useState<boolean>(false);
+
   const [name, setName] = useState<string>("");
   const [selectedBills, setSelectedBills] = useState<Bill[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
   const bills = api.bills.getBills.useQuery();
-  const addNewSet = api.billSets.addNewSetReturnAll.useMutation();
+  const users = api.users.getUsers.useQuery();
   const { onSubmit } = props;
+
+  const handleUsers = (user: User) => {
+    setSelectedUsers((prev) => {
+      return prev.includes(user)
+        ? prev.filter((el) => el.id !== user.id)
+        : [...prev, user];
+    });
+  };
+
   const handleSelect = (opt: Bill, isChecked: boolean) => {
     isChecked
       ? setSelectedBills((prev) => [...prev, opt])
@@ -35,18 +48,37 @@ export const AddSetForm = (props: FormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name) return;
-    await onSubmit(e, name, selectedBills);
-    reset();
+
+    if (selectedBills.length > 0 && selectedUsers.length > 0) {
+      await onSubmit(name, selectedBills, selectedUsers);
+    }
+
+    if (selectedBills.length > 0 && selectedUsers.length < 1) {
+      await onSubmit(name, selectedBills);
+    }
+
+    if (selectedBills.length < 1 && selectedUsers.length > 0) {
+      await onSubmit(name, undefined, selectedUsers);
+    }
+
+    if (selectedBills.length < 1 && selectedUsers.length < 1) {
+      await onSubmit(name);
+    }
+
+    closeForm();
   };
 
   const reset = () => {
     setName("");
     setSelectedBills([]);
+    setSelectedUsers([]);
   };
 
   const closeForm = () => {
     reset();
     setShowForm(false);
+    setShowSelect(false);
+    setShowUsers(false);
   };
 
   if (!showForm) {
@@ -112,6 +144,54 @@ export const AddSetForm = (props: FormProps) => {
             </ul>
           </div>
         </span>
+      )}
+
+      {showUsers ? (
+        <div className={styles.select}>
+          <button
+            type="button"
+            className={styles.submitBtn}
+            onClick={() => setShowUsers(false)}
+          >
+            Zamknij
+          </button>
+
+          <ul className={styles.usersList}>
+            {users.data &&
+              users.data.map((user) => {
+                if (selectedUsers.includes(user)) {
+                  return (
+                    <li
+                      key={user.id}
+                      className={styles.userItem}
+                      onClick={() => handleUsers(user)}
+                    >
+                      {user.name}{" "}
+                      <AiOutlineCheck className={styles.userCheck} />
+                    </li>
+                  );
+                } else {
+                  return (
+                    <li
+                      key={user.id}
+                      className={styles.userItem}
+                      onClick={() => handleUsers(user)}
+                    >
+                      {user.name}
+                    </li>
+                  );
+                }
+              })}
+          </ul>
+        </div>
+      ) : (
+        <button
+          type="button"
+          className={styles.submitBtn}
+          onClick={() => setShowUsers(true)}
+        >
+          Zaproś
+        </button>
       )}
 
       <button type="submit" className={styles.submitBtn} onClick={handleSubmit}>

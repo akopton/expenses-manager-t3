@@ -11,7 +11,7 @@ import { useLoadingState } from "~/hooks/useLoadingState";
 type customType = {
   id: string;
   name: string;
-  value: number;
+  value?: number;
 };
 
 type SelectProps<T> = {
