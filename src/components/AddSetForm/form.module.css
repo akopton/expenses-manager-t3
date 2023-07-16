@@ -42,12 +42,12 @@
 }
 
 .inputTitle {
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 .input {
     padding: 5px 10px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border-bottom: 2px solid var(--primary-color);
 }
 
@@ -58,10 +58,37 @@
     gap: 10px;
 }
 
+.usersList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userItem {
+    padding: 5px 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.userCheck {
+    color: green;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .submitBtn {
     padding: 5px 10px;
     background: var(--primary-color);
     border-radius: 8px;
+    font-size: 1.2rem;
 }
 
 .submitBtn:hover {
@@ -86,7 +113,6 @@
 
 .selectedBillsCount:hover .selectedBillsTooltip {
     display:block;
-
 }
 .tooltipArrow {
     position: absolute;
