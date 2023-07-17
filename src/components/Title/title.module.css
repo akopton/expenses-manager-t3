@@ -1,10 +1,12 @@
+
+
 .title {
-    padding: 1rem 1.5rem;
-    font-size: 1.5rem;
+    padding: .5rem 1rem;
+    font-size: 1.2rem;
     position: relative;
     text-align: center;
     margin-bottom: .5rem;
-}
+} 
 
 .title::after {
     content: '';
@@ -15,4 +17,11 @@
     height: 2px;
     background: var(--primary-font);
     box-shadow: 0 0 4px 2px var(--primary-color);
+}
+
+@media screen and (min-width: 640px) {
+    .title {
+    padding: 1rem 1.5rem;
+        font-size: 2rem;
+    }
 }

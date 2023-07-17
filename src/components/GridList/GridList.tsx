@@ -4,6 +4,8 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { User } from ".prisma/client";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
+import { useWindowSize } from "~/hooks/useWindowSize";
+import { useEffect } from "react";
 
 type GridListProps<T> = {
   data: T[];
@@ -67,45 +69,62 @@ export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
     data
   );
 
+  const { windowSize } = useWindowSize();
+
   return (
-    <div className={gridStyles.container}>
+    <div
+      className={gridStyles.container}
+      style={windowSize.width < 640 ? { padding: "10px 20px" } : {}}
+    >
       <h2 className={gridStyles.title}>{props.title}</h2>
       <div className={gridStyles.gridWrapper}>
-        <button
-          className={gridStyles.slideBtn}
-          onClick={() => showPage(currentPage - 1)}
-          disabled={data.length > itemsPerView ? false : true}
-        >
-          {data.length > itemsPerView && (
-            <>
-              <FaArrowLeftLong className={gridStyles.slideOutLeft} />
-              <FaArrowLeftLong className={gridStyles.slideInLeft} />
-            </>
-          )}
-        </button>
+        {windowSize.width > 1280 && (
+          <button
+            className={gridStyles.slideBtn}
+            onClick={() => showPage(currentPage - 1)}
+            disabled={data.length > itemsPerView ? false : true}
+          >
+            {data.length > itemsPerView && (
+              <>
+                <FaArrowLeftLong className={gridStyles.slideOutLeft} />
+                <FaArrowLeftLong className={gridStyles.slideInLeft} />
+              </>
+            )}
+          </button>
+        )}
         <ul
           className={gridStyles.grid}
-          style={{
-            gridTemplateColumns: `repeat(${cols}, 1fr)`,
-            gridTemplateRows: `repeat(${rows}, 1fr)`,
-          }}
+          style={
+            windowSize.width < 640
+              ? { display: "flex", flexDirection: "column" }
+              : {
+                  gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                  gridTemplateRows: `repeat(${rows}, 1fr)`,
+                }
+          }
         >
-          {currentItems.map((el, idx) => {
-            return <Item<T> {...el} route={route} key={idx} />;
-          })}
+          {windowSize.width < 640
+            ? data.map((el, idx) => {
+                return <Item<T> {...el} route={route} key={idx} />;
+              })
+            : currentItems.map((el, idx) => {
+                return <Item<T> {...el} route={route} key={idx} />;
+              })}
         </ul>
-        <button
-          className={gridStyles.slideBtn}
-          onClick={() => showPage(currentPage + 1)}
-          disabled={data.length > itemsPerView ? false : true}
-        >
-          {data.length > itemsPerView && (
-            <>
-              <FaArrowRightLong className={gridStyles.slideInRight} />
-              <FaArrowRightLong className={gridStyles.slideOutRight} />
-            </>
-          )}
-        </button>
+        {windowSize.width > 1280 && (
+          <button
+            className={gridStyles.slideBtn}
+            onClick={() => showPage(currentPage + 1)}
+            disabled={data.length > itemsPerView ? false : true}
+          >
+            {data.length > itemsPerView && (
+              <>
+                <FaArrowRightLong className={gridStyles.slideInRight} />
+                <FaArrowRightLong className={gridStyles.slideOutRight} />
+              </>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

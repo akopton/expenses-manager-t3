@@ -74,13 +74,13 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="span flex flex-col items-center justify-center gap-5 sm:col-span-2 sm:gap-20 sm:px-10">
+        <div className="span m-4 flex flex-col items-center justify-center gap-5 sm:col-span-2 sm:m-0 sm:gap-20 sm:px-10">
           {links.map((link) => {
             return (
               <Link
                 href={link.href}
                 key={link.id}
-                className="rounded-xl bg-primaryColor px-3 py-2 text-xl text-white hover:animate-myAnimation sm:px-6 sm:py-4 sm:text-4xl"
+                className="rounded-xl bg-primaryColor px-3 py-2 text-center text-xl text-white hover:animate-myAnimation sm:px-6 sm:py-4 sm:text-4xl"
               >
                 {link.name}
               </Link>

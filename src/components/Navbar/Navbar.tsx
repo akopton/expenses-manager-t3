@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useState, useContext } from "react";
 import { ThemeContext } from "~/context/ThemeContext";
 import styles from "./navbar.module.css";
+import { useWindowSize } from "~/hooks/useWindowSize";
 
 type TLink = {
   name: string;
@@ -17,7 +18,7 @@ export const Navbar = () => {
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
   const { pathname } = useRouter();
-
+  const { windowSize } = useWindowSize();
   const links: TLink[] = [
     { name: "Tablica", href: "/dashboard" },
     {
@@ -35,11 +36,37 @@ export const Navbar = () => {
     setIsMenuVisible((prev) => !prev);
   };
 
+  const handleMobileMenu = () => {
+    if (windowSize.width < 640) {
+      setIsMenuVisible(false);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <div className={styles.themeBtn}>
-        <ToggleThemeBtn />
-      </div>
+      {windowSize.width < 640 && (
+        <div
+          className={styles.navBtns}
+          style={{
+            background:
+              theme === "dark" ? "var(--primary-bg)" : "var(--primary-font)",
+          }}
+        >
+          <div className={styles.themeBtn}>
+            <ToggleThemeBtn />
+          </div>
+          <div className={styles.hamburger} onClick={showMenu}>
+            <div className={styles.piece}></div>
+            <div className={styles.piece}></div>
+            <div className={styles.piece}></div>
+          </div>
+        </div>
+      )}
+      {windowSize.width > 640 && (
+        <div className={styles.themeBtn}>
+          <ToggleThemeBtn />
+        </div>
+      )}
       <ul
         className={`${styles.linksList as string} ${
           isMenuVisible
@@ -54,6 +81,7 @@ export const Navbar = () => {
             }
             `}
             key={idx}
+            onClick={handleMobileMenu}
             onMouseEnter={() => {
               el.links?.length && setShowLinks(true);
             }}
@@ -93,11 +121,6 @@ export const Navbar = () => {
           <SignOutBtn />
         </li>
       </ul>
-      <div className={styles.hamburger} onClick={showMenu}>
-        <div className={styles.piece}></div>
-        <div className={styles.piece}></div>
-        <div className={styles.piece}></div>
-      </div>
     </div>
   );
 };
