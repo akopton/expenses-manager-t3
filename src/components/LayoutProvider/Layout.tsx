@@ -10,14 +10,14 @@ const roboto_mono = Roboto_Mono({
 });
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const session = useSession();
+  // const session = useSession();
   const router = useRouter();
 
-  if (session.status === "unauthenticated") {
+  if (router.pathname === "/") {
     return children;
   }
 
-  if (session.status === "authenticated" && router.pathname !== "/") {
+  if (router.pathname !== "/") {
     return (
       <div
         className={`flex max-h-screen min-h-screen flex-col overflow-hidden ${roboto_mono.className}`}

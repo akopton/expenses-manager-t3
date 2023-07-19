@@ -72,58 +72,43 @@ export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
   const { windowSize } = useWindowSize();
 
   return (
-    <div
-      className={gridStyles.container}
-      style={windowSize.width < 640 ? { padding: "10px 20px" } : {}}
-    >
+    <div className={gridStyles.container}>
       <div className={gridStyles.gridWrapper}>
-        {windowSize.width > 1280 && (
-          <button
-            className={gridStyles.slideBtn}
-            onClick={() => showPage(currentPage - 1)}
-            disabled={data.length > itemsPerView ? false : true}
-          >
-            {data.length > itemsPerView && (
-              <>
-                <FaArrowLeftLong className={gridStyles.slideOutLeft} />
-                <FaArrowLeftLong className={gridStyles.slideInLeft} />
-              </>
-            )}
-          </button>
-        )}
+        <button
+          className={gridStyles.slideBtn}
+          onClick={() => showPage(currentPage - 1)}
+          disabled={data.length > itemsPerView ? false : true}
+        >
+          {data.length > itemsPerView && (
+            <>
+              <FaArrowLeftLong className={gridStyles.slideOutLeft} />
+              <FaArrowLeftLong className={gridStyles.slideInLeft} />
+            </>
+          )}
+        </button>
         <ul
           className={gridStyles.grid}
-          style={
-            windowSize.width < 640
-              ? { display: "flex", flexDirection: "column" }
-              : {
-                  gridTemplateColumns: `repeat(${cols}, 1fr)`,
-                  gridTemplateRows: `repeat(${rows}, 1fr)`,
-                }
-          }
+          style={{
+            gridTemplateColumns: `repeat(${cols}, 1fr)`,
+            gridTemplateRows: `repeat(${rows}, 1fr)`,
+          }}
         >
-          {windowSize.width < 640
-            ? data.map((el, idx) => {
-                return <Item<T> {...el} route={route} key={idx} />;
-              })
-            : currentItems.map((el, idx) => {
-                return <Item<T> {...el} route={route} key={idx} />;
-              })}
+          {currentItems.map((el, idx) => {
+            return <Item<T> {...el} route={route} key={idx} />;
+          })}
         </ul>
-        {windowSize.width > 1280 && (
-          <button
-            className={gridStyles.slideBtn}
-            onClick={() => showPage(currentPage + 1)}
-            disabled={data.length > itemsPerView ? false : true}
-          >
-            {data.length > itemsPerView && (
-              <>
-                <FaArrowRightLong className={gridStyles.slideInRight} />
-                <FaArrowRightLong className={gridStyles.slideOutRight} />
-              </>
-            )}
-          </button>
-        )}
+        <button
+          className={gridStyles.slideBtn}
+          onClick={() => showPage(currentPage + 1)}
+          disabled={data.length > itemsPerView ? false : true}
+        >
+          {data.length > itemsPerView && (
+            <>
+              <FaArrowRightLong className={gridStyles.slideInRight} />
+              <FaArrowRightLong className={gridStyles.slideOutRight} />
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
