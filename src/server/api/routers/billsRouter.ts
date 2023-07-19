@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { type Product, type Bill, type Prisma } from "@prisma/client";
-import { type User } from "next-auth";
+import { type Bill, type Prisma } from "@prisma/client";
+import { Input } from "postcss";
 
 type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;
 
@@ -150,5 +150,15 @@ export const billsRouter = createTRPCRouter({
         include: { items: true },
       });
       return bills;
+    }),
+
+  deleteOneById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.bill.delete({
+        where: {
+          id: input.id,
+        },
+      });
     }),
 });

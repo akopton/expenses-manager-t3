@@ -27,4 +27,19 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
   }
+
+  // for tests purposes
+
+  // if (router.pathname !== "/") {
+  //   return (
+  //     <div
+  //       className={`flex max-h-screen min-h-screen flex-col overflow-hidden ${roboto_mono.className}`}
+  //     >
+  //       <Navbar />
+  //       {children}
+  //     </div>
+  //   );
+  // }
+
+  // return children;
 };

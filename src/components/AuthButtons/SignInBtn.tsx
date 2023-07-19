@@ -1,5 +1,6 @@
 import { signIn } from "next-auth/react";
 import styles from "./button.module.css";
+import Link from "next/link";
 
 export const SignInBtn = () => {
   const handleSignIn = async () => {
@@ -8,7 +9,7 @@ export const SignInBtn = () => {
   };
 
   return (
-    <button className={styles.btn} onClick={handleSignIn}>
+    <button id="sign-in-btn" className={styles.btn} onClick={handleSignIn}>
       Sign In
     </button>
   );

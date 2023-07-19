@@ -76,7 +76,6 @@ export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
       className={gridStyles.container}
       style={windowSize.width < 640 ? { padding: "10px 20px" } : {}}
     >
-      <h2 className={gridStyles.title}>{props.title}</h2>
       <div className={gridStyles.gridWrapper}>
         {windowSize.width > 1280 && (
           <button

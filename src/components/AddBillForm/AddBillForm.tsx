@@ -30,6 +30,7 @@ export const AddBillForm = () => {
 
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
+
   const reset = () => {
     setName("");
     setItems([]);
