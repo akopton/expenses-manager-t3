@@ -4,8 +4,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { User } from ".prisma/client";
 import gridStyles from "./grid.module.css";
 import itemStyles from "./item.module.css";
-import { useWindowSize } from "~/hooks/useWindowSize";
-import { useEffect } from "react";
+import { ArrowLeftBtn, ArrowRightBtn } from "../ArrowButtons/ArrowButtons";
 
 type GridListProps<T> = {
   data: T[];
@@ -69,23 +68,9 @@ export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
     data
   );
 
-  const { windowSize } = useWindowSize();
-
   return (
     <div className={gridStyles.container}>
       <div className={gridStyles.gridWrapper}>
-        <button
-          className={gridStyles.slideBtn}
-          onClick={() => showPage(currentPage - 1)}
-          disabled={data.length > itemsPerView ? false : true}
-        >
-          {data.length > itemsPerView && (
-            <>
-              <FaArrowLeftLong className={gridStyles.slideOutLeft} />
-              <FaArrowLeftLong className={gridStyles.slideInLeft} />
-            </>
-          )}
-        </button>
         <ul
           className={gridStyles.grid}
           style={{
@@ -97,19 +82,19 @@ export const GridList = <T extends ItemProps>(props: GridListProps<T>) => {
             return <Item<T> {...el} route={route} key={idx} />;
           })}
         </ul>
-        <button
-          className={gridStyles.slideBtn}
-          onClick={() => showPage(currentPage + 1)}
-          disabled={data.length > itemsPerView ? false : true}
-        >
-          {data.length > itemsPerView && (
-            <>
-              <FaArrowRightLong className={gridStyles.slideInRight} />
-              <FaArrowRightLong className={gridStyles.slideOutRight} />
-            </>
-          )}
-        </button>
       </div>
+      {data.length > itemsPerView && (
+        <div className={gridStyles.navBtns}>
+          <ArrowLeftBtn
+            disabled={data.length > itemsPerView ? false : true}
+            onClick={() => showPage(currentPage - 1)}
+          />
+          <ArrowRightBtn
+            disabled={data.length > itemsPerView ? false : true}
+            onClick={() => showPage(currentPage + 1)}
+          />
+        </div>
+      )}
     </div>
   );
 };

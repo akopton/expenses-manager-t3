@@ -32,7 +32,7 @@ export const billSetsRouter = createTRPCRouter({
       where: { owners: { some: user }, NOT: { updated_at: null } },
       orderBy: { updated_at: "desc" },
       include: { owners: true, _count: true },
-      take: 4,
+      take: 6,
     });
     return sets;
   }),

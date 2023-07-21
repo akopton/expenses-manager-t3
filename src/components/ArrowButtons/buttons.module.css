@@ -1,0 +1,82 @@
+.btn {
+    height: 30px;
+    width: 80px;
+    font-size: 3rem;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+/**** disabled buttons ****/
+.btn:disabled, .slideBtn[disabled] {
+    cursor: none;
+}
+
+/**** animations ****/
+.btn:hover .slideInRight {
+    animation:  slide-out-right 1s infinite;
+}
+
+.btn:hover .slideOutRight {
+    animation: slide-in-right 1s infinite;
+}
+
+.btn:hover .slideInLeft {
+    animation:  slide-out-left 1s infinite;
+}
+
+.btn:hover .slideOutLeft {
+    animation: slide-in-left 1s infinite;
+}
+
+.slideOutRight,
+.slideOutLeft {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-250%, -50%);
+}
+
+.slideInLeft,
+.slideInRight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes slide-out-right {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        transform: translate(180%, -50%);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        transform: translate(-200%, -50%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes slide-out-left {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        transform: translate(-200%, -50%);
+    }
+}
+
+@keyframes slide-in-left {
+    0% {
+        transform: translate(200%, -50%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
