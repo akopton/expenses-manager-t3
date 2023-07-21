@@ -110,10 +110,12 @@ export const Carousel = <T extends TSet>(props: CarouselProps<T>) => {
           <Item {...el} idx={idx} transformValue={transformValue} key={el.id} />
         ))}
       </ul>
-      <div className={styles.btns}>
-        <ArrowLeftBtn onClick={swipeRight} />
-        <ArrowRightBtn onClick={swipeLeft} />
-      </div>
+      {windowWidth > 1280 && (
+        <div className={styles.btns}>
+          <ArrowLeftBtn onClick={swipeRight} />
+          <ArrowRightBtn onClick={swipeLeft} />
+        </div>
+      )}
     </div>
   );
 };
