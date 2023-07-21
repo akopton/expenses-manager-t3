@@ -5,6 +5,7 @@
     gap: 10px;
     height: 20rem;
     overflow: hidden;
+    touch-action: none;
 }
 
 .itemWrapper {

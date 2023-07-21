@@ -98,14 +98,15 @@ export const Carousel = <T extends TSet>(props: CarouselProps<T>) => {
       swipeRight();
     }
   };
+
   return (
-    <div className={styles.container}>
-      <ul
-        className={styles.carousel}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={swipe}
-        onTouchStart={handleTouchStart}
-      >
+    <div
+      className={styles.container}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={swipe}
+      onTouchStart={handleTouchStart}
+    >
+      <ul className={styles.carousel}>
         {props.data.map((el, idx) => (
           <Item {...el} idx={idx} transformValue={transformValue} key={el.id} />
         ))}
