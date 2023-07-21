@@ -47,9 +47,27 @@ export const Navbar = () => {
           <ToggleThemeBtn />
         </div>
         <div className={styles.hamburger} onClick={showMenu}>
-          <div className={styles.piece}></div>
-          <div className={styles.piece}></div>
-          <div className={styles.piece}></div>
+          <div
+            className={styles.piece}
+            style={{
+              background:
+                theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+            }}
+          ></div>
+          <div
+            className={styles.piece}
+            style={{
+              background:
+                theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+            }}
+          ></div>
+          <div
+            className={styles.piece}
+            style={{
+              background:
+                theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+            }}
+          ></div>
         </div>
       </div>
       <div

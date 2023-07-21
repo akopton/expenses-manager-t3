@@ -1,85 +1,64 @@
-    
 .form {
+    padding: 80px 20px;
     height: 100%;
     width: 100%;
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    height: 35rem;
-}
-
-.formLeft {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 2rem;
-}
-
-.formCenter {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    padding: 2rem 0;
+    gap: 30px;
 }
 
+.formLeft,
+.formCenter,
 .formRight {
-    text-align: right;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
     gap: 20px;
-    padding: 2rem;
 }
 
-.sectionTitle {
-    font-size: 2rem;
+.formLeft {
+    gap: 30px;
+}
+
+.sectionTitle { 
+    font-size: 1.5rem;
 }
 
 .inputWrapper {
     display: flex;
     flex-direction: column;
-    font-size: 2rem;
+    align-items: center;
+    font-size: 1.5rem;
     position: relative;
-    max-width: 25rem;
 }
 
 .input {
-    font-size: 1.5rem;
-    max-width: 80%;
-    padding: .5rem;
     border-bottom: 3px solid var(--primary-color);
-    display: flex;
+    padding: 5px 10px;
 }
 
 .input:disabled {
     opacity: .3;
 }
 
-
 .select {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25rem;
 }
 
 .sumValue {
-    width: 100%;
 }
 
 .isPaid {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 2rem;
-    cursor: pointer;
+    font-size: 1.5rem;
 }
 
 .checkbox {
-    height: 25px;
-    width: 25px;
-    cursor: pointer;
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
 }
 
 .addBtn {
@@ -89,47 +68,181 @@
     border: 2px solid var(--primary-font);
     border-radius: 10px;
     cursor: pointer;
-    transition: .3s ease;
-    bottom: 2rem;
-    left: 50%;
-}
-
-.addBtn:hover {
-    border-radius: 20px;
-    transition: .3s ease;
-}
-
-.bottomBtns {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    margin-top: 30px;
 }
 
 .categoriesList {
-    min-width: 50%;
-    max-width: 100%;
-    position: absolute;
-    top: 100%;
-    z-index: 2;
-    border: 1px solid var(--primary-color);
-    border-top: none;
-    padding: 5px;
 }
 
 .categoryItem {
-    padding: 0 5px; 
-    font-size: 1.2rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 8px;
 }
 
-.categoryItem:hover {
-    background: var(--primary-color);
-    color: var(--primary-font)
+.bottomBtns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+
+@media screen and (min-width: 768px) {
+    .form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+
+    .formLeft {
+        height: 100%;
+        align-items: center;
+    }
+
+    .formCenter {
+        justify-content: flex-start;
+        height: 100%;
+    }
+    
+    .formRight {
+        grid-column: span 2 / span 2;
+    }
+
+    .inputWrapper {
+        align-items: normal;
+    }
+
+    .input {
+        align-items: normal;
+    }
+}
+
+
+
+@media screen and (min-width: 1280px) {
+    .form {
+        height: 100%;
+        width: 100%;
+        padding: 2rem;
+        grid-template-columns: repeat(3, 1fr);
+        height: 35rem;
+    }
+    
+    .formLeft {
+        gap: 20px;
+        padding: 2rem;
+        height: 100%;
+        align-items: center;
+    }
+    
+    .formCenter {
+        align-items: center;
+        gap: 20px;
+        padding: 2rem 0;
+    }
+    
+    .formRight {
+        height: 100%;
+        text-align: right;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        padding: 2rem;
+        grid-column: auto;
+    }
+    
+    .sectionTitle {
+        font-size: 2rem;
+    }
+    
+    .inputWrapper {
+        align-items: center;
+        font-size: 2rem;
+        width: 100%;
+    }
+    
+    .input {
+        font-size: 1.5rem;
+        padding: .5rem;
+    }
+    
+    .input:disabled {
+        opacity: .3;
+    }
+    
+    
+    .select {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25rem;
+    }
+    
+    .sumValue {
+        width: 100%;
+    }
+    
+    .isPaid {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+    
+    .checkbox {
+        height: 25px;
+        width: 25px;
+        cursor: pointer;
+    }
+    
+    .addBtn {
+        padding: .5rem 1rem;
+        font-size: 1.5rem;
+        box-shadow: 0 0 8px 4px var(--primary-color), inset 0 0 6px 4px var(--primary-color);
+        border: 2px solid var(--primary-font);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .3s ease;
+        bottom: 2rem;
+        left: 50%;
+    }
+    
+    .addBtn:hover {
+        border-radius: 20px;
+        transition: .3s ease;
+    }
+    
+    .bottomBtns {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+        margin-top: 30px;
+    }
+    
+    .categoriesList {
+        min-width: 50%;
+        max-width: 100%;
+        position: absolute;
+        top: 100%;
+        z-index: 2;
+        border: 1px solid var(--primary-color);
+        border-top: none;
+        padding: 5px;
+    }
+    
+    .categoryItem {
+        padding: 0 5px; 
+        font-size: 1.2rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border-radius: 8px;
+    }
+    
+    .categoryItem:hover {
+        background: var(--primary-color);
+        color: var(--primary-font)
+    }
 }

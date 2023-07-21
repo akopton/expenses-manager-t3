@@ -69,7 +69,6 @@ export const Carousel = <T extends TSet>(props: CarouselProps<T>) => {
   const windowWidth = window.innerWidth;
   const itemsPerPage = windowWidth < 640 ? 1 : 2;
   const { totalPages } = usePagination(itemsPerPage, props.data);
-
   const swipeLeft = () => {
     setTransformValue((prev) => {
       const max = windowWidth < 640 ? totalPages - 1 : totalPages;
