@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import { api } from "~/utils/api";
 
 export default function BillsPage() {
   const links = [
@@ -7,6 +8,8 @@ export default function BillsPage() {
     { id: 2, name: "Zestawy", href: "/bills/sets" },
   ];
 
+  const categoriesCount = api.categories.getCategoriesCount.useQuery();
+  const setsCount = api.billSets.getSetsCount.useQuery();
   return (
     <>
       <Head>
@@ -25,7 +28,11 @@ export default function BillsPage() {
               <span>{link.name}</span>
               <div className="flex flex-col items-center gap-5">
                 <span>Ilość pozycji:</span>
-                <span>4</span>
+                <span>
+                  {link.name === "Kategorie"
+                    ? categoriesCount.data
+                    : setsCount.data}
+                </span>
               </div>
             </Link>
           );
@@ -33,8 +40,4 @@ export default function BillsPage() {
       </main>
     </>
   );
-}
-
-{
-  /*  */
 }

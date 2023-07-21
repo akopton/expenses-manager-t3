@@ -143,4 +143,18 @@ export const billSetsRouter = createTRPCRouter({
 
       return set;
     }),
+
+  getSetsCount: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+    const count = await ctx.prisma.billSet.count({
+      where: {
+        owners: {
+          some: {
+            id: user.id,
+          },
+        },
+      },
+    });
+    return count;
+  }),
 });

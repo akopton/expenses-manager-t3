@@ -48,4 +48,12 @@ export const categoriesRouter = createTRPCRouter({
       });
       return product;
     }),
+
+  getCategoriesCount: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+    const count = await ctx.prisma.category.count({
+      where: { userId: user.id },
+    });
+    return count;
+  }),
 });
