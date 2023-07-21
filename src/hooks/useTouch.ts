@@ -14,11 +14,11 @@ export const useTouch = () => {
 
   function handleTouchEnd() {
     if (!touchEnd || !touchStart) return;
-    if (touchStart - touchEnd > 150) {
+    if (touchStart - touchEnd > 50) {
       return "left";
     }
 
-    if (touchStart - touchEnd < -150) {
+    if (touchStart - touchEnd < -50) {
       return "right";
     }
   }
