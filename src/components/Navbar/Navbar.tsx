@@ -48,26 +48,35 @@ export const Navbar = () => {
         </div>
         <div className={styles.hamburger} onClick={showMenu}>
           <div
-            className={styles.piece}
+            className={`${styles.piece as string} ${styles.topPiece as string}`}
             style={{
               background:
                 theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+              transform: isMenuVisible
+                ? "translateY(-50%) rotate(45deg)"
+                : "translateY(0) rotate(0)",
+              top: isMenuVisible ? "50%" : "0",
             }}
-          ></div>
+          />
           <div
-            className={styles.piece}
+            className={`${styles.piece as string} ${styles.midPiece as string}`}
             style={{
               background:
                 theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+              opacity: isMenuVisible ? "0" : "1",
             }}
-          ></div>
+          />
           <div
-            className={styles.piece}
+            className={`${styles.piece as string} ${styles.botPiece as string}`}
             style={{
               background:
                 theme === "dark" ? "var(--primary-font)" : "var(--primary-bg)",
+              transform: isMenuVisible
+                ? "translateY(50%) rotate(-45deg)"
+                : "translateY(0) rotate(0)",
+              bottom: isMenuVisible ? "50%" : "0",
             }}
-          ></div>
+          />
         </div>
       </div>
       <div

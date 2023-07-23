@@ -1,10 +1,11 @@
+.container { 
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 0;
+}
+
 .carousel {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 20rem;
-    overflow: hidden;
     touch-action: none;
 }
 
@@ -13,20 +14,16 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     transition: .3s ease;
-    width: 25rem;
-    min-height: 20rem;
-    padding: 40px;
+    width: 18rem;
+    padding: 10px 10px;
     font-size: 1rem;
 }
 
 .item {
-    height: 100%;
-    padding: 20px;
-    border: 2px solid var(--primary-font);
+    padding: 10px;
+    border: 4px solid var(--primary-color);
     border-radius: 20px;
-    box-shadow: 0 0 10px 6px var(--primary-color), inset 0 0 10px 2px var(--primary-color);
     cursor: pointer;
     transition: .3s ease;
 }
@@ -39,12 +36,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap:10px;
+    overflow: hidden;
 }
 
 
 .itemName {
-    font-size: 2rem;
+    width: 100%;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
 }
 
 .itemDate {
@@ -64,11 +67,6 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-}
-
-@media screen and (min-width: 1024px) {
-    .carousel {
-    }
 }
 
 @media screen and (min-width: 768px) {

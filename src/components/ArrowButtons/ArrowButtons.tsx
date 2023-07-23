@@ -11,12 +11,9 @@ export const ArrowLeftBtn = (props: BtnProps) => {
     <button
       className={`${styles.btn as string} ${styles.btnLeft as string}`}
       onClick={onClick}
-      disabled={disabled}
     >
-      <>
-        <FaArrowLeftLong className={styles.slideOutLeft} />
-        <FaArrowLeftLong className={styles.slideInLeft} />
-      </>
+      <FaArrowLeftLong className={styles.slideOutLeft} />
+      <FaArrowLeftLong className={styles.slideInLeft} />
     </button>
   );
 };
@@ -27,12 +24,9 @@ export const ArrowRightBtn = (props: BtnProps) => {
     <button
       className={`${styles.btn as string} ${styles.btnRight as string}`}
       onClick={onClick}
-      disabled={disabled}
     >
-      <>
-        <FaArrowRightLong className={styles.slideInRight} />
-        <FaArrowRightLong className={styles.slideOutRight} />
-      </>
+      <FaArrowRightLong className={styles.slideInRight} />
+      <FaArrowRightLong className={styles.slideOutRight} />
     </button>
   );
 };

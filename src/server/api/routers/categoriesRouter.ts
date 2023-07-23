@@ -56,4 +56,16 @@ export const categoriesRouter = createTRPCRouter({
     });
     return count;
   }),
+
+  getTopUsed: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+
+    const categories = await ctx.prisma.category.findMany({
+      where: { owner: user },
+      orderBy: { bills: { _count: "desc" } },
+      take: 4,
+    });
+
+    return categories;
+  }),
 });

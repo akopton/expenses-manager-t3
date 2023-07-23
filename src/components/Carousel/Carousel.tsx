@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { useMemo, useState } from "react";
 import { usePagination } from "~/hooks/usePagination";
 import { ArrowLeftBtn, ArrowRightBtn } from "../ArrowButtons/ArrowButtons";
+import { CustomLink } from "../CustomLink/CustomLink";
 
 type TSet = Prisma.BillSetGetPayload<{ include: { owners: true } }>;
 
@@ -16,6 +17,7 @@ type CustomType = TSet & {
 
 type CarouselProps<T> = {
   data: T[];
+  centerBtn?: React.ReactNode;
 };
 
 const Item = (props: CustomType) => {
@@ -81,7 +83,6 @@ export const Carousel = <T extends TSet>(props: CarouselProps<T>) => {
   const swipeRight = () => {
     setTransformValue((prev) => {
       const max = windowWidth < 640 ? totalPages - 1 : totalPages;
-
       const absValue = prev / 100;
       if (absValue >= 0) return -100 * max;
       return prev + 100;
@@ -99,23 +100,46 @@ export const Carousel = <T extends TSet>(props: CarouselProps<T>) => {
   };
 
   return (
-    <div
-      className={styles.container}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={swipe}
-      onTouchStart={handleTouchStart}
-    >
-      <ul className={styles.carousel}>
+    <div className={styles.container}>
+      <ul
+        className={styles.carousel}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={swipe}
+        onTouchStart={handleTouchStart}
+      >
+        <HelperItem />
         {props.data.map((el, idx) => (
           <Item {...el} idx={idx} transformValue={transformValue} key={el.id} />
         ))}
       </ul>
-      {windowWidth > 1280 && (
-        <div className={styles.btns}>
-          <ArrowLeftBtn onClick={swipeRight} />
-          <ArrowRightBtn onClick={swipeLeft} />
-        </div>
-      )}
+      <div className={styles.btns}>
+        <ArrowLeftBtn onClick={() => swipeRight()} />
+        {props.centerBtn && props.centerBtn}
+        <ArrowRightBtn onClick={() => swipeLeft()} />
+      </div>
     </div>
+  );
+};
+
+const HelperItem = () => {
+  return (
+    <li
+      className={`${styles.itemWrapper as string}`}
+      style={{ visibility: "hidden", position: "inherit" }}
+    >
+      <div className={styles.item}>
+        <div className={styles.link}>
+          <span className={styles.itemName}>test</span>
+          <div className={styles.itemPerson}>
+            <span>test</span>
+            <span>test</span>
+          </div>
+          <div className={styles.itemDate}>
+            <span>test</span>
+            <span>test</span>
+          </div>
+        </div>
+      </div>
+    </li>
   );
 };

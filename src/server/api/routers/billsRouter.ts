@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { type Bill, type Prisma } from "@prisma/client";
 import { Input } from "postcss";
+import { sumPlnValues } from "~/utils/sumValues";
 
 type BillWithProducts = Prisma.BillGetPayload<{ include: { items: true } }>;
 
@@ -160,5 +161,22 @@ export const billsRouter = createTRPCRouter({
           id: input.id,
         },
       });
+    }),
+
+  getValueFromXDays: protectedProcedure
+    .input(z.number())
+    .query(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+      const daysDiff = Date.now() - 24 * 60 * 60 * 1000 * input;
+      const daysDiffString = new Date(daysDiff).toISOString();
+      const bills = await ctx.prisma.bill.findMany({
+        where: {
+          owner: user,
+          isPaid: true,
+          added_at: { lte: new Date(), gte: daysDiffString },
+        },
+      });
+      const value = sumPlnValues(bills);
+      return value;
     }),
 });
