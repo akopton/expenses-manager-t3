@@ -5,6 +5,7 @@ import { billsRouter } from "./routers/billsRouter";
 import { categoriesRouter } from "./routers/categoriesRouter";
 import { billItemsRouter } from "./routers/billItemsRouter";
 import { billSetsRouter } from "./routers/billSetsRouter";
+import { shoppingListsRouter } from "./routers/shoppingListsRouter";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   categories: categoriesRouter,
   billItems: billItemsRouter,
   billSets: billSetsRouter,
+  shoppingLists: shoppingListsRouter,
 });
 
 // export type definition of API

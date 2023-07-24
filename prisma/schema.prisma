@@ -41,9 +41,9 @@ model Session {
 }
 
 model User {
-    id            String     @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?    @unique
+    email         String?        @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
@@ -53,6 +53,7 @@ model User {
     billSets      BillSet[]
     product       Product[]
     billItem      BillItem[]
+    shoppingList  ShoppingList[]
 }
 
 model VerificationToken {
@@ -129,4 +130,19 @@ model BillSet {
     // lastAddedBillId String 
     bills       Bill[]
     owners      User[]
+}
+
+model ShoppingListProduct {
+    id             String        @id @default(cuid())
+    name           String
+    count          Int
+    ShoppingList   ShoppingList? @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+    shoppingListId String?
+}
+
+model ShoppingList {
+    id       String                @id @default(cuid())
+    name     String
+    products ShoppingListProduct[]
+    owners   User[]
 }
