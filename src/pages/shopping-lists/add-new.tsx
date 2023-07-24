@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { ShoppingListForm } from "~/components/ShoppingListForm/ShoppingListForm";
 
 export default function AddNewShoppingListPage() {
   return (
@@ -6,7 +7,9 @@ export default function AddNewShoppingListPage() {
       <Head>
         <title>Dodaj listę zakupów</title>
       </Head>
-      <main>nowa lista zakupów</main>
+      <main>
+        <ShoppingListForm />
+      </main>
     </>
   );
 }
