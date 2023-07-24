@@ -12,7 +12,7 @@ type TProduct = {
 type ProductProps = TProduct & {
   updateProductsList: (product: TProduct) => void;
   addProduct: (type: "initial" | "next", product?: TProduct) => void;
-  deleteProduct: () => void;
+  deleteEmptyProduct: () => void;
 };
 
 /* LIST ITEM COMPONENT */
@@ -20,7 +20,7 @@ type ProductProps = TProduct & {
 const Product = (props: ProductProps) => {
   const [name, setName] = useState(props.name);
   const [count, setCount] = useState(props.count);
-  const { id, addProduct, updateProductsList, deleteProduct } = props;
+  const { id, addProduct, updateProductsList, deleteEmptyProduct } = props;
 
   const handleProductKeyDown = (e: React.KeyboardEvent) => {
     if (name !== "" && e.code === "Enter") {
@@ -43,7 +43,7 @@ const Product = (props: ProductProps) => {
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value === "") deleteProduct();
+    if (e.currentTarget.value === "") deleteEmptyProduct();
   };
 
   return (
@@ -76,15 +76,15 @@ export const ShoppingListForm = () => {
   const [name, setName] = useState<string>("");
   const [products, setProducts] = useState<TProduct[]>([]);
 
-  const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);
   };
 
-  const handleNameBlur = () => {
+  const handleBlur = () => {
     if (name !== "" && products.length < 1) addProduct("initial");
   };
 
-  const handleNameKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (name !== "" && products.length < 1 && e.code === "Enter")
       addProduct("initial");
   };
@@ -110,7 +110,7 @@ export const ShoppingListForm = () => {
     });
   };
 
-  const deleteProduct = () => {
+  const deleteEmptyProduct = () => {
     setProducts((prev) => prev.filter((el) => el.name !== ""));
   };
 
@@ -128,9 +128,9 @@ export const ShoppingListForm = () => {
           id="list-name"
           className={styles.input}
           value={name}
-          onChange={handleName}
-          onBlur={handleNameBlur}
-          onKeyDown={handleNameKeyDown}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
         />
       </label>
       <ul className={styles.productsList}>
@@ -141,7 +141,7 @@ export const ShoppingListForm = () => {
               key={idx}
               updateProductsList={updateProductsList}
               addProduct={addProduct}
-              deleteProduct={deleteProduct}
+              deleteEmptyProduct={deleteEmptyProduct}
             />
           );
         })}
