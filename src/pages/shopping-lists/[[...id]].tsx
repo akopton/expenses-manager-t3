@@ -17,7 +17,7 @@ export default function ShoppingPage() {
       <Head>
         <title>Listy zakupów</title>
       </Head>
-      <main className="flex flex-col items-center">
+      <main className="flex h-screen flex-col items-center">
         <ul className="flex w-full flex-col items-center gap-10">
           {lists.map((el) => {
             return (

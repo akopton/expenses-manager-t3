@@ -7,7 +7,7 @@ export default function AddNewShoppingListPage() {
       <Head>
         <title>Dodaj listę zakupów</title>
       </Head>
-      <main>
+      <main className="h-screen">
         <ShoppingListForm />
       </main>
     </>
