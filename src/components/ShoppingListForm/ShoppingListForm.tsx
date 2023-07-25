@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 import styles from "./form.module.css";
+import { api } from "~/utils/api";
+import { redirect } from "next/navigation";
+import { User } from "@prisma/client";
+import { UsersList } from "../UsersList/UsersList";
 
 /* TYPES */
 
@@ -22,7 +26,6 @@ type ProductProps = TProduct & {
 const Product = (props: ProductProps) => {
   const [name, setName] = useState("");
   const [count, setCount] = useState(1);
-  const [hideTooltip, setHideTooltip] = useState(false);
   const { id, addProduct, updateProductsList, deleteProduct, newId } = props;
 
   useEffect(() => {
@@ -31,7 +34,6 @@ const Product = (props: ProductProps) => {
 
   const handleProductKeyDown = (e: React.KeyboardEvent) => {
     if (name !== "" && e.code === "Enter") {
-      setHideTooltip(true);
       e.preventDefault();
       addProduct("next", { id: newId, name: "", count: 1 });
     }
@@ -86,7 +88,7 @@ const Product = (props: ProductProps) => {
           <BsTrash />
         </button>
       )}
-      {!hideTooltip && (
+      {name !== "" && (
         <div className={styles.nameTooltip}>
           <div className={styles.tooltipArrow} />
           <span>{name}</span>
@@ -99,10 +101,18 @@ const Product = (props: ProductProps) => {
 /* FORM COMPONENT */
 
 export const ShoppingListForm = () => {
+  const addShoppingList = api.shoppingLists.addNew.useMutation();
   const [name, setName] = useState<string>("");
   const [products, setProducts] = useState<TProduct[]>([]);
+  const [shareWith, setShareWith] = useState<User[]>([]);
+  const [showUsersList, setShowUsersList] = useState(false);
 
   const newId = Math.max(...products.map((el) => el.id)) + 1;
+
+  const clearAll = () => {
+    setName("");
+    setProducts([]);
+  };
 
   const handleClick = () => {
     if (products.length > 0) {
@@ -160,10 +170,14 @@ export const ShoppingListForm = () => {
     else setProducts((prev) => prev.filter((el) => el.id !== product.id));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("nazwa: ", name);
-    console.table(products);
+    await addShoppingList.mutateAsync({ name, products });
+    clearAll();
+  };
+
+  const closeUsersList = () => {
+    setShowUsersList(false);
   };
 
   return (
@@ -198,9 +212,17 @@ export const ShoppingListForm = () => {
           </li>
         )}
       </ul>
+      <button
+        type="button"
+        className={styles.submitBtn}
+        onClick={() => setShowUsersList(true)}
+      >
+        Dodaj użytkownika
+      </button>
       <button type="submit" className={styles.submitBtn} onClick={handleSubmit}>
         Stwórz listę
       </button>
+      {showUsersList && <UsersList closeList={closeUsersList} />}
     </form>
   );
 };

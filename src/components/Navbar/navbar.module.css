@@ -6,8 +6,8 @@
         width: 100%;
         max-height: 100vh;
         z-index: 10;
-        /* background: var(--primary-font-transparent);
-        backdrop-filter: blur(6px); */
+        background: var(--primary-font-transparent);
+        backdrop-filter: blur(6px);
     }
     
     .navBtns {

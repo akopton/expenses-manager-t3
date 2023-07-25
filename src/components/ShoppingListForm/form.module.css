@@ -69,7 +69,7 @@
 .product:hover .nameTooltip {
     visibility: visible;
     opacity: 1;
-    transition: opacity .3s ease .5s;
+    transition: opacity .3s ease 1s;
 }
 
 .inputProductCount {
@@ -78,7 +78,7 @@
 }
 
 .submitBtn {
-    padding: 10px 15px;
+    padding: 8px 12px;
     width: fit-content;
     border: 2px solid var(--primary-color);
     border-radius: 12px;
