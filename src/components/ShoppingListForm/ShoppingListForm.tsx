@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import { redirect } from "next/navigation";
 import { User } from "@prisma/client";
 import { UsersList } from "../UsersList/UsersList";
+import { SelectedUsersProvider } from "~/context/SelectedUsersContext";
 
 /* TYPES */
 
@@ -180,49 +181,72 @@ export const ShoppingListForm = () => {
     setShowUsersList(false);
   };
 
+  const openUsersList = () => {
+    setShowUsersList(true);
+  };
+
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Nadaj mi nazwę..."
-        className={styles.inputFormName}
-        value={name}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-      />
-      <ul className={styles.productsList}>
-        {products.map((el, idx) => {
-          return (
-            <Product
-              {...el}
-              newId={newId}
-              key={idx}
-              updateProductsList={updateProductsList}
-              addProduct={addProduct}
-              deleteProduct={deleteProduct}
-            />
-          );
-        })}
-        {name !== "" && (
-          <li className={styles.submitBtn}>
-            <button type="button" onClick={handleClick}>
-              Dodaj produkt
+    <SelectedUsersProvider>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div
+          className={styles.wrapper}
+          onClick={() => {
+            if (showUsersList) {
+              console.log("eloi");
+              closeUsersList();
+            }
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Nadaj mi nazwę..."
+            className={styles.inputFormName}
+            value={name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            autoFocus
+          />
+          <ul className={styles.productsList}>
+            {products.map((el, idx) => {
+              return (
+                <Product
+                  {...el}
+                  newId={newId}
+                  key={idx}
+                  updateProductsList={updateProductsList}
+                  addProduct={addProduct}
+                  deleteProduct={deleteProduct}
+                />
+              );
+            })}
+            {name !== "" && (
+              <li className={styles.submitBtn}>
+                <button type="button" onClick={handleClick}>
+                  Dodaj produkt
+                </button>
+              </li>
+            )}
+          </ul>
+          <div className={styles.buttonsWrapper}>
+            <button
+              type="button"
+              className={styles.submitBtn}
+              onClick={openUsersList}
+            >
+              Dodaj użytkownika
             </button>
-          </li>
-        )}
-      </ul>
-      <button
-        type="button"
-        className={styles.submitBtn}
-        onClick={() => setShowUsersList(true)}
-      >
-        Dodaj użytkownika
-      </button>
-      <button type="submit" className={styles.submitBtn} onClick={handleSubmit}>
-        Stwórz listę
-      </button>
-      {showUsersList && <UsersList closeList={closeUsersList} />}
-    </form>
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              onClick={handleSubmit}
+            >
+              Stwórz listę
+            </button>
+          </div>
+        </div>
+        <UsersList closeList={closeUsersList} show={showUsersList} />
+      </form>
+    </SelectedUsersProvider>
   );
 };

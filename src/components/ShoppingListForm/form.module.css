@@ -8,6 +8,14 @@
     gap: 20px;
 }
 
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .inputFormName {
     padding: 5px;
     width: 100%;
@@ -83,6 +91,13 @@
     border: 2px solid var(--primary-color);
     border-radius: 12px;
     margin-left: 0;
+}
+
+.buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 /* Product Tooltip */
