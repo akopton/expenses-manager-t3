@@ -4,6 +4,11 @@ import { useRouter } from "next/router";
 import { CustomLink } from "~/components/CustomLink/CustomLink";
 import { ShoppingList } from "~/components/ShoppingList/ShoppingList";
 import { ShoppingListForm } from "~/components/ShoppingListForm/ShoppingListForm";
+import { SelectedUsersProvider } from "~/context/SelectedUsersContext";
+import {
+  ShoppingListContext,
+  ShoppingListProvider,
+} from "~/context/ShoppingListContext";
 import { api } from "~/utils/api";
 
 export default function ShoppingPage() {
@@ -17,8 +22,9 @@ export default function ShoppingPage() {
           <title>Listy zakupów</title>
         </Head>
         <main className="flex h-screen flex-col items-center py-20">
-          <ShoppingListForm />
-          <CustomLink href={"/shopping-lists/add-new"} text="Nowa lista" />
+          <ShoppingListProvider>
+            <ShoppingListForm type="empty" />
+          </ShoppingListProvider>
         </main>
       </>
     );
@@ -31,8 +37,9 @@ export default function ShoppingPage() {
           <title>Listy zakupów</title>
         </Head>
         <main className="flex h-screen flex-col items-center py-20">
-          <ShoppingList id={router.query.slug[0]!} />
-          <CustomLink href={"/shopping-lists/add-new"} text="Nowa lista" />
+          <ShoppingListProvider>
+            <ShoppingListForm type="filled" />
+          </ShoppingListProvider>
         </main>
       </>
     );

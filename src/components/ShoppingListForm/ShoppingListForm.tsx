@@ -11,32 +11,33 @@ import {
 } from "~/context/SelectedUsersContext";
 import { router } from "@trpc/server";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { ShoppingListContext, TProduct } from "~/context/ShoppingListContext";
+import { randomUUID } from "crypto";
 
 /* TYPES */
 
-type TProduct = {
-  id: number;
-  name: string;
-  count: number;
-};
-
-type ProductProps = TProduct & {
-  newId: number;
-  updateProductsList: (product: TProduct) => void;
-  addProduct: (type: "initial" | "next", product?: TProduct) => void;
-  deleteProduct: (product?: TProduct) => void;
-};
+// type ProductProps = TProduct & {
+//   newId: string;
+//   updateProductsList: (product: TProduct) => void;
+//   addProduct: (type: "initial" | "next", product?: TProduct) => void;
+//   deleteProduct: (product?: TProduct) => void;
+// };
 
 /* LIST ITEM COMPONENT */
 
-const Product = (props: ProductProps) => {
+const Product = (props: TProduct) => {
   const [name, setName] = useState("");
   const [count, setCount] = useState(1);
-  const { id, addProduct, updateProductsList, deleteProduct, newId } = props;
+  const { id } = props;
+  const { addProduct, deleteProduct, updateProductsList, newId } =
+    useContext(ShoppingListContext);
+  // const { id, addProduct, updateProductsList, deleteProduct, newId } = props;
 
   useEffect(() => {
     setName(props.name);
-  }, [props.name]);
+    setCount(props.count);
+  }, [props.name, props.count]);
 
   const handleProductKeyDown = (e: React.KeyboardEvent) => {
     if (name !== "" && e.code === "Enter") {
@@ -106,20 +107,48 @@ const Product = (props: ProductProps) => {
 
 /* FORM COMPONENT */
 
-export const ShoppingListForm = () => {
-  const addShoppingList = api.shoppingLists.addNew.useMutation();
+type FormProps = {
+  type: "empty" | "filled";
+};
+
+export const ShoppingListForm = (props: FormProps) => {
   const router = useRouter();
+  const session = useSession();
+
+  const addShoppingList = api.shoppingLists.addNew.useMutation();
+  const updateShoppingList = api.shoppingLists.updateWithId.useMutation();
+  const { data: currentList, isLoading } =
+    api.shoppingLists.getOneWithId.useQuery({
+      id: router.query?.slug?.[0]!,
+    });
+
   const [name, setName] = useState<string>("");
-  const [products, setProducts] = useState<TProduct[]>([]);
+  // const [products, setProducts] = useState<TProduct[]>([]);
   const [showUsersList, setShowUsersList] = useState(false);
-  const { selectedUsers, resetSelectedUsers } =
-    useContext(SelectedUsersContext);
-  const newId = Math.max(...products.map((el) => el.id)) + 1;
+
+  const { selectedUsers, addUser, products, addProduct, reset, newId } =
+    useContext(ShoppingListContext);
+  // const { addUser, selectedUsers } = useContext(SelectedUsersContext);
+
+  // const newId = self.crypto.randomUUID();
+
+  useEffect(() => {
+    if (currentList) {
+      clearAll();
+      const { name, products, owners } = currentList;
+      setName(name);
+      products.forEach((product) => addProduct("next", product));
+      owners.forEach((user) => {
+        if (user.id !== session.data?.user.id) {
+          addUser(user);
+        }
+      });
+    }
+  }, [currentList]);
 
   const clearAll = () => {
     setName("");
-    setProducts([]);
-    resetSelectedUsers();
+    reset();
   };
 
   const handleClick = () => {
@@ -149,46 +178,61 @@ export const ShoppingListForm = () => {
     }
   };
 
-  const addProduct = (type: "initial" | "next", product?: TProduct) => {
-    if (type === "initial") {
-      setProducts((prev) => [
-        ...prev,
-        { id: products.length, name: "", count: 1 },
-      ]);
-    }
+  // const addProduct = (type: "initial" | "next", product?: TProduct) => {
+  //   if (type === "initial") {
+  //     setProducts((prev) => [...prev, { id: newId, name: "", count: 1 }]);
+  //   }
 
-    if (type === "next" && product) {
-      setProducts((prev) => [...prev, product]);
-    }
-  };
+  //   if (type === "next" && product) {
+  //     setProducts((prev) => [...prev, product]);
+  //   }
+  // };
 
-  const updateProductsList = (product: TProduct) => {
-    setProducts((prev) => {
-      return prev.map((el) => {
-        if (el.id === product.id) {
-          return product;
-        }
-        return el;
-      });
+  // const updateProductsList = (product: TProduct) => {
+  //   setProducts((prev) => {
+  //     return prev.map((el) => {
+  //       if (el.id === product.id) {
+  //         return product;
+  //       }
+  //       return el;
+  //     });
+  //   });
+  // };
+
+  // const deleteProduct = (product?: TProduct) => {
+  //   if (!product) setProducts((prev) => prev.filter((el) => el.name !== ""));
+  //   else setProducts((prev) => prev.filter((el) => el.id !== product.id));
+  // };
+
+  const createList = async () => {
+    const added = await addShoppingList.mutateAsync({
+      name,
+      products,
+      users: selectedUsers,
     });
+    router.replace(`/shopping-lists/${added.id}`);
   };
 
-  const deleteProduct = (product?: TProduct) => {
-    if (!product) setProducts((prev) => prev.filter((el) => el.name !== ""));
-    else setProducts((prev) => prev.filter((el) => el.id !== product.id));
+  const updateList = async () => {
+    if (!currentList) return;
+    await updateShoppingList.mutateAsync({
+      id: currentList?.id,
+      name,
+      products,
+      users: selectedUsers,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name) return;
     if (products.length < 1) return;
-    const added = await addShoppingList.mutateAsync({
-      name,
-      products,
-      users: selectedUsers,
-    });
-    router.push(`/shopping-lists/${added.id}`);
-    clearAll();
+    if (currentList) {
+      await updateList();
+      return;
+    }
+
+    await createList();
   };
 
   const closeUsersList = () => {
@@ -198,6 +242,10 @@ export const ShoppingListForm = () => {
   const openUsersList = () => {
     setShowUsersList(true);
   };
+
+  if (isLoading && props.type === "filled") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -224,11 +272,11 @@ export const ShoppingListForm = () => {
             return (
               <Product
                 {...el}
-                newId={newId}
                 key={idx}
-                updateProductsList={updateProductsList}
-                addProduct={addProduct}
-                deleteProduct={deleteProduct}
+                // newId={newId}
+                // updateProductsList={updateProductsList}
+                // addProduct={addProduct}
+                // deleteProduct={deleteProduct}
               />
             );
           })}
