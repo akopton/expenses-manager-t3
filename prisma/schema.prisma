@@ -138,6 +138,8 @@ model ShoppingListProduct {
     count          Int
     ShoppingList   ShoppingList? @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
     shoppingListId String?
+
+    @@unique([name, shoppingListId])
 }
 
 model ShoppingList {
