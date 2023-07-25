@@ -1,31 +1,26 @@
 import { useState } from "react";
 import styles from "./list.module.css";
 import Link from "next/link";
+import { ShoppingList as TShoppingList } from "@prisma/client";
+import { api } from "~/utils/api";
 
 type ListProps = {
-  name: string;
-  listId: string;
-  isClosed: boolean;
-  content: string;
+  id: string;
 };
 
 export const ShoppingList = (props: ListProps) => {
-  const { isClosed, listId, name, content } = props;
-
-  if (isClosed) {
-    return (
-      <li className={styles.container}>
-        <Link href={`/shopping-lists/${listId}`}>{name}</Link>
-      </li>
-    );
-  }
+  const { id } = props;
+  const { data } = api.shoppingLists.getOneWithId.useQuery({ id: id });
 
   return (
-    <li className={styles.container}>
-      <Link className={styles.closeBtn} href={"/shopping-lists"}></Link>
-      {/* <div }></div> */}
-      <span>{name}</span>
-      <span>{content}</span>
-    </li>
+    <div className={styles.container}>
+      <span>{data && data.name}</span>
+      <ul>
+        {data &&
+          data.owners.map((el) => {
+            return <li key={el.id}>{el.name}</li>;
+          })}
+      </ul>
+    </div>
   );
 };

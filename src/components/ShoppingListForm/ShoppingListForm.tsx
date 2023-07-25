@@ -9,6 +9,8 @@ import {
   SelectedUsersContext,
   SelectedUsersProvider,
 } from "~/context/SelectedUsersContext";
+import { router } from "@trpc/server";
+import { useRouter } from "next/router";
 
 /* TYPES */
 
@@ -106,6 +108,7 @@ const Product = (props: ProductProps) => {
 
 export const ShoppingListForm = () => {
   const addShoppingList = api.shoppingLists.addNew.useMutation();
+  const router = useRouter();
   const [name, setName] = useState<string>("");
   const [products, setProducts] = useState<TProduct[]>([]);
   const [showUsersList, setShowUsersList] = useState(false);
@@ -179,7 +182,12 @@ export const ShoppingListForm = () => {
     e.preventDefault();
     if (!name) return;
     if (products.length < 1) return;
-    await addShoppingList.mutateAsync({ name, products, users: selectedUsers });
+    const added = await addShoppingList.mutateAsync({
+      name,
+      products,
+      users: selectedUsers,
+    });
+    router.push(`/shopping-lists/${added.id}`);
     clearAll();
   };
 
@@ -248,7 +256,7 @@ export const ShoppingListForm = () => {
             className={styles.submitBtn}
             onClick={handleSubmit}
           >
-            Stwórz listę
+            Zapisz
           </button>
         </div>
       </div>

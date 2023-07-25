@@ -8,7 +8,24 @@ export const shoppingListsRouter = createTRPCRouter({
 
   getNamesAndIds: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
+    const lists = await ctx.prisma.shoppingList.findMany({
+      select: { id: true, name: true },
+      where: {
+        owners: { some: { id: user.id } },
+      },
+    });
+    return lists;
   }),
+
+  getOneWithId: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const list = await ctx.prisma.shoppingList.findUnique({
+        where: { id: input.id },
+        include: { owners: true, products: true },
+      });
+      return list;
+    }),
 
   addNew: protectedProcedure
     .input(
