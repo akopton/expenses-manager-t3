@@ -15,10 +15,14 @@ export const shoppingListsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         products: z.object({ name: z.string(), count: z.number() }).array(),
+        users: z.object({ id: z.string() }).array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
+      const owners = input.users;
+      owners.push(user);
+
       const list = await ctx.prisma.shoppingList.create({
         data: {
           name: input.name,
@@ -28,7 +32,11 @@ export const shoppingListsRouter = createTRPCRouter({
               count: product.count,
             })),
           },
-          owners: { connect: { id: user.id } },
+          owners: {
+            connect: owners.map((user) => {
+              return { id: user.id };
+            }),
+          },
         },
       });
       return list;

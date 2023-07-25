@@ -1,11 +1,11 @@
 import { User } from "@prisma/client";
 import { api } from "~/utils/api";
-import { AiOutlineClose } from "react-icons/ai";
-import styles from "./list.module.css";
+import { AiOutlineClose, AiOutlineCheckCircle } from "react-icons/ai";
 import { ThemeContext } from "~/context/ThemeContext";
 import { useContext, useState } from "react";
 import { useSearch } from "~/hooks/useSearch";
 import { SelectedUsersContext } from "~/context/SelectedUsersContext";
+import styles from "./list.module.css";
 
 type ListProps = {
   closeList: () => void;
@@ -32,10 +32,10 @@ const User = (props: UserProps) => {
   };
 
   return (
-    <li className={styles.listItem}>
-      <button type="button" onClick={handleClick}>
+    <li>
+      <button type="button" onClick={handleClick} className={styles.listItem}>
         <span>{props.name}</span>
-        <span>{selected ? <span>V</span> : null}</span>
+        <span>{selected ? <AiOutlineCheckCircle /> : null}</span>
       </button>
     </li>
   );

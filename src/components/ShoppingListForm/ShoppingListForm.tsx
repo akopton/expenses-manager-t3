@@ -1,11 +1,14 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 import styles from "./form.module.css";
 import { api } from "~/utils/api";
 import { redirect } from "next/navigation";
 import { User } from "@prisma/client";
 import { UsersList } from "../UsersList/UsersList";
-import { SelectedUsersProvider } from "~/context/SelectedUsersContext";
+import {
+  SelectedUsersContext,
+  SelectedUsersProvider,
+} from "~/context/SelectedUsersContext";
 
 /* TYPES */
 
@@ -105,14 +108,15 @@ export const ShoppingListForm = () => {
   const addShoppingList = api.shoppingLists.addNew.useMutation();
   const [name, setName] = useState<string>("");
   const [products, setProducts] = useState<TProduct[]>([]);
-  const [shareWith, setShareWith] = useState<User[]>([]);
   const [showUsersList, setShowUsersList] = useState(false);
-
+  const { selectedUsers, resetSelectedUsers } =
+    useContext(SelectedUsersContext);
   const newId = Math.max(...products.map((el) => el.id)) + 1;
 
   const clearAll = () => {
     setName("");
     setProducts([]);
+    resetSelectedUsers();
   };
 
   const handleClick = () => {
@@ -173,7 +177,9 @@ export const ShoppingListForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addShoppingList.mutateAsync({ name, products });
+    if (!name) return;
+    if (products.length < 1) return;
+    await addShoppingList.mutateAsync({ name, products, users: selectedUsers });
     clearAll();
   };
 
@@ -186,49 +192,48 @@ export const ShoppingListForm = () => {
   };
 
   return (
-    <SelectedUsersProvider>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <div
-          className={styles.wrapper}
-          onClick={() => {
-            if (showUsersList) {
-              console.log("eloi");
-              closeUsersList();
-            }
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Nadaj mi nazwę..."
-            className={styles.inputFormName}
-            value={name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-            autoFocus
-          />
-          <ul className={styles.productsList}>
-            {products.map((el, idx) => {
-              return (
-                <Product
-                  {...el}
-                  newId={newId}
-                  key={idx}
-                  updateProductsList={updateProductsList}
-                  addProduct={addProduct}
-                  deleteProduct={deleteProduct}
-                />
-              );
-            })}
-            {name !== "" && (
-              <li className={styles.submitBtn}>
-                <button type="button" onClick={handleClick}>
-                  Dodaj produkt
-                </button>
-              </li>
-            )}
-          </ul>
-          <div className={styles.buttonsWrapper}>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div
+        className={styles.wrapper}
+        onClick={() => {
+          if (showUsersList) {
+            closeUsersList();
+          }
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Nadaj mi nazwę..."
+          className={styles.inputFormName}
+          value={name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          autoFocus
+        />
+        <ul className={styles.productsList}>
+          {products.map((el, idx) => {
+            return (
+              <Product
+                {...el}
+                newId={newId}
+                key={idx}
+                updateProductsList={updateProductsList}
+                addProduct={addProduct}
+                deleteProduct={deleteProduct}
+              />
+            );
+          })}
+          {name !== "" && (
+            <li className={styles.submitBtn}>
+              <button type="button" onClick={handleClick}>
+                Dodaj produkt
+              </button>
+            </li>
+          )}
+        </ul>
+        <div className={styles.buttonsWrapper}>
+          <div>
             <button
               type="button"
               className={styles.submitBtn}
@@ -236,17 +241,18 @@ export const ShoppingListForm = () => {
             >
               Dodaj użytkownika
             </button>
-            <button
-              type="submit"
-              className={styles.submitBtn}
-              onClick={handleSubmit}
-            >
-              Stwórz listę
-            </button>
+            {selectedUsers.length > 0 && <span>{selectedUsers.length}</span>}
           </div>
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            onClick={handleSubmit}
+          >
+            Stwórz listę
+          </button>
         </div>
-        <UsersList closeList={closeUsersList} show={showUsersList} />
-      </form>
-    </SelectedUsersProvider>
+      </div>
+      <UsersList closeList={closeUsersList} show={showUsersList} />
+    </form>
   );
 };

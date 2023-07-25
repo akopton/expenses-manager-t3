@@ -6,12 +6,14 @@ type ContextProps = {
   selectedUsers: User[];
   addUser: (user: User) => void;
   removeUser: (user: User) => void;
+  resetSelectedUsers: () => void;
 };
 
 const initialContext: ContextProps = {
   selectedUsers: [],
   addUser: (user: User) => {},
   removeUser: (user: User) => {},
+  resetSelectedUsers: () => {},
 };
 
 export const SelectedUsersContext = createContext(initialContext);
@@ -36,13 +38,13 @@ export const SelectedUsersProvider = ({
     setSelectedUsers((prev) => prev.filter((el) => el.id !== user.id));
   };
 
-  useEffect(() => {
-    console.log(selectedUsers);
-  }, [selectedUsers]);
+  const resetSelectedUsers = () => {
+    setSelectedUsers([]);
+  };
 
   return (
     <SelectedUsersContext.Provider
-      value={{ selectedUsers, addUser, removeUser }}
+      value={{ selectedUsers, addUser, removeUser, resetSelectedUsers }}
     >
       {children}
     </SelectedUsersContext.Provider>
