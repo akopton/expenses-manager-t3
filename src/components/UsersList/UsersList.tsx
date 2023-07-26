@@ -4,8 +4,8 @@ import { AiOutlineClose, AiOutlineCheckCircle } from "react-icons/ai";
 import { ThemeContext } from "~/context/ThemeContext";
 import { useContext, useState } from "react";
 import { useSearch } from "~/hooks/useSearch";
-import { SelectedUsersContext } from "~/context/SelectedUsersContext";
 import styles from "./list.module.css";
+import { ShoppingListContext } from "~/context/ShoppingListContext";
 
 type ListProps = {
   closeList: () => void;
@@ -19,7 +19,7 @@ type UserProps = User & {
 const User = (props: UserProps) => {
   const { selected, ...rest } = props;
   const { selectedUsers, addUser, removeUser } =
-    useContext(SelectedUsersContext);
+    useContext(ShoppingListContext);
 
   const user = { ...rest };
 
@@ -48,7 +48,7 @@ export const UsersList = (props: ListProps) => {
 
   const { closeList, show } = props;
   const { theme } = useContext(ThemeContext);
-  const { selectedUsers } = useContext(SelectedUsersContext);
+  const { selectedUsers } = useContext(ShoppingListContext);
   const { filteredData } = useSearch(users.data, searchValue);
 
   return (
