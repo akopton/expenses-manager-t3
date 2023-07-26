@@ -54,34 +54,34 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
-    CredentialsProvider({
-      type: "credentials",
-      id: "credentials",
-      name: "Credentials",
-      credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "jsmith",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
-      },
-      authorize: async (): Promise<User | null> => {
-        const user = {
-          id: "elo",
-          username: "john",
-          password: "smith",
-          email: "eluwina",
-        };
-        if (user) {
-          return user;
-        }
-        return null;
-      },
-    }),
+    // CredentialsProvider({
+    //   type: "credentials",
+    //   id: "credentials",
+    //   name: "Credentials",
+    //   credentials: {
+    //     username: {
+    //       label: "Username",
+    //       type: "text",
+    //       placeholder: "jsmith",
+    //     },
+    //     password: {
+    //       label: "Password",
+    //       type: "password",
+    //     },
+    //   },
+    //   authorize: async (): Promise<User | null> => {
+    //     const user = {
+    //       id: "elo",
+    //       username: "john",
+    //       password: "smith",
+    //       email: "eluwina",
+    //     };
+    //     if (user) {
+    //       return user;
+    //     }
+    //     return null;
+    //   },
+    // }),
     /*
      * @see https://next-auth.js.org/providers/github
      */

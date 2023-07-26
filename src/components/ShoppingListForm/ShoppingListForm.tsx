@@ -166,7 +166,7 @@ export const ShoppingListForm = (props: FormProps) => {
       products,
       users: selectedUsers,
     });
-    router.replace(`/shopping-lists/${added.id}`);
+    await router.replace(`/shopping-lists/${added.id}`);
   };
 
   const updateList = async () => {
