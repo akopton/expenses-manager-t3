@@ -9,6 +9,8 @@
   --primary-font: rgb(247, 247, 247);
   --primary-color-hover: rgba(88, 14, 246, .5);
   --primary-font-transparent: rgba(247, 247, 247, .2);
+  --primary-bg-transparent: rgba(26, 28, 34, .2);
+  --secondary-bg-transparent: rgba(61, 58, 80, .5);
 }
 
 .dark {

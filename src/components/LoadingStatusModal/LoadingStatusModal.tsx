@@ -38,7 +38,7 @@ export const LoadingStatusModal = (props: StatusProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowComponent(false);
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
