@@ -23,12 +23,24 @@ type ContextProps = {
 const initialContext: ContextProps = {
   selectedUsers: [],
   products: [],
-  addUser: (user: User) => {},
-  removeUser: (user: User) => {},
-  updateProductsList: (product: TProduct) => {},
-  addProduct: (type: "initial" | "next", product?: TProduct) => {},
-  deleteProduct: (product?: TProduct) => {},
-  reset: () => {},
+  addUser: (user: User) => {
+    console.log("add user");
+  },
+  removeUser: (user: User) => {
+    console.log("remove user");
+  },
+  updateProductsList: (product: TProduct) => {
+    console.log("update products list");
+  },
+  addProduct: (type: "initial" | "next", product?: TProduct) => {
+    console.log("add product");
+  },
+  deleteProduct: (product?: TProduct) => {
+    console.log("delete product");
+  },
+  reset: () => {
+    console.log("reset all");
+  },
   newId: "",
 };
 

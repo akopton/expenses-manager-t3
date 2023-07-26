@@ -4,6 +4,8 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const shoppingListsRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
+    const lists = await ctx.prisma.shoppingList.findMany();
+    return lists;
   }),
 
   getNamesAndIds: protectedProcedure.query(async ({ ctx }) => {
@@ -87,7 +89,7 @@ export const shoppingListsRouter = createTRPCRouter({
         }
 
         if (currentList.products.length < input.products.length) {
-          input.products.forEach(async (product) => {
+          input.products.map(async (product) => {
             const found = await ctx.prisma.shoppingListProduct.findUnique({
               where: {
                 name_shoppingListId: {
@@ -111,7 +113,7 @@ export const shoppingListsRouter = createTRPCRouter({
         }
 
         if (currentList.products.length > input.products.length) {
-          input.products.forEach(async (product) => {
+          input.products.map(async (product) => {
             const found = currentList.products.filter(
               (el) => !input.products.some((item) => el.name === item.name)
             );
@@ -135,7 +137,7 @@ export const shoppingListsRouter = createTRPCRouter({
         }
 
         if (currentList.owners.length < input.users.length) {
-          input.users.forEach(async (user) => {
+          input.users.map(async (user) => {
             await ctx.prisma.shoppingList.update({
               where: { id: input.id },
               data: {
@@ -149,7 +151,7 @@ export const shoppingListsRouter = createTRPCRouter({
           });
         }
 
-        input.products.forEach(async (product) => {
+        input.products.map(async (product) => {
           await ctx.prisma.shoppingListProduct.update({
             where: {
               name_shoppingListId: {

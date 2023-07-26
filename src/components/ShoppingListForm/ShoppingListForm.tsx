@@ -5,24 +5,11 @@ import { api } from "~/utils/api";
 import { redirect } from "next/navigation";
 import { User } from "@prisma/client";
 import { UsersList } from "../UsersList/UsersList";
-import {
-  SelectedUsersContext,
-  SelectedUsersProvider,
-} from "~/context/SelectedUsersContext";
 import { router } from "@trpc/server";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { ShoppingListContext, TProduct } from "~/context/ShoppingListContext";
 import { randomUUID } from "crypto";
-
-/* TYPES */
-
-// type ProductProps = TProduct & {
-//   newId: string;
-//   updateProductsList: (product: TProduct) => void;
-//   addProduct: (type: "initial" | "next", product?: TProduct) => void;
-//   deleteProduct: (product?: TProduct) => void;
-// };
 
 /* LIST ITEM COMPONENT */
 
@@ -32,7 +19,6 @@ const Product = (props: TProduct) => {
   const { id } = props;
   const { addProduct, deleteProduct, updateProductsList, newId } =
     useContext(ShoppingListContext);
-  // const { id, addProduct, updateProductsList, deleteProduct, newId } = props;
 
   useEffect(() => {
     setName(props.name);
@@ -119,18 +105,14 @@ export const ShoppingListForm = (props: FormProps) => {
   const updateShoppingList = api.shoppingLists.updateWithId.useMutation();
   const { data: currentList, isLoading } =
     api.shoppingLists.getOneWithId.useQuery({
-      id: router.query?.slug?.[0]!,
+      id: router.query?.slug?.[0] as string,
     });
 
   const [name, setName] = useState<string>("");
-  // const [products, setProducts] = useState<TProduct[]>([]);
   const [showUsersList, setShowUsersList] = useState(false);
 
   const { selectedUsers, addUser, products, addProduct, reset, newId } =
     useContext(ShoppingListContext);
-  // const { addUser, selectedUsers } = useContext(SelectedUsersContext);
-
-  // const newId = self.crypto.randomUUID();
 
   useEffect(() => {
     if (currentList) {
@@ -177,32 +159,6 @@ export const ShoppingListForm = (props: FormProps) => {
       addProduct("initial");
     }
   };
-
-  // const addProduct = (type: "initial" | "next", product?: TProduct) => {
-  //   if (type === "initial") {
-  //     setProducts((prev) => [...prev, { id: newId, name: "", count: 1 }]);
-  //   }
-
-  //   if (type === "next" && product) {
-  //     setProducts((prev) => [...prev, product]);
-  //   }
-  // };
-
-  // const updateProductsList = (product: TProduct) => {
-  //   setProducts((prev) => {
-  //     return prev.map((el) => {
-  //       if (el.id === product.id) {
-  //         return product;
-  //       }
-  //       return el;
-  //     });
-  //   });
-  // };
-
-  // const deleteProduct = (product?: TProduct) => {
-  //   if (!product) setProducts((prev) => prev.filter((el) => el.name !== ""));
-  //   else setProducts((prev) => prev.filter((el) => el.id !== product.id));
-  // };
 
   const createList = async () => {
     const added = await addShoppingList.mutateAsync({
@@ -269,16 +225,7 @@ export const ShoppingListForm = (props: FormProps) => {
         />
         <ul className={styles.productsList}>
           {products.map((el, idx) => {
-            return (
-              <Product
-                {...el}
-                key={idx}
-                // newId={newId}
-                // updateProductsList={updateProductsList}
-                // addProduct={addProduct}
-                // deleteProduct={deleteProduct}
-              />
-            );
+            return <Product {...el} key={idx} />;
           })}
           {name !== "" && (
             <li className={styles.submitBtn}>
