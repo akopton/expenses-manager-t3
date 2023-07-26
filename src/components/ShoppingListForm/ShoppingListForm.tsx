@@ -58,7 +58,9 @@ const Product = (props: TProduct) => {
     <li className={styles.product}>
       <input
         type="text"
-        className={`${styles.inputProductName as string} ${styles.input}`}
+        className={`${styles.inputProductName as string} ${
+          styles.input as string
+        }`}
         value={props.name ? props.name : name}
         onChange={handleProductName}
         onKeyDown={handleProductKeyDown}
@@ -67,7 +69,9 @@ const Product = (props: TProduct) => {
       />
       <input
         type="number"
-        className={`${styles.inputProductCount as string} ${styles.input}`}
+        className={`${styles.inputProductCount as string} ${
+          styles.input as string
+        }`}
         value={count ? count : ""}
         onChange={handleProductCount}
         onKeyDown={handleProductKeyDown}
