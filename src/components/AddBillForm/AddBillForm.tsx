@@ -238,25 +238,11 @@ export const AddBillForm = () => {
         </button>
       </div>
       {loading && (
-        <LoadingStatusModal
-          status="loading"
-          message="Proszę czekać"
-          closeModal={resetStatus}
-        />
+        <LoadingStatusModal status="loading" message="Proszę czekać" />
       )}
-      {error && (
-        <LoadingStatusModal
-          status="error"
-          message="Wystąpił błąd"
-          closeModal={resetStatus}
-        />
-      )}
+      {error && <LoadingStatusModal status="error" message="Wystąpił błąd" />}
       {success && (
-        <LoadingStatusModal
-          status="success"
-          message="Pomyślnie dodano"
-          closeModal={resetStatus}
-        />
+        <LoadingStatusModal status="success" message="Pomyślnie dodano" />
       )}
     </>
   );
