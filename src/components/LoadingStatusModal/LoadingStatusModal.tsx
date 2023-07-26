@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 type StatusProps = {
   status: "error" | "loading" | "success";
   message?: string;
-  closeModal: () => void;
 };
 
 const Loader = () => {
@@ -31,7 +30,7 @@ const Success = () => {
 };
 
 export const LoadingStatusModal = (props: StatusProps) => {
-  const { status, message, closeModal } = props;
+  const { status, message } = props;
   const router = useRouter();
   const previousRoute = router.asPath.replace("/add-bill", "");
   const [showComponent, setShowComponent] = useState(true);

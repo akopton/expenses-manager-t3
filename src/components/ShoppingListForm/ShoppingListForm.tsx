@@ -263,18 +263,10 @@ export const ShoppingListForm = (props: FormProps) => {
       </div>
       <UsersList closeList={closeUsersList} show={showUsersList} />
       {updateShoppingList.isLoading && (
-        <LoadingStatusModal
-          status="loading"
-          message="Zapisuję"
-          closeModal={() => {}}
-        />
+        <LoadingStatusModal status="loading" message="Zapisuję" />
       )}
       {updateShoppingList.isSuccess && (
-        <LoadingStatusModal
-          status="success"
-          message="Pomyślnie zapisano"
-          closeModal={() => {}}
-        />
+        <LoadingStatusModal status="success" message="Pomyślnie zapisano" />
       )}
     </form>
   );
