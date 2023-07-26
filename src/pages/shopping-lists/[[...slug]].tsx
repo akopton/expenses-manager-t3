@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { CustomLink } from "~/components/CustomLink/CustomLink";
 import { ShoppingList } from "~/components/ShoppingList/ShoppingList";
 import { ShoppingListForm } from "~/components/ShoppingListForm/ShoppingListForm";
-import { SelectedUsersProvider } from "~/context/SelectedUsersContext";
 import {
   ShoppingListContext,
   ShoppingListProvider,
