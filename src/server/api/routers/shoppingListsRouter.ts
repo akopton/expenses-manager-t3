@@ -159,7 +159,7 @@ export const shoppingListsRouter = createTRPCRouter({
                 shoppingListId: input.id,
               },
             },
-            data: { count: product.count },
+            data: { name: product.name, count: product.count },
           });
         });
       }
