@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { ShoppingListContext, TProduct } from "~/context/ShoppingListContext";
 import { randomUUID } from "crypto";
+import { LoadingStatusModal } from "../LoadingStatusModal/LoadingStatusModal";
 
 /* LIST ITEM COMPONENT */
 
@@ -107,6 +108,7 @@ export const ShoppingListForm = (props: FormProps) => {
 
   const addShoppingList = api.shoppingLists.addNew.useMutation();
   const updateShoppingList = api.shoppingLists.updateWithId.useMutation();
+
   const { data: currentList, isLoading } =
     api.shoppingLists.getOneWithId.useQuery({
       id: router.query?.slug?.[0] as string,
@@ -260,6 +262,20 @@ export const ShoppingListForm = (props: FormProps) => {
         </div>
       </div>
       <UsersList closeList={closeUsersList} show={showUsersList} />
+      {updateShoppingList.isLoading && (
+        <LoadingStatusModal
+          status="loading"
+          message="Zapisuję"
+          closeModal={() => {}}
+        />
+      )}
+      {updateShoppingList.isSuccess && (
+        <LoadingStatusModal
+          status="success"
+          message="Pomyślnie zapisano"
+          closeModal={() => {}}
+        />
+      )}
     </form>
   );
 };

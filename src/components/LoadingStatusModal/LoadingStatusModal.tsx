@@ -3,6 +3,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdErrorOutline } from "react-icons/md";
 import { useRouter } from "next/router";
 import styles from "./modal.module.css";
+import { useEffect, useState } from "react";
 
 type StatusProps = {
   status: "error" | "loading" | "success";
@@ -33,6 +34,15 @@ export const LoadingStatusModal = (props: StatusProps) => {
   const { status, message, closeModal } = props;
   const router = useRouter();
   const previousRoute = router.asPath.replace("/add-bill", "");
+  const [showComponent, setShowComponent] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowComponent(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (status === "loading") {
     return (
@@ -41,52 +51,46 @@ export const LoadingStatusModal = (props: StatusProps) => {
           <span className={styles.modalMessage}>{message}</span>
           <Loader />
         </div>
-        <div className={styles.blur} onClick={closeModal} />
       </>
     );
   }
 
-  if (status === "error") {
-    return (
-      <>
-        <div className={styles.statusModal}>
-          <span className={styles.modalMessage}>{message}</span>
-          <div>
-            <Error />
-          </div>
-          <div className={styles.links}>
-            <button onClick={closeModal} className={styles.link}>
-              Powrót
-            </button>
-            <Link href={previousRoute} className={styles.link}>
-              Strona główna
-            </Link>
-          </div>
-        </div>
-        <div className={styles.blur} onClick={closeModal} />
-      </>
-    );
-  }
+  // if (status === "error") {
+  //   return (
+  //     <>
+  //       <div className={styles.statusModal}>
+  //         <span className={styles.modalMessage}>{message}</span>
+  //         <div>
+  //           <Error />
+  //         </div>
+  //         <div className={styles.links}>
+  //           <button onClick={closeModal} className={styles.link}>
+  //             Powrót
+  //           </button>
+  //           <Link href={previousRoute} className={styles.link}>
+  //             Strona główna
+  //           </Link>
+  //         </div>
+  //       </div>
+  //       <div className={styles.blur} onClick={closeModal} />
+  //     </>
+  //   );
+  // }
 
   if (status === "success") {
-    return (
-      <>
-        <div className={styles.statusModal}>
-          <span className={styles.modalMessage}>{message}</span>
-          <div>
-            <Success />
+    if (showComponent) {
+      return (
+        <>
+          <div className={styles.statusModal}>
+            <span className={styles.modalMessage}>{message}</span>
+            <div>
+              <Success />
+            </div>
           </div>
-          <div className={styles.links}>
-            <button onClick={closeModal} className={styles.link}>
-              Dodaj następny
-            </button>
-            <Link href={previousRoute} className={styles.link}>
-              Strona główna
-            </Link>
-          </div>
-        </div>
-        <div className={styles.blur} onClick={closeModal} />
-      </>
-    );
+        </>
+      );
+    } else {
+      return null;
+    }
   }
 };
