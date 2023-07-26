@@ -72,96 +72,26 @@ export const shoppingListsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const currentUser = ctx.session.user;
-      const currentList = await ctx.prisma.shoppingList.findUnique({
+      const newOwners = [...input.users, currentUser];
+      const currentList = await ctx.prisma.shoppingList.update({
         where: { id: input.id },
-        include: {
-          products: true,
-          owners: { where: { NOT: { id: currentUser.id } } },
+        data: {
+          name: input.name,
+          products: {
+            deleteMany: {},
+            create: input.products.map((product) => ({
+              name: product.name,
+              count: product.count,
+            })),
+          },
+          owners: {
+            set: [],
+            connect: newOwners.map((user) => {
+              return { id: user.id };
+            }),
+          },
         },
       });
-
-      if (currentList) {
-        if (input.name !== currentList.name) {
-          await ctx.prisma.shoppingList.update({
-            where: { id: input.id },
-            data: { name: input.name },
-          });
-        }
-
-        if (currentList.products.length < input.products.length) {
-          input.products.map(async (product) => {
-            const found = await ctx.prisma.shoppingListProduct.findUnique({
-              where: {
-                name_shoppingListId: {
-                  name: product.name,
-                  shoppingListId: input.id,
-                },
-              },
-            });
-
-            if (!found) {
-              await ctx.prisma.shoppingList.update({
-                where: { id: input.id },
-                data: {
-                  products: {
-                    create: { name: product.name, count: product.count },
-                  },
-                },
-              });
-            }
-          });
-        }
-
-        if (currentList.products.length > input.products.length) {
-          input.products.map(async (product) => {
-            const found = currentList.products.filter(
-              (el) => !input.products.some((item) => el.name === item.name)
-            );
-
-            if (found[0]) {
-              await ctx.prisma.shoppingList.update({
-                where: { id: input.id },
-                data: {
-                  products: {
-                    delete: {
-                      name_shoppingListId: {
-                        name: found[0].name,
-                        shoppingListId: input.id,
-                      },
-                    },
-                  },
-                },
-              });
-            }
-          });
-        }
-
-        if (currentList.owners.length < input.users.length) {
-          input.users.map(async (user) => {
-            await ctx.prisma.shoppingList.update({
-              where: { id: input.id },
-              data: {
-                owners: {
-                  connect: {
-                    id: user.id,
-                  },
-                },
-              },
-            });
-          });
-        }
-
-        input.products.map(async (product) => {
-          await ctx.prisma.shoppingListProduct.update({
-            where: {
-              name_shoppingListId: {
-                name: product.name,
-                shoppingListId: input.id,
-              },
-            },
-            data: { name: product.name, count: product.count },
-          });
-        });
-      }
+      return currentList;
     }),
 });
